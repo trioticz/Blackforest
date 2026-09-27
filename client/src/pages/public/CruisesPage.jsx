@@ -2,27 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSettings } from '../../context/SiteSettingsContext';
 import HeroWave from '../../components/common/HeroWave';
-
-import img1 from '../../assets/uploads/Cruise_images/1912240620312026.jpg';
-import img2 from '../../assets/uploads/Cruise_images/2002260756529264.jpg';
-import img3 from '../../assets/uploads/Cruise_images/2002260804071560.jpg';
-import img4 from '../../assets/uploads/Cruise_images/2002260815352706.jpg';
-import img5 from '../../assets/uploads/Cruise_images/2009180841458359.jpg';
-import img6 from '../../assets/uploads/Cruise_images/20120304414770.jpg';
-import img7 from '../../assets/uploads/Cruise_images/2012030441483467.jpg';
-import img8 from '../../assets/uploads/Cruise_images/2012030441484284.jpg';
-import img9 from '../../assets/uploads/Cruise_images/2012250605258841.jpg';
-import img10 from '../../assets/uploads/Cruise_images/2012250625472923.jpg';
-import img11 from '../../assets/uploads/Cruise_images/20170303171617.png';
-import img12 from '../../assets/uploads/Cruise_images/20170314130600.png';
-import img13 from '../../assets/uploads/Cruise_images/20170503184757.png';
-import img14 from '../../assets/uploads/Cruise_images/20170504112032.png';
-
 const CDN = 'https://blackforestholidays.com/wp-content/uploads';
 
 const cruiseUploadImages = [
-  img1, img2, img3, img4, img5, img6, img7,
-  img8, img9, img10, img11, img12, img13, img14
+  '/assets/uploads/Cruise_images/1912240620312026.jpg',
+  '/assets/uploads/Cruise_images/2002260756529264.jpg',
+  '/assets/uploads/Cruise_images/2002260804071560.jpg',
+  '/assets/uploads/Cruise_images/2002260815352706.jpg',
+  '/assets/uploads/Cruise_images/2009180841458359.jpg',
+  '/assets/uploads/Cruise_images/20120304414770.jpg',
+  '/assets/uploads/Cruise_images/2012030441483467.jpg',
+  '/assets/uploads/Cruise_images/2012030441484284.jpg',
+  '/assets/uploads/Cruise_images/2012250605258841.jpg',
+  '/assets/uploads/Cruise_images/2012250625472923.jpg',
+  '/assets/uploads/Cruise_images/20170303171617.png',
+  '/assets/uploads/Cruise_images/20170314130600.png',
+  '/assets/uploads/Cruise_images/20170503184757.png',
+  '/assets/uploads/Cruise_images/20170504112032.png'
 ];
 
 export default function CruisesPage() {
