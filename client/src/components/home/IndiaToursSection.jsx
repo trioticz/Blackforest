@@ -24,7 +24,7 @@ export default function IndiaToursSection() {
       duration: '4 Days',
       rating: 'Rated 4.82 / 5 by past travellers',
       description: "Tea gardens, misty hill roads and colonial charm across two of the Nilgiris' most loved hill towns.",
-      coverImage: '/assets/images/asset_a4a423a58d.jpg'
+      coverImage: '/assets/images/nilgiris-ooty-coonoor.jpg'
     },
     {
       id: 3,

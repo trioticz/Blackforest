@@ -600,7 +600,7 @@ const seedDatabase = async () => {
         rating: 4.8,
         reviewCount: 33,
         featured: true,
-        coverImage: '/assets/images/adventure-activity-detail-3-04.jpg',
+        coverImage: '/assets/images/nilgiris-ooty-coonoor.jpg',
         status: 'published'
       },
       {
