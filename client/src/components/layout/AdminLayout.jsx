@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   MailQuestion,
@@ -18,15 +18,22 @@ import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
 export default function AdminLayout() {
-  const { user, isAuthenticated, logout, isAdmin } = useAuth();
+  const { user, isAuthenticated, loading, logout, isAdmin } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const { showToast } = useToast();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+        <div className="w-8 h-8 border-4 border-[#27B8B1] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
-    navigate('/admin/login', { replace: true });
-    return null;
+    return <Navigate to="/admin/login" replace state={{ from: location }} />;
   }
 
   const handleLogout = () => {

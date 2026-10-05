@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { enquiryService } from '../../services/allServices';
@@ -89,7 +90,7 @@ export default function ContactPage() {
             Contact Us
           </h1>
           <div className="flex items-center justify-center space-x-2 text-sm text-gray-300 font-light">
-            <a href="/" className="hover:text-white transition-colors">Home</a>
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
             <span>•</span>
             <span className="text-[#27B8B1] font-medium">Contact</span>
           </div>

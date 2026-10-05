@@ -68,15 +68,32 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api', apiRoutes);
 
 // Serve client build in production if available
-const clientDist = path.join(__dirname, '../../client/dist');
+const clientDist = path.resolve(__dirname, '../../client/dist');
 const fs = require('fs');
 
 if (fs.existsSync(clientDist)) {
-  app.use(express.static(clientDist));
+  // Serve static assets from client dist
+  app.use(express.static(clientDist, {
+    maxAge: '1y',
+    immutable: true,
+    index: false // do not automatically serve index.html for all subdirs
+  }));
+
+  // Frontend SPA Fallback: All page routes serve index.html
   app.get('*', (req, res, next) => {
+    // 1. Never serve index.html for API or uploads routes
     if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
       return next();
     }
+
+    // 2. Never serve index.html for missing static assets (images, css, js, fonts)
+    // to avoid MIME-type mismatch errors in the browser
+    const isStaticAsset = /\.(js|css|png|jpg|jpeg|gif|ico|svg|woff2?|ttf|eot|webp|avif|mp4|webm|json)$/i.test(req.path);
+    if (isStaticAsset) {
+      return res.status(404).send('Not found');
+    }
+
+    // 3. Serve SPA index.html for all client-side routes (/about, /contact, /destinations/*, etc.)
     res.sendFile(path.join(clientDist, 'index.html'));
   });
 } else {

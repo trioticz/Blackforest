@@ -15,6 +15,7 @@
     "seed": "npm --prefix server run seed",
     "build:client": "npm --prefix client run build",
     "build": "npm --prefix client install && npm --prefix client run build",
+    "build:zip": "npm run build:client && rm -f client/dist.zip && (cd client/dist && zip -r ../dist.zip . -x \"*.DS_Store\")",
     "start": "node server/src/server.js"
   },
   "dependencies": {

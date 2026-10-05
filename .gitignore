@@ -5,6 +5,9 @@ node_modules
 # Build artifacts
 dist
 client/dist
+build
+client/build
+*.zip
 
 # Environment variables
 .env

@@ -56,6 +56,8 @@ export default function App() {
                 {/* Destinations */}
                 <Route path="/destinations" element={<DestinationsPage />} />
                 <Route path="/destinations/asian-countries" element={<AsianCountriesPage />} />
+                <Route path="/destinations/indian_ocean" element={<DestinationDetailPage forcedSlug="indian-ocean" />} />
+                <Route path="/destinations/middle_east_countries" element={<DestinationDetailPage forcedSlug="middle-east" />} />
                 <Route path="/destinations/:slug" element={<DestinationDetailPage />} />
                 <Route path="/africa" element={<DestinationDetailPage forcedSlug="africa" />} />
                 <Route path="/america" element={<DestinationDetailPage forcedSlug="america" />} />
@@ -64,10 +66,8 @@ export default function App() {
                 <Route path="/europe" element={<DestinationDetailPage forcedSlug="europe" />} />
                 <Route path="/indian-ocean" element={<DestinationDetailPage forcedSlug="indian-ocean" />} />
                 <Route path="/indian_ocean" element={<DestinationDetailPage forcedSlug="indian-ocean" />} />
-                <Route path="/destinations/indian_ocean" element={<DestinationDetailPage forcedSlug="indian-ocean" />} />
                 <Route path="/middle-east" element={<DestinationDetailPage forcedSlug="middle-east" />} />
                 <Route path="/middle_east_countries" element={<DestinationDetailPage forcedSlug="middle-east" />} />
-                <Route path="/destinations/middle_east_countries" element={<DestinationDetailPage forcedSlug="middle-east" />} />
                 <Route path="/south-asia" element={<DestinationDetailPage forcedSlug="south-asia" />} />
 
                 {/* Tours */}
