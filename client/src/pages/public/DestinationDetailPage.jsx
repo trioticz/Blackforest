@@ -193,6 +193,8 @@ export default function DestinationDetailPage({ forcedSlug }) {
           <img
             src={resolveImageUrl(heroImage)}
             alt={regionName}
+            fetchpriority="high"
+            decoding="async"
             onError={handleImageError}
             className="absolute inset-0 w-full h-full object-cover object-center transform scale-105"
           />
@@ -218,6 +220,7 @@ export default function DestinationDetailPage({ forcedSlug }) {
           <img
             src="/pine-forest.webp"
             alt="Black Forest Pine Trees"
+            decoding="async"
             className="w-full h-24 sm:h-36 md:h-44 object-cover object-bottom"
             style={{
               filter: 'drop-shadow(0 -3px 5px rgba(0,0,0,0.35))'
@@ -266,6 +269,8 @@ export default function DestinationDetailPage({ forcedSlug }) {
                 <img
                   src={resolveImageUrl(intro.img1)}
                   alt={`${name} feature`}
+                  loading="lazy"
+                  decoding="async"
                   onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -280,6 +285,8 @@ export default function DestinationDetailPage({ forcedSlug }) {
                 <img
                   src={resolveImageUrl(intro.img2)}
                   alt={`${name} highlight portrait`}
+                  loading="lazy"
+                  decoding="async"
                   onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -374,6 +381,8 @@ export default function DestinationDetailPage({ forcedSlug }) {
                 <img
                   src={resolveImageUrl(tabs.tab1?.image)}
                   alt={tabs.tab1?.title}
+                  loading="lazy"
+                  decoding="async"
                   onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -410,6 +419,8 @@ export default function DestinationDetailPage({ forcedSlug }) {
                 <img
                   src={resolveImageUrl(tabs.tab2?.image)}
                   alt={tabs.tab2?.title}
+                  loading="lazy"
+                  decoding="async"
                   onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -442,6 +453,8 @@ export default function DestinationDetailPage({ forcedSlug }) {
                 <img
                   src={resolveImageUrl(tabs.tab3?.image)}
                   alt={tabs.tab3?.title}
+                  loading="lazy"
+                  decoding="async"
                   onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -542,6 +555,8 @@ export default function DestinationDetailPage({ forcedSlug }) {
                   <img
                     src={resolveImageUrl(c.image)}
                     alt={c.name}
+                    loading="lazy"
+                    decoding="async"
                     onError={handleImageError}
                     className="w-full h-full object-cover object-center transform scale-100 group-hover:scale-105 transition-transform duration-700"
                   />
@@ -552,6 +567,8 @@ export default function DestinationDetailPage({ forcedSlug }) {
                   <img
                     src={resolveImageUrl(c.image)}
                     alt={c.name}
+                    loading="lazy"
+                    decoding="async"
                     onError={handleImageError}
                     className="w-full h-full object-cover object-center transform scale-105"
                   />

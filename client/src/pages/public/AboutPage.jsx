@@ -49,6 +49,8 @@ export default function AboutPage() {
           <img
             src="/assets/images/about_hero_map.jpg"
             alt={`About ${siteName}`}
+            fetchpriority="high"
+            decoding="async"
             className="w-full h-full object-cover object-center opacity-85 scale-105"
             onError={(e) => {
               e.target.onerror = null;
@@ -150,6 +152,8 @@ export default function AboutPage() {
                 <img 
                   src="/assets/images/ABOUT-US.png" 
                   alt="Ulun Danu Beratan Bali Water Temple" 
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
@@ -163,6 +167,8 @@ export default function AboutPage() {
                 <img 
                   src="/assets/images/about-img-3.png" 
                   alt="Couple with Safari Jeep Planning Adventure" 
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
@@ -179,6 +185,8 @@ export default function AboutPage() {
                 <img 
                   src="/assets/images/Untitled-design.png" 
                   alt="Mountain Peak and Pine Forest" 
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
@@ -233,6 +241,8 @@ export default function AboutPage() {
                 <img 
                   src="/assets/images/Blackforest-about-1.png" 
                   alt="Exclusive Escapes James Bond Island" 
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
@@ -259,6 +269,8 @@ export default function AboutPage() {
                 <img 
                   src="/assets/images/Untitled-design-1.png" 
                   alt="Curated Journeys Alpine Hikers" 
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
@@ -317,6 +329,8 @@ export default function AboutPage() {
                         <img 
                           src={t.image} 
                           alt={t.name} 
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover" 
                           onError={(e) => {
                             e.target.onerror = null;
@@ -325,7 +339,7 @@ export default function AboutPage() {
                         />
                       </div>
                       <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow border border-gray-100">
-                        <img src="/assets/site/google_icon.svg" alt="Google" className="w-3.5 h-3.5" />
+                        <img src="/assets/site/google_icon.svg" alt="Google" loading="lazy" decoding="async" className="w-3.5 h-3.5" />
                       </div>
                     </div>
                     <div>
@@ -337,7 +351,7 @@ export default function AboutPage() {
                   {/* 5 Google Stars */}
                   <div className="flex items-center gap-1 mb-3">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <img key={star} src="/assets/site/google_star.svg" alt="★" className="w-3.5 h-3.5" />
+                      <img key={star} src="/assets/site/google_star.svg" alt="★" loading="lazy" decoding="async" className="w-3.5 h-3.5" />
                     ))}
                   </div>
 

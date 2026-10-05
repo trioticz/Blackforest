@@ -38,7 +38,7 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-[#f6f8f6] text-[#10221b] border-t border-gray-200/60 relative overflow-hidden">
+    <section className="py-16 sm:py-20 lg:py-24 bg-[#f6f8f6] text-[#10221b] border-t border-gray-200/60 relative overflow-hidden render-defer">
       {/* Decorative subtle background accents */}
       <div 
         className="absolute inset-0 opacity-15 pointer-events-none bg-bottom bg-cover"

@@ -101,12 +101,16 @@ export default function IntroSection() {
   const centreIdx = idx + 1; // which CARDS[] entry is currently in the centre slot
 
   return (
-    <section className="relative py-14 sm:py-18 lg:py-24 overflow-hidden z-10 bg-white">
+    <section className="relative py-14 sm:py-18 lg:py-24 overflow-hidden z-10 bg-white render-defer">
       {/* Slowly rotating compass watermark on top of cards in right side corner */}
       <div className="absolute -right-20 sm:-right-12 md:right-0 lg:right-2 top-4 sm:top-8 md:top-12 z-(-1) pointer-events-none select-none overflow-visible">
         <img
           src="/assets/images/carousel-compass.jpg"
           alt="Compass Rose"
+          loading="lazy"
+          decoding="async"
+          width="480"
+          height="480"
           className="w-[340px] sm:w-[420px] md:w-[480px] lg:w-[540px] h-auto object-contain animate-spin-slow mix-blend-multiply opacity-80"
           draggable={false}
         />
@@ -173,6 +177,10 @@ export default function IntroSection() {
                       <img
                         src={card.image}
                         alt={card.title.replace('\n', ' ')}
+                        loading="lazy"
+                        decoding="async"
+                        width="195"
+                        height="195"
                         className="w-full h-full object-cover"
                         draggable={false}
                       />

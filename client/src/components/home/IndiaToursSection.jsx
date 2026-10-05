@@ -117,7 +117,7 @@ export default function IndiaToursSection() {
   }, [nextSlide, isPaused]);
 
   return (
-    <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden bg-[#181818]">
+    <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden bg-[#181818] render-defer">
       {/* Background Image overlay */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-bottom pointer-events-none"
@@ -194,6 +194,7 @@ export default function IndiaToursSection() {
                         alt={tour.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
+                        decoding="async"
                       />
 
                       {/* Top Right Duration Badge */}

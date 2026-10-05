@@ -139,7 +139,7 @@ export default function InternationalToursSection() {
   }, [nextSlide, isPaused]);
 
   return (
-    <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden bg-[#10221b]">
+    <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden bg-[#10221b] render-defer">
       {/* Background overlay */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center opacity-30 mix-blend-luminosity pointer-events-none"
@@ -215,6 +215,7 @@ export default function InternationalToursSection() {
                         alt={tour.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
+                        decoding="async"
                       />
 
                       {/* Top Right Duration Badge */}

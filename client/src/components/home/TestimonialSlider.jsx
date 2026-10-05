@@ -68,7 +68,7 @@ export default function TestimonialSlider() {
   };
 
   return (
-    <section id="testimonials" className="py-20 bg-white relative">
+    <section id="testimonials" className="py-20 bg-white relative render-defer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Title matching Image 1 */}
@@ -123,6 +123,10 @@ export default function TestimonialSlider() {
                       <img 
                         src={t.image} 
                         alt={t.name} 
+                        loading="lazy"
+                        decoding="async"
+                        width="64"
+                        height="64"
                         className="w-full h-full object-cover" 
                         onError={(e) => {
                           e.target.onerror = null;
@@ -134,6 +138,10 @@ export default function TestimonialSlider() {
                       <img 
                         src="/assets/site/google_icon.svg" 
                         alt="Google" 
+                        loading="lazy"
+                        decoding="async"
+                        width="16"
+                        height="16"
                         className="w-4 h-4"
                       />
                     </div>
@@ -150,6 +158,10 @@ export default function TestimonialSlider() {
                         key={star}
                         src="/assets/site/google_star.svg" 
                         alt="Star"
+                        loading="lazy"
+                        decoding="async"
+                        width="16"
+                        height="16"
                         className="w-4 h-4"
                       />
                     ))}

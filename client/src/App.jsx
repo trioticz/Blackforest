@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // Context Providers
@@ -11,35 +11,45 @@ import ScrollToTop from './components/common/ScrollToTop';
 import PublicLayout from './components/layout/PublicLayout';
 import AdminLayout from './components/layout/AdminLayout';
 
-// Public Pages
+// Primary landing page loaded directly for instant FCP/LCP
 import HomePage from './pages/public/HomePage';
-import AsianCountriesPage from './pages/public/AsianCountriesPage';
-import DestinationsPage from './pages/public/DestinationsPage';
-import DestinationDetailPage from './pages/public/DestinationDetailPage';
-import ToursPage from './pages/public/ToursPage';
-import TourDetailPage from './pages/public/TourDetailPage';
-import ExperiencesPage from './pages/public/ExperiencesPage';
-import ConciergePage from './pages/public/ConciergePage';
-import CruisesPage from './pages/public/CruisesPage';
-import CorporateTravelPage from './pages/public/CorporateTravelPage';
-import CoachTourPage from './pages/public/CoachTourPage';
-import CoachTourDetailPage from './pages/public/CoachTourDetailPage';
-import AboutPage from './pages/public/AboutPage';
-import ContactPage from './pages/public/ContactPage';
-import JournalPage from './pages/public/JournalPage';
-import ArticleDetailPage from './pages/public/ArticleDetailPage';
-import PolicyPage from './pages/public/PolicyPage';
-import NotFoundPage from './pages/public/NotFoundPage';
 
-// Admin Pages
-import AdminLoginPage from './pages/admin/AdminLoginPage';
-import AdminDashboardPage from './pages/admin/AdminDashboardPage';
-import AdminEnquiriesPage from './pages/admin/AdminEnquiriesPage';
-import AdminDestinationsPage from './pages/admin/AdminDestinationsPage';
-import AdminJournalPage from './pages/admin/AdminJournalPage';
-import AdminExpertisePage from './pages/admin/AdminExpertisePage';
-import AdminSEOPage from './pages/admin/AdminSEOPage';
-import AdminUsersPage from './pages/admin/AdminUsersPage';
+// Public Pages (code-split via dynamic import)
+const AsianCountriesPage = lazy(() => import('./pages/public/AsianCountriesPage'));
+const DestinationsPage = lazy(() => import('./pages/public/DestinationsPage'));
+const DestinationDetailPage = lazy(() => import('./pages/public/DestinationDetailPage'));
+const ToursPage = lazy(() => import('./pages/public/ToursPage'));
+const TourDetailPage = lazy(() => import('./pages/public/TourDetailPage'));
+const ExperiencesPage = lazy(() => import('./pages/public/ExperiencesPage'));
+const ConciergePage = lazy(() => import('./pages/public/ConciergePage'));
+const CruisesPage = lazy(() => import('./pages/public/CruisesPage'));
+const CorporateTravelPage = lazy(() => import('./pages/public/CorporateTravelPage'));
+const CoachTourPage = lazy(() => import('./pages/public/CoachTourPage'));
+const CoachTourDetailPage = lazy(() => import('./pages/public/CoachTourDetailPage'));
+const AboutPage = lazy(() => import('./pages/public/AboutPage'));
+const ContactPage = lazy(() => import('./pages/public/ContactPage'));
+const JournalPage = lazy(() => import('./pages/public/JournalPage'));
+const ArticleDetailPage = lazy(() => import('./pages/public/ArticleDetailPage'));
+const PolicyPage = lazy(() => import('./pages/public/PolicyPage'));
+const NotFoundPage = lazy(() => import('./pages/public/NotFoundPage'));
+
+// Admin Pages (code-split via dynamic import)
+const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage'));
+const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboardPage'));
+const AdminEnquiriesPage = lazy(() => import('./pages/admin/AdminEnquiriesPage'));
+const AdminDestinationsPage = lazy(() => import('./pages/admin/AdminDestinationsPage'));
+const AdminJournalPage = lazy(() => import('./pages/admin/AdminJournalPage'));
+const AdminExpertisePage = lazy(() => import('./pages/admin/AdminExpertisePage'));
+const AdminSEOPage = lazy(() => import('./pages/admin/AdminSEOPage'));
+const AdminUsersPage = lazy(() => import('./pages/admin/AdminUsersPage'));
+
+function PageFallback() {
+  return (
+    <div className="min-h-[50vh] flex flex-col items-center justify-center bg-[#f7f9f8] py-16" aria-busy="true" aria-label="Loading page">
+      <div className="w-9 h-9 border-3 border-gray-200 border-t-[#27B8B1] rounded-full animate-spin"></div>
+    </div>
+  );
+}
 
 export default function App() {
   return (
@@ -48,7 +58,8 @@ export default function App() {
         <SiteSettingsProvider>
           <ToastProvider>
             <ScrollToTop />
-            <Routes>
+            <Suspense fallback={<PageFallback />}>
+              <Routes>
               {/* Public Website Routes */}
               <Route element={<PublicLayout />}>
                 <Route path="/" element={<HomePage />} />
@@ -151,6 +162,7 @@ export default function App() {
                 <Route path="audit-logs/*" element={<Navigate to="/admin/dashboard" replace />} />
               </Route>
             </Routes>
+            </Suspense>
           </ToastProvider>
         </SiteSettingsProvider>
       </AuthProvider>

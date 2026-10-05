@@ -47,7 +47,7 @@ export default function StatsSection() {
   const { count: countTailor, ref: refTailor } = useCounter(150);
 
   return (
-    <section className="relative py-16 sm:py-20 lg:py-24 bg-[#f4f7f4] text-[#10221b] overflow-hidden">
+    <section className="relative py-16 sm:py-20 lg:py-24 bg-[#f4f7f4] text-[#10221b] overflow-hidden render-defer">
       {/* Mountain silhouette background graphic at bottom */}
       <div
         className="absolute inset-0 z-0 opacity-20 pointer-events-none bg-bottom bg-cover"

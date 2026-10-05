@@ -19,7 +19,40 @@
   RewriteRule . /index.html [L]
 </IfModule>
 
-# Security headers
+# Enable Gzip / Brotli Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml image/svg+xml font/woff2
+</IfModule>
+
+# Browser Caching Headers
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+
+  # HTML documents - no-cache so SPA updates immediately
+  ExpiresByType text/html "access plus 0 seconds"
+
+  # Static hashed assets (Vite produces immutable hashed bundles)
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 month"
+</IfModule>
+
+# Security & Cache-Control Headers
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
+
+  <FilesMatch "\.(js|css|woff2|webp|png|jpg|jpeg|svg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
 </IfModule>

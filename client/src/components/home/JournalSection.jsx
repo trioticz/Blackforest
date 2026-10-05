@@ -30,7 +30,7 @@ export default function JournalSection() {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white render-defer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Title matching screenshot */}
@@ -61,6 +61,8 @@ export default function JournalSection() {
                 <img 
                   src={article.coverImage} 
                   alt={article.title} 
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>

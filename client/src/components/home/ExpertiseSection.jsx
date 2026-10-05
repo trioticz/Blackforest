@@ -23,7 +23,7 @@ export default function ExpertiseSection() {
   }
 
   return (
-    <section className="py-20 bg-[#fbfaf8] text-center border-t border-gray-100">
+    <section className="py-20 bg-[#fbfaf8] text-center border-t border-gray-100 render-defer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Title Area matching Image 2 */}
@@ -63,6 +63,8 @@ export default function ExpertiseSection() {
                 <img
                   src={partner.image}
                   alt={partner.name}
+                  loading="lazy"
+                  decoding="async"
                   className="max-h-20 max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                   onError={(e) => {
                     e.target.onerror = null;

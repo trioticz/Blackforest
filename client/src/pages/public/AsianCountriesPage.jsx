@@ -208,6 +208,8 @@ export default function AsianCountriesPage() {
           <img
             src="/assets/images/ChatGPT-Image-Aug-1-2026-11_13_45-PM.png"
             alt="Asian Countries"
+            fetchpriority="high"
+            decoding="async"
             className="w-full h-full object-cover opacity-85 transform scale-105"
           />
           <div className="absolute inset-0 bg-black/40" />
@@ -269,6 +271,8 @@ export default function AsianCountriesPage() {
                 <img
                   src="/assets/images/himeji-castle-with-beautiful-cherry-blossom-spring-season-hyogo-near-osaka-japan-scaled.jpg"
                   alt="Himeji Castle cherry blossom Japan"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -278,6 +282,8 @@ export default function AsianCountriesPage() {
                 <img
                   src="/assets/images/Untitled-design-17.png"
                   alt="Asian travel destination"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-auto object-cover block"
                 />
               </div>
@@ -385,6 +391,8 @@ export default function AsianCountriesPage() {
                 <img
                   src="/assets/images/3d-rendering-chinese-great-wall-scaled.jpg"
                   alt="Chinese Great Wall"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -438,6 +446,8 @@ export default function AsianCountriesPage() {
                 <img
                   src="/assets/images/Untitled-design-11.png"
                   alt="South East Asia destinations"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -489,6 +499,8 @@ export default function AsianCountriesPage() {
                 <img
                   src="/assets/images/picturesque-view-monastery-perched-cliff-with-prayer-flags-birds-flying-sky-scaled.jpg"
                   alt="Monastery perched cliff"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -589,6 +601,8 @@ export default function AsianCountriesPage() {
                   <img
                     src={c.image}
                     alt={c.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-center transform scale-100 group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
@@ -598,6 +612,8 @@ export default function AsianCountriesPage() {
                   <img
                     src={c.image}
                     alt={c.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-center transform scale-105"
                   />
                   <div className="absolute inset-0 bg-[#10221b]/70" />
@@ -626,6 +642,8 @@ export default function AsianCountriesPage() {
                   <img
                     src={c.image}
                     alt={c.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-center transform scale-100 group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
@@ -635,6 +653,8 @@ export default function AsianCountriesPage() {
                   <img
                     src={c.image}
                     alt={c.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-center transform scale-105"
                   />
                   <div className="absolute inset-0 bg-[#10221b]/70" />

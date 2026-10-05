@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function AboutMemoriesSection() {
   return (
-    <section className="relative py-16 sm:py-20 lg:py-24 bg-white overflow-hidden z-10">
+    <section className="relative py-16 sm:py-20 lg:py-24 bg-white overflow-hidden z-10 render-defer">
       {/* ── Background Mountain / Forest Silhouettes matching Image 3 ── */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
         {/* Mountain contour outline across the section */}
@@ -10,6 +10,8 @@ export default function AboutMemoriesSection() {
           src="/assets/images/home-intro-bg_d266ed.jpg" 
           alt="" 
           aria-hidden="true" 
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover object-top opacity-35"
         />
 
@@ -23,7 +25,9 @@ export default function AboutMemoriesSection() {
           <img 
             src="/assets/images/mask-pine.jpg" 
             alt="" 
-            aria-hidden="true"
+            aria-hidden="true" 
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover"
           />
         </div>
@@ -60,6 +64,10 @@ export default function AboutMemoriesSection() {
               <img
                 src="/map-intro.webp"
                 alt="Let us plan your journey - Black Forest Holidays"
+                loading="lazy"
+                decoding="async"
+                width="600"
+                height="480"
                 className="w-full h-auto max-h-[480px] object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>

@@ -53,10 +53,11 @@ export default function HeroSection() {
         <video
           ref={videoRef}
           src="/hero-video-1080p60.mp4"
+          poster="/hero-poster.jpg"
           autoPlay
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           className="w-full h-full object-cover object-center pointer-events-none select-none"
           style={{
             display: 'block',

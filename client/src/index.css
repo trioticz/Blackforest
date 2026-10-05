@@ -163,6 +163,17 @@
     font-weight: 500;
     letter-spacing: 0.025em;
   }
+
+  /* Offscreen layout deferral for fast rendering & smooth INP */
+  .render-defer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto none auto 500px;
+  }
+
+  .render-defer-lg {
+    content-visibility: auto;
+    contain-intrinsic-size: auto none auto 800px;
+  }
 }
 
 /* Custom modern scrollbar */

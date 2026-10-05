@@ -45,7 +45,7 @@ export default function ValuePropsSection() {
 
   return (
     <section 
-      className="relative py-16 sm:py-20 lg:py-24 bg-[#fbfaf8] overflow-hidden bg-cover bg-center bg-no-repeat"
+      className="relative py-16 sm:py-20 lg:py-24 bg-[#fbfaf8] overflow-hidden bg-cover bg-center bg-no-repeat render-defer"
       style={{
         backgroundImage: "url('/assets/images/value-props-bg.jpg')"
       }}
@@ -92,8 +92,11 @@ export default function ValuePropsSection() {
                     <img 
                       src={item.icon} 
                       alt={item.title} 
-                      className="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-110"
                       loading="lazy"
+                      decoding="async"
+                      width="40"
+                      height="40"
+                      className="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-110"
                     />
                   </div>
                   <div>
@@ -121,8 +124,11 @@ export default function ValuePropsSection() {
                     <img 
                       src={item.icon} 
                       alt={item.title} 
-                      className="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-110"
                       loading="lazy"
+                      decoding="async"
+                      width="40"
+                      height="40"
+                      className="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-110"
                     />
                   </div>
                   <div>

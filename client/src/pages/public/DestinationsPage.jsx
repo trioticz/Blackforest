@@ -141,6 +141,8 @@ export default function DestinationsPage() {
                   <img
                     src={d.thumbnail || d.heroImage || '/assets/images/sean-robertson-5ftxFgXLtkI-unsplash-scaled.jpg'}
                     alt={d.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     onError={(e) => {
                       e.target.onerror = null;

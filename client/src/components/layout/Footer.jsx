@@ -26,7 +26,7 @@ export default function Footer() {
 
       {/* Dark Green Main Footer with Pine Forest Background */}
       <footer
-        className="bg-[#0c1c16] text-white pt-16 pb-8 relative border-t border-[#1a382b]/40 bg-cover bg-top"
+        className="bg-[#0c1c16] text-white pt-16 pb-8 relative border-t border-[#1a382b]/40 bg-cover bg-top render-defer-lg"
         style={{
           backgroundImage: `linear-gradient(to bottom, rgba(12, 28, 22, 0.85) 0%, rgba(12, 28, 22, 0.96) 45%, #0c1c16 100%), url('/assets/images/footer-img.png')`,
           backgroundPosition: 'top center',

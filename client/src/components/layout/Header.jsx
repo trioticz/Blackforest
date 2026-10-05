@@ -43,12 +43,12 @@ export default function Header() {
     };
   }, []);
 
-  // Handle sticky header on scroll
+  // Handle sticky header on scroll (passive listener for high FPS and smooth scrolling)
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -96,6 +96,10 @@ export default function Header() {
             <img
               src="/assets/site/white_logo.png"
               alt={settings.siteName || 'Blackforest Holidays'}
+              width="180"
+              height="48"
+              fetchpriority="high"
+              decoding="async"
               className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
