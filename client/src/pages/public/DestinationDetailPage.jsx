@@ -6,6 +6,7 @@ import { useSettings } from '../../context/SiteSettingsContext';
 import { allDestinationsData } from '../../data/destinationsData';
 import { isDestinationPublished, DESTINATIONS_EVENT } from '../../utils/destinationsManager';
 import { getPublishedExpertiseCards, EXPERTISE_EVENT } from '../../utils/expertiseManager';
+import { resolveImageUrl, handleImageError } from '../../utils/imageHelper';
 
 // Dynamic Animated Counter for Stats
 function AnimatedCounter({ end, duration = 1800, suffix = '' }) {
@@ -190,8 +191,9 @@ export default function DestinationDetailPage({ forcedSlug }) {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src={heroImage}
+            src={resolveImageUrl(heroImage)}
             alt={regionName}
+            onError={handleImageError}
             className="absolute inset-0 w-full h-full object-cover object-center transform scale-105"
           />
           {/* Dark vignette overlay */}
@@ -262,8 +264,9 @@ export default function DestinationDetailPage({ forcedSlug }) {
             {intro.img1 && (
               <div className="relative w-full max-w-lg h-[240px] sm:h-[300px] rounded-2xl overflow-hidden shadow-xl border border-gray-100">
                 <img
-                  src={intro.img1}
+                  src={resolveImageUrl(intro.img1)}
                   alt={`${name} feature`}
+                  onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -275,8 +278,9 @@ export default function DestinationDetailPage({ forcedSlug }) {
             {intro.img2 && (
               <div className="w-full max-w-md h-[460px] sm:h-[580px] rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
                 <img
-                  src={intro.img2}
+                  src={resolveImageUrl(intro.img2)}
                   alt={`${name} highlight portrait`}
+                  onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -368,8 +372,9 @@ export default function DestinationDetailPage({ forcedSlug }) {
             <div className="lg:col-span-6">
               <div className="w-full h-[360px] sm:h-[440px] rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
                 <img
-                  src={tabs.tab1?.image}
+                  src={resolveImageUrl(tabs.tab1?.image)}
                   alt={tabs.tab1?.title}
+                  onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -403,8 +408,9 @@ export default function DestinationDetailPage({ forcedSlug }) {
             <div className="lg:col-span-6">
               <div className="w-full h-[400px] sm:h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-gray-100 sticky top-32">
                 <img
-                  src={tabs.tab2?.image}
+                  src={resolveImageUrl(tabs.tab2?.image)}
                   alt={tabs.tab2?.title}
+                  onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -434,8 +440,9 @@ export default function DestinationDetailPage({ forcedSlug }) {
             <div className="lg:col-span-6">
               <div className="w-full h-[360px] sm:h-[440px] rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
                 <img
-                  src={tabs.tab3?.image}
+                  src={resolveImageUrl(tabs.tab3?.image)}
                   alt={tabs.tab3?.title}
+                  onError={handleImageError}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -448,7 +455,7 @@ export default function DestinationDetailPage({ forcedSlug }) {
       <section
         className="relative w-full h-[60vh] min-h-[460px] flex items-center justify-center overflow-hidden bg-fixed bg-center bg-cover"
         style={{
-          backgroundImage: `url('${parallaxBanner?.bgImage || 'https://blackforestholidays.com/wp-content/uploads/2026/07/4.png'}')`
+          backgroundImage: `url('${parallaxBanner?.bgImage || '/assets/images/4.png'}')`
         }}
       >
         <div className="absolute inset-0 bg-black/55" />
@@ -533,8 +540,9 @@ export default function DestinationDetailPage({ forcedSlug }) {
                 {/* Front Side: Pure Photograph */}
                 <div className="absolute inset-0 w-full h-full backface-hidden rounded-2xl overflow-hidden bg-gray-100 shadow-md">
                   <img
-                    src={c.image}
+                    src={resolveImageUrl(c.image)}
                     alt={c.name}
+                    onError={handleImageError}
                     className="w-full h-full object-cover object-center transform scale-100 group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
@@ -542,8 +550,9 @@ export default function DestinationDetailPage({ forcedSlug }) {
                 {/* Back Side: Dark Forest Tint Overlay & Centered Country Title */}
                 <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-2xl overflow-hidden shadow-2xl">
                   <img
-                    src={c.image}
+                    src={resolveImageUrl(c.image)}
                     alt={c.name}
+                    onError={handleImageError}
                     className="w-full h-full object-cover object-center transform scale-105"
                   />
                   <div className="absolute inset-0 bg-[#10221b]/70" />
@@ -563,7 +572,7 @@ export default function DestinationDetailPage({ forcedSlug }) {
       <section
         className="relative w-full py-20 bg-fixed bg-cover bg-center border-t border-gray-100"
         style={{
-          backgroundImage: `url('https://blackforestholidays.com/wp-content/uploads/2021/07/faq-img.jpg')`
+          backgroundImage: `url('/assets/images/faq-img.jpg')`
         }}
       >
         <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px]" />
@@ -618,7 +627,7 @@ export default function DestinationDetailPage({ forcedSlug }) {
       <section
         className="w-full py-20 relative bg-cover bg-center border-t border-gray-100"
         style={{
-          backgroundImage: `url('${stats?.bgImage || 'https://blackforestholidays.com/wp-content/uploads/2021/07/number-counter-bg.png'}')`
+          backgroundImage: `url('${stats?.bgImage || '/assets/images/number-counter-bg.png'}')`
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

@@ -4,7 +4,7 @@
 export const experiencesData = {
   'adventure-nature': {
     title: 'Adventure & Nature',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-8-2026-05_59_39-PM.png',
+    heroImage: '/assets/images/ChatGPT-Image-Aug-8-2026-05_59_39-PM.png',
 
     intro: {
       title: 'Where the Journey Becomes the Adventure',
@@ -30,10 +30,10 @@ export const experiencesData = {
         { title: 'Nature & Wellness Escapes', desc: 'Combine adventure with relaxation through peaceful retreats surrounded by nature.' },
       ],
       images: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-28.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-29.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-22.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-20.png',
+        '/assets/images/Untitled-design-28.png',
+        '/assets/images/Untitled-design-29.png',
+        '/assets/images/Untitled-design-22.png',
+        '/assets/images/Untitled-design-20.png',
       ],
     },
 
@@ -44,7 +44,7 @@ export const experiencesData = {
 
     whyChooseUs: {
       heading: 'Why Choose BlackForest Holidays?',
-      backgroundImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/contact-pine-bg-2.jpg',
+      backgroundImage: '/assets/images/contact-pine-bg-2_533e08.jpg',
       features: [
         { title: 'Tailor-Made Adventures', desc: 'Every journey is designed around your interests, comfort level, and sense of adventure.' },
         { title: 'Authentic Experiences', desc: 'Go beyond the typical sightseeing itinerary and discover destinations through meaningful experiences.' },
@@ -66,18 +66,18 @@ export const experiencesData = {
 
     bottomSection: {
       collageImages: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/07/Untitled-design-1.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/adventure_travel3.jpg',
-        'https://blackforestholidays.com/wp-content/uploads/2026/07/WhatsApp-Image-2026-08-06-at-16.31.32.jpeg',
+        '/assets/images/Untitled-design-1.png',
+        '/assets/images/adventure_travel3.jpg',
+        '/assets/images/WhatsApp-Image-2026-08-06-at-16.31.32.jpeg',
       ],
-      decorativeImage: 'https://blackforestholidays.com/wp-content/uploads/2021/07/about-compass.jpg',
+      decorativeImage: '/assets/images/about-compass.jpg',
       quote: 'A Vision created for the activities to make sure you enjoy & get thrilled.',
     },
   },
 
   'island-holidays': {
     title: 'Island Holidays',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/pexels-asadphoto-9394652-scaled.jpg',
+    heroImage: '/assets/images/pexels-asadphoto-9394652-scaled.jpg',
 
     intro: {
       title: 'Escape to Paradise, Discover Your Perfect Island',
@@ -103,10 +103,10 @@ export const experiencesData = {
         { title: 'Wellness & Spa Retreats', desc: 'Reconnect and rejuvenate with beautiful surroundings, luxury spas, and wellness experiences.' },
       ],
       images: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-33.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-31.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-30.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-32.png',
+        '/assets/images/Untitled-design-33.png',
+        '/assets/images/Untitled-design-31.png',
+        '/assets/images/Untitled-design-30.png',
+        '/assets/images/Untitled-design-32.png',
       ],
     },
 
@@ -117,7 +117,7 @@ export const experiencesData = {
 
     whyChooseUs: {
       heading: 'Why Choose BlackForest Holidays?',
-      backgroundImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/contact-pine-bg-2.jpg',
+      backgroundImage: '/assets/images/contact-pine-bg-2_533e08.jpg',
       features: [
         { title: 'Tailor-Made Island Journeys', desc: 'We design your holiday around your interests, travel style, and expectations.' },
         { title: 'Handpicked Resorts & Villas', desc: 'Our recommendations focus on exceptional locations, comfort, privacy, and memorable experiences.' },
@@ -139,18 +139,18 @@ export const experiencesData = {
 
     bottomSection: {
       collageImages: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/n0n2mkbdu087ancdeh94veeyfzlk_shutterstock_2653002613.avif',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/island-getaway.avif',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-8-2026-07_07_31-PM.png',
+        '/assets/images/n0n2mkbdu087ancdeh94veeyfzlk_shutterstock_2653002613.avif',
+        '/assets/images/island-getaway.avif',
+        '/assets/images/ChatGPT-Image-Aug-8-2026-07_07_31-PM.png',
       ],
-      decorativeImage: 'https://blackforestholidays.com/wp-content/uploads/2021/07/about-compass.jpg',
+      decorativeImage: '/assets/images/about-compass.jpg',
       quote: 'A Vision created for the activities to make sure you enjoy & get thrilled.',
     },
   },
 
   'family-holidays': {
     title: 'Family Holidays',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/family-holidays-nsw-main.jpg',
+    heroImage: '/assets/images/family-holidays-nsw-main.jpg',
 
     intro: {
       title: 'Create Memories That Last a Lifetime',
@@ -176,10 +176,10 @@ export const experiencesData = {
         { title: 'Private Family Tours', desc: "Enjoy greater flexibility with private guides, personalised sightseeing, and itineraries designed around your family." },
       ],
       images: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-34.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-35.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-36.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-37.png',
+        '/assets/images/Untitled-design-34.png',
+        '/assets/images/Untitled-design-35.png',
+        '/assets/images/Untitled-design-36.png',
+        '/assets/images/Untitled-design-37.png',
       ],
     },
 
@@ -190,7 +190,7 @@ export const experiencesData = {
 
     whyChooseUs: {
       heading: 'Why Choose BlackForest Holidays?',
-      backgroundImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/contact-pine-bg-2.jpg',
+      backgroundImage: '/assets/images/contact-pine-bg-2_533e08.jpg',
       features: [
         { title: 'Family-Focused Planning', desc: "Every itinerary is designed with your family's comfort, interests, and pace in mind." },
         { title: 'Handpicked Family Stays', desc: 'We select hotels, resorts, villas, and accommodations that work well for families.' },
@@ -212,18 +212,18 @@ export const experiencesData = {
 
     bottomSection: {
       collageImages: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/gi-1170508698-1920x1080-1.avif',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/shutterstock_2456271857.jpg',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-60.png',
+        '/assets/images/gi-1170508698-1920x1080-1.avif',
+        '/assets/images/shutterstock_2456271857.jpg',
+        '/assets/images/Untitled-design-60.png',
       ],
-      decorativeImage: 'https://blackforestholidays.com/wp-content/uploads/2021/07/about-compass.jpg',
+      decorativeImage: '/assets/images/about-compass.jpg',
       quote: 'A Vision created for the activities to make sure you enjoy & get thrilled.',
     },
   },
 
   'honeymoon-escapes': {
     title: 'Honeymoon Escapes',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/pexels-asadphoto-1024967.jpg',
+    heroImage: '/assets/images/pexels-asadphoto-1024967.jpg',
 
     intro: {
       title: 'Begin Your Forever With an Unforgettable Journey',
@@ -249,10 +249,10 @@ export const experiencesData = {
         { title: 'Celebration Experiences', desc: 'Add special touches such as room decorations, romantic surprises, private celebrations, and memorable experiences.' },
       ],
       images: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-41.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-40.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-39.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-38.png',
+        '/assets/images/Untitled-design-41.png',
+        '/assets/images/Untitled-design-40.png',
+        '/assets/images/Untitled-design-39.png',
+        '/assets/images/Untitled-design-38.png',
       ],
     },
 
@@ -263,7 +263,7 @@ export const experiencesData = {
 
     whyChooseUs: {
       heading: 'Why Choose BlackForest Holidays?',
-      backgroundImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/contact-pine-bg-2.jpg',
+      backgroundImage: '/assets/images/contact-pine-bg-2_533e08.jpg',
       features: [
         { title: 'Personalised Honeymoon Planning', desc: 'Your honeymoon is designed around your preferences, budget, travel style, and dreams.' },
         { title: 'Handpicked Romantic Stays', desc: 'We recommend carefully selected hotels, resorts, villas, and private retreats.' },
@@ -285,18 +285,18 @@ export const experiencesData = {
 
     bottomSection: {
       collageImages: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/darren-lawrence-EpeNGhitrlc-unsplash-scaled.jpg',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/AdobeStock_257003085.jpg',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/ismail-mohamed-sovile-u7qgO97JAEo-unsplash-scaled.jpg',
+        '/assets/images/darren-lawrence-EpeNGhitrlc-unsplash-scaled.jpg',
+        '/assets/images/AdobeStock_257003085.jpg',
+        '/assets/images/ismail-mohamed-sovile-u7qgO97JAEo-unsplash-scaled.jpg',
       ],
-      decorativeImage: 'https://blackforestholidays.com/wp-content/uploads/2021/07/about-compass.jpg',
+      decorativeImage: '/assets/images/about-compass.jpg',
       quote: 'A Vision created for the activities to make sure you enjoy & get thrilled.',
     },
   },
 
   'luxury-escapes': {
     title: 'Luxury Escapes',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/dino-reichmuth-A5rCN8626Ck-unsplash-scaled.jpg',
+    heroImage: '/assets/images/dino-reichmuth-A5rCN8626Ck-unsplash-scaled.jpg',
 
     intro: {
       title: 'Bespoke Journeys. Exceptional Places. Unforgettable Moments.',
@@ -323,10 +323,10 @@ export const experiencesData = {
         { title: 'Private Transfers & Concierge Services', desc: 'Travel effortlessly with seamless transfers, personalised assistance, and dedicated support throughout your journey.' },
       ],
       images: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-43.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-45.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-44.png',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/Untitled-design-42.png',
+        '/assets/images/Untitled-design-43.png',
+        '/assets/images/Untitled-design-45.png',
+        '/assets/images/Untitled-design-44.png',
+        '/assets/images/Untitled-design-42.png',
       ],
     },
 
@@ -337,7 +337,7 @@ export const experiencesData = {
 
     whyChooseUs: {
       heading: 'Why Travel With BlackForest Holidays?',
-      backgroundImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/contact-pine-bg-2.jpg',
+      backgroundImage: '/assets/images/contact-pine-bg-2_533e08.jpg',
       features: [
         { title: 'Personalised Planning', desc: 'Your journey is designed around you, not selected from a standard package.' },
         { title: 'Handpicked Experiences', desc: 'We carefully select hotels, experiences, guides, and destinations that meet our standards.' },
@@ -359,11 +359,11 @@ export const experiencesData = {
 
     bottomSection: {
       collageImages: [
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/stevebidmead-deckchairs-355596-scaled.jpg',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/tama66-boat-3480914-scaled.jpg',
-        'https://blackforestholidays.com/wp-content/uploads/2026/08/nikldn-t-6GW8T6Jsc-unsplash-scaled.jpg',
+        '/assets/images/stevebidmead-deckchairs-355596-scaled.jpg',
+        '/assets/images/tama66-boat-3480914-scaled.jpg',
+        '/assets/images/nikldn-t-6GW8T6Jsc-unsplash-scaled.jpg',
       ],
-      decorativeImage: 'https://blackforestholidays.com/wp-content/uploads/2021/07/about-compass.jpg',
+      decorativeImage: '/assets/images/about-compass.jpg',
       quote: 'A Vision created for the activities to make sure you enjoy & get thrilled.',
     },
   },

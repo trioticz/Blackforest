@@ -150,31 +150,31 @@ export default function AsianCountriesPage() {
   const destinationCards = [
     {
       name: 'Japan',
-      image: 'https://blackforestholidays.com/wp-content/uploads/2026/07/cherry-blossoms-castle-himeji-japan-scaled.jpg'
+      image: '/assets/images/cherry-blossoms-castle-himeji-japan-scaled.jpg'
     },
     {
       name: 'South Korea',
-      image: 'https://blackforestholidays.com/wp-content/uploads/2026/07/gyeongbukgung-maple-tree-autumn-korea-scaled.jpg'
+      image: '/assets/images/gyeongbukgung-maple-tree-autumn-korea-scaled.jpg'
     },
     {
       name: 'China',
-      image: 'https://blackforestholidays.com/wp-content/uploads/2026/07/travelling-china-scaled.jpg'
+      image: '/assets/images/travelling-china-scaled.jpg'
     },
     {
       name: 'Hong Kong',
-      image: 'https://blackforestholidays.com/wp-content/uploads/2026/07/junk-boat-hong-kong-victoria-harbour-scaled.jpg'
+      image: '/assets/images/junk-boat-hong-kong-victoria-harbour-scaled.jpg'
     },
     {
       name: 'Macau',
-      image: 'https://blackforestholidays.com/wp-content/uploads/2026/07/beautiful-architecture-building-scaled.jpg'
+      image: '/assets/images/beautiful-architecture-building-scaled.jpg'
     },
     {
       name: 'Taiwan',
-      image: 'https://blackforestholidays.com/wp-content/uploads/2026/07/tourist-boat-ban-rak-thai-village-mae-hong-son-province-scaled.jpg'
+      image: '/assets/images/tourist-boat-ban-rak-thai-village-mae-hong-son-province-scaled.jpg'
     },
     {
       name: 'Mongolia',
-      image: 'https://blackforestholidays.com/wp-content/uploads/2026/08/yang-v4It5Tvnet8-unsplash-scaled.jpg'
+      image: '/assets/images/yang-v4It5Tvnet8-unsplash-scaled.jpg'
     }
   ];
 
@@ -206,7 +206,7 @@ export default function AsianCountriesPage() {
         {/* Background Image with Fixed Effect */}
         <div className="absolute inset-0 z-0 bg-[#0a1712]">
           <img
-            src="https://blackforestholidays.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-1-2026-11_13_45-PM.png"
+            src="/assets/images/ChatGPT-Image-Aug-1-2026-11_13_45-PM.png"
             alt="Asian Countries"
             className="w-full h-full object-cover opacity-85 transform scale-105"
           />
@@ -267,7 +267,7 @@ export default function AsianCountriesPage() {
               {/* Back Image (Himeji Castle Cherry Blossom) with teal border */}
               <div className="w-[88%] ml-auto aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-[8px] sm:border-[10px] border-[#27B8B1] relative z-10">
                 <img
-                  src="https://blackforestholidays.com/wp-content/uploads/2026/07/himeji-castle-with-beautiful-cherry-blossom-spring-season-hyogo-near-osaka-japan-scaled.jpg"
+                  src="/assets/images/himeji-castle-with-beautiful-cherry-blossom-spring-season-hyogo-near-osaka-japan-scaled.jpg"
                   alt="Himeji Castle cherry blossom Japan"
                   className="w-full h-full object-cover"
                 />
@@ -276,7 +276,7 @@ export default function AsianCountriesPage() {
               {/* Front Overlapping Image */}
               <div className="w-[74%] -mt-24 sm:-mt-28 relative z-20 rounded-xl overflow-hidden shadow-2xl border-4 border-white">
                 <img
-                  src="https://blackforestholidays.com/wp-content/uploads/2026/07/Untitled-design-17.png"
+                  src="/assets/images/Untitled-design-17.png"
                   alt="Asian travel destination"
                   className="w-full h-auto object-cover block"
                 />
@@ -383,7 +383,7 @@ export default function AsianCountriesPage() {
             <div className="lg:col-span-6">
               <div className="w-full h-[460px] sm:h-[560px] rounded-2xl overflow-hidden shadow-2xl border border-gray-100 sticky top-32">
                 <img
-                  src="https://blackforestholidays.com/wp-content/uploads/2026/07/3d-rendering-chinese-great-wall-scaled.jpg"
+                  src="/assets/images/3d-rendering-chinese-great-wall-scaled.jpg"
                   alt="Chinese Great Wall"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -436,7 +436,7 @@ export default function AsianCountriesPage() {
             <div className="lg:col-span-6">
               <div className="w-full h-[460px] sm:h-[560px] rounded-2xl overflow-hidden shadow-2xl border border-gray-100 sticky top-32">
                 <img
-                  src="https://blackforestholidays.com/wp-content/uploads/2026/07/Untitled-design-11.png"
+                  src="/assets/images/Untitled-design-11.png"
                   alt="South East Asia destinations"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -487,7 +487,7 @@ export default function AsianCountriesPage() {
             <div className="lg:col-span-6">
               <div className="w-full h-[460px] sm:h-[560px] rounded-2xl overflow-hidden shadow-2xl border border-gray-100 sticky top-32">
                 <img
-                  src="https://blackforestholidays.com/wp-content/uploads/2026/07/picturesque-view-monastery-perched-cliff-with-prayer-flags-birds-flying-sky-scaled.jpg"
+                  src="/assets/images/picturesque-view-monastery-perched-cliff-with-prayer-flags-birds-flying-sky-scaled.jpg"
                   alt="Monastery perched cliff"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -502,7 +502,7 @@ export default function AsianCountriesPage() {
       <section
         className="relative w-full h-[60vh] min-h-[460px] flex items-center justify-center overflow-hidden bg-fixed bg-center bg-cover"
         style={{
-          backgroundImage: `url('https://blackforestholidays.com/wp-content/uploads/2026/07/4.png')`
+          backgroundImage: `url('/assets/images/4.png')`
         }}
       >
         <div className="absolute inset-0 bg-black/55" />
@@ -654,7 +654,7 @@ export default function AsianCountriesPage() {
       <section
         className="relative w-full py-20 bg-fixed bg-cover bg-center border-t border-gray-100"
         style={{
-          backgroundImage: `url('https://blackforestholidays.com/wp-content/uploads/2021/07/faq-img.jpg')`
+          backgroundImage: `url('/assets/images/faq-img.jpg')`
         }}
       >
         <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px]" />
@@ -709,7 +709,7 @@ export default function AsianCountriesPage() {
       <section
         className="w-full py-20 relative bg-cover bg-center border-t border-gray-100"
         style={{
-          backgroundImage: `url('https://blackforestholidays.com/wp-content/uploads/2021/07/number-counter-bg.png')`
+          backgroundImage: `url('/assets/images/number-counter-bg.png')`
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

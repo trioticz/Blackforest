@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSettings } from '../../context/SiteSettingsContext';
 import HeroWave from '../../components/common/HeroWave';
-const CDN = 'https://blackforestholidays.com/wp-content/uploads';
 
 const cruiseUploadImages = [
   '/assets/uploads/Cruise_images/1912240620312026.jpg',
@@ -58,7 +57,7 @@ export default function CruisesPage() {
       <section className="relative h-[65vh] min-h-[500px] flex flex-col items-center justify-center">
         <div className="absolute inset-0 z-0">
           <img
-            src={`${CDN}/2026/08/pexels-g-isle-px-210751289-11820070-scaled.jpg`}
+            src={'/assets/images/pexels-g-isle-px-210751289-11820070-scaled.jpg'}
             alt="Cruises"
             className="w-full h-full object-cover"
           />
@@ -110,7 +109,7 @@ export default function CruisesPage() {
             <div className="relative pl-6 pt-6 mt-8 lg:mt-0 w-full max-w-lg mx-auto lg:ml-auto">
               <div className="absolute top-0 left-0 w-[95%] h-[95%] border-[3px] border-[#18c4c7] z-0" />
               <img
-                src={`${CDN}/2026/08/ChatGPT-Image-Aug-8-2026-06_20_36-PM.png`}
+                src={'/assets/images/ChatGPT-Image-Aug-8-2026-06_20_36-PM.png'}
                 alt="Discover the World on Cruises"
                 className="relative z-10 w-full h-auto object-cover shadow-sm bg-white p-2 aspect-[4/3]"
               />
@@ -216,7 +215,7 @@ export default function CruisesPage() {
         {/* Pine Tree Background Silhouette on Right Edge */}
         <div className="absolute right-0 top-0 bottom-0 w-72 md:w-96 pointer-events-none opacity-25 z-0 overflow-hidden">
           <img
-            src={`${CDN}/2026/08/contact-pine-bg-2.jpg`}
+            src={'/assets/images/contact-pine-bg-2.jpg'}
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover object-left"
@@ -316,14 +315,14 @@ export default function CruisesPage() {
             <div className="lg:col-span-4 space-y-6 pt-4 lg:pt-16">
               <div className="overflow-hidden rounded-sm shadow-md">
                 <img
-                  src={`${CDN}/2026/08/Horizon-Lounge-Dining-Venue-copy-scaled.avif`}
+                  src={'/assets/images/Horizon-Lounge-Dining-Venue-copy-scaled.avif'}
                   alt="Horizon Lounge Dining Venue"
                   className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div className="overflow-hidden rounded-sm shadow-md">
                 <img
-                  src={`${CDN}/2026/08/pngtree-cruise-ship-that-is-sitting-on-a-tropical-island-image_2615573.jpg`}
+                  src={'/assets/images/pngtree-cruise-ship-that-is-sitting-on-a-tropical-island-image_2615573.jpg'}
                   alt="Cruise Ship Tropical Island"
                   className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
                 />
@@ -335,11 +334,11 @@ export default function CruisesPage() {
               {/* Compass Watermark */}
               <div
                 className="absolute -top-10 -right-10 w-64 h-64 opacity-15 pointer-events-none bg-contain bg-no-repeat z-0"
-                style={{ backgroundImage: `url('${CDN}/2021/07/about-compass.jpg')` }}
+                style={{ backgroundImage: `url('/assets/images/about-compass.jpg')` }}
               />
               <div className="relative z-10 overflow-hidden rounded-sm shadow-md">
                 <img
-                  src={`${CDN}/2026/08/ChatGPT-Image-Aug-8-2026-06_49_29-PM.png`}
+                  src={'/assets/images/ChatGPT-Image-Aug-8-2026-06_49_29-PM.png'}
                   alt="Cruise Ship Voyage"
                   className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
                 />

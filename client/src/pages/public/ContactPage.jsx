@@ -74,7 +74,7 @@ export default function ContactPage() {
       <section className="relative h-[50vh] min-h-[420px] flex flex-col items-center justify-center">
         <div className="absolute inset-0 z-0 bg-[#0a1712]">
           <img
-            src="https://blackforestholidays.com/wp-content/uploads/2026/08/buddhist-prayer-flags-himalaya-mountains-annapurna-base-camp-area-nepal-scaled.jpg"
+            src="/assets/images/buddhist-prayer-flags-himalaya-mountains-annapurna-base-camp-area-nepal-scaled.jpg"
             alt="Contact Us"
             className="w-full h-full object-cover opacity-70"
           />

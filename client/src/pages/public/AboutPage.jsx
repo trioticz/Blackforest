@@ -153,7 +153,7 @@ export default function AboutPage() {
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = 'https://blackforestholidays.com/wp-content/uploads/2026/07/ABOUT-US.png';
+                    e.target.src = '/assets/images/ABOUT-US.png';
                   }}
                 />
               </div>
@@ -166,7 +166,7 @@ export default function AboutPage() {
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = 'https://blackforestholidays.com/wp-content/uploads/2021/07/about-img-3.png';
+                    e.target.src = '/assets/images/about-img-3.png';
                   }}
                 />
               </div>
@@ -182,7 +182,7 @@ export default function AboutPage() {
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = 'https://blackforestholidays.com/wp-content/uploads/2026/07/Untitled-design.png';
+                    e.target.src = '/assets/images/Untitled-design.png';
                   }}
                 />
               </div>
@@ -236,7 +236,7 @@ export default function AboutPage() {
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = 'https://blackforestholidays.com/wp-content/uploads/2026/07/Blackforest-about-1.png';
+                    e.target.src = '/assets/images/Blackforest-about-1.png';
                   }}
                 />
               </div>
@@ -262,7 +262,7 @@ export default function AboutPage() {
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = 'https://blackforestholidays.com/wp-content/uploads/2026/07/Untitled-design-1.png';
+                    e.target.src = '/assets/images/Untitled-design-1.png';
                   }}
                 />
               </div>

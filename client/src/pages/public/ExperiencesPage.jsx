@@ -10,7 +10,7 @@ const ALL_EXPERIENCES = [
     title: 'Adventure & Nature',
     tagline: 'Where the Journey Becomes the Adventure',
     description: 'Step beyond the ordinary and experience the world at its most spectacular. From mountain trails and tropical forests to thrilling outdoor adventures and remote wilderness escapes.',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-8-2026-05_59_39-PM.png',
+    heroImage: '/assets/images/ChatGPT-Image-Aug-8-2026-05_59_39-PM.png',
     highlights: ['Mountain & Trekking', 'Wildlife Encounters', 'Jungle Expeditions', 'Water Adventures'],
   },
   {
@@ -18,7 +18,7 @@ const ALL_EXPERIENCES = [
     title: 'Island Holidays',
     tagline: 'Escape to Paradise, Discover Your Perfect Island',
     description: 'Leave the everyday behind and discover pristine beaches, luxurious resorts, turquoise lagoons, and private beachfront villas across the Maldives, Mauritius, Seychelles, and beyond.',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/pexels-asadphoto-9394652-scaled.jpg',
+    heroImage: '/assets/images/pexels-asadphoto-9394652-scaled.jpg',
     highlights: ['Luxury Island Resorts', 'Private Island Escapes', 'Beach & Relaxation', 'Island Hopping'],
   },
   {
@@ -26,7 +26,7 @@ const ALL_EXPERIENCES = [
     title: 'Family Holidays',
     tagline: 'Create Memories That Last a Lifetime',
     description: 'Personalised family holiday packages combining comfort, adventure, and relaxation for every generation, from exciting theme parks to unforgettable cultural explorations.',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/family-holidays-nsw-main.jpg',
+    heroImage: '/assets/images/family-holidays-nsw-main.jpg',
     highlights: ['Family Beach Escapes', 'Wildlife & Safari', 'Theme Parks & Attractions', 'Multi-Generational'],
   },
   {
@@ -34,7 +34,7 @@ const ALL_EXPERIENCES = [
     title: 'Honeymoon Escapes',
     tagline: 'Begin Your Forever With an Unforgettable Journey',
     description: 'Romantic international honeymoon packages designed around your love story, featuring candlelit dining, private villas, sunset cruises, and secluded tropical retreats.',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/pexels-asadphoto-1024967.jpg',
+    heroImage: '/assets/images/pexels-asadphoto-1024967.jpg',
     highlights: ['Luxury Beach Escapes', 'Private Island Retreats', 'Candlelight Dining', 'Couples Experiences'],
   },
   {
@@ -42,7 +42,7 @@ const ALL_EXPERIENCES = [
     title: 'Luxury Escapes',
     tagline: 'Bespoke Journeys. Exceptional Places. Unforgettable Moments.',
     description: 'The pinnacle of bespoke travel featuring private villas, iconic 5-star resorts, fine dining, private charters, and dedicated VIP concierge services.',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/dino-reichmuth-A5rCN8626Ck-unsplash-scaled.jpg',
+    heroImage: '/assets/images/dino-reichmuth-A5rCN8626Ck-unsplash-scaled.jpg',
     highlights: ['Exclusive Resorts & Villas', 'Private Experiences', 'Luxury Safaris', 'VIP Concierge'],
   },
 ];
@@ -101,7 +101,7 @@ export default function ExperiencesPage({ forcedSlug }) {
         <section className="relative h-[65vh] min-h-[500px] flex flex-col items-center justify-center">
           <div className="absolute inset-0 z-0">
             <img
-              src="https://blackforestholidays.com/wp-content/uploads/2026/08/dino-reichmuth-A5rCN8626Ck-unsplash-scaled.jpg"
+              src="/assets/images/dino-reichmuth-A5rCN8626Ck-unsplash-scaled.jpg"
               alt="Curated Travel Experiences"
               className="w-full h-full object-cover"
             />

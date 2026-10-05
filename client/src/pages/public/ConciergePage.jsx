@@ -4,7 +4,6 @@ import { Plane, ShieldCheck, Car } from 'lucide-react';
 import { useSettings } from '../../context/SiteSettingsContext';
 import HeroWave from '../../components/common/HeroWave';
 
-const CDN = 'https://blackforestholidays.com/wp-content/uploads';
 
 export default function ConciergePage() {
   const location = useLocation();
@@ -20,14 +19,14 @@ export default function ConciergePage() {
     flights: {
       title: 'Flight Booking',
       cursiveSubtitle: 'Flight Booking, Airport Transfers & Travel Insurance',
-      heroImage: `${CDN}/2026/08/—Pngtree—worldwide-flight-adventure-a-3d_5773140-scaled.jpg`,
+      heroImage: '/assets/images/Pngtree-worldwide-flight-adventure-a-3d_5773140-scaled.jpg',
 
       intro: {
         heading: 'Everything You Need for a Seamless Journey',
         paragraphs: [
           'From international flight booking to arranging smooth airport transfers and suitable travel insurance, BlackForest Holidays provides essential travel services under one roof. We make every journey simple, convenient, and hassle-free, helping you travel with confidence from departure to arrival.',
         ],
-        image: `${CDN}/2026/08/alexey-starki-91ykdj2WQeg-unsplash-scaled.jpg`,
+        image: '/assets/images/alexey-starki-91ykdj2WQeg-unsplash-scaled.jpg',
       },
 
       extraBlocks: [
@@ -62,16 +61,16 @@ export default function ConciergePage() {
       },
 
       carouselImages: [
-        `${CDN}/2026/08/Untitled-design-48.png`,
-        `${CDN}/2026/08/Untitled-design-47.png`,
-        `${CDN}/2026/08/Untitled-design-50.png`,
-        `${CDN}/2026/08/Untitled-design-49.png`,
+        '/assets/images/Untitled-design-48.png',
+        '/assets/images/Untitled-design-47.png',
+        '/assets/images/Untitled-design-50.png',
+        '/assets/images/Untitled-design-49.png',
       ],
 
       whyChooseUs: {
         cursiveSubtitle: 'Why Choose Us',
         heading: 'Why Choose BlackForest Holidays?',
-        bgImage: `${CDN}/2026/08/contact-pine-bg-2.jpg`,
+        bgImage: '/assets/images/contact-pine-bg-2.jpg',
         features: [
           { title: 'Tailor-Made Adventures', desc: 'Every journey is designed around your interests, comfort level, and sense of adventure.' },
           { title: 'Authentic Experiences', desc: 'Go beyond the typical sightseeing itinerary and discover destinations through meaningful experiences.' },
@@ -86,7 +85,7 @@ export default function ConciergePage() {
         text: "Whether you're seeking the thrill of a mountain expedition, the serenity of a rainforest, the excitement of a safari, or simply a deeper connection with nature, BlackForest Holidays creates journeys that inspire you to explore further.",
         ctaLabel: 'Go Further and Explore More.',
         buttonText: 'Book your Flights',
-        image: `${CDN}/2026/08/global-residence-index-wOj5HTw2YMc-unsplash-scaled.jpg`,
+        image: '/assets/images/global-residence-index-wOj5HTw2YMc-unsplash-scaled.jpg',
       },
 
       secondaryFeature: {
@@ -116,11 +115,11 @@ export default function ConciergePage() {
         ctaLabel: 'Need Travel Assistance?',
         buttonText: 'Talk to Our Travel Experts',
         collageImages: [
-          `${CDN}/2026/08/Visitor-Visa-new-zealand.jpg`,
-          `${CDN}/2026/08/ChatGPT-Image-Aug-8-2026-06_30_11-PM.png`,
-          `${CDN}/2026/08/sacha-verheij-5bwgW8_9OPs-unsplash-scaled.jpg`,
+          '/assets/images/Visitor-Visa-new-zealand.jpg',
+          '/assets/images/ChatGPT-Image-Aug-8-2026-06_30_11-PM.png',
+          '/assets/images/sacha-verheij-5bwgW8_9OPs-unsplash-scaled.jpg',
         ],
-        watermark: 'https://blackforestholidays.com/wp-content/uploads/2021/07/about-compass.jpg',
+        watermark: '/assets/images/about-compass.jpg',
         quote: 'A Vision created for the activities to make sure you enjoy & get thrilled.',
       },
     },
@@ -128,7 +127,7 @@ export default function ConciergePage() {
     visas: {
       title: 'Visa Assistance',
       cursiveSubtitle: 'Visa Assistance',
-      heroImage: `${CDN}/2026/08/ChatGPT-Image-Aug-8-2026-06_30_11-PM-2.png`,
+      heroImage: '/assets/images/ChatGPT-Image-Aug-8-2026-06_30_11-PM-2.png',
 
       intro: {
         heading: 'Visa Assistance Made Simple',
@@ -136,7 +135,7 @@ export default function ConciergePage() {
           'Planning an international journey should be exciting, not stressful. At BlackForest Holidays, we provide personalised visa assistance services to help you understand visa requirements, prepare the necessary documents, and navigate the application process with confidence.',
           'From tourist and business visas to family visits and other travel purposes, our experienced team provides practical guidance based on your destination and travel requirements.',
         ],
-        image: `${CDN}/2026/08/freepik__make-an-image-on-visitor-visa-add-a-flight-a-passp__37353.jpeg.webp`,
+        image: '/assets/images/freepik__make-an-image-on-visitor-visa-add-a-flight-a-passp__37353.jpeg.webp',
       },
 
       extraBlocks: [
@@ -169,17 +168,17 @@ export default function ConciergePage() {
       },
 
       carouselImages: [
-        `${CDN}/2026/08/Untitled-design-55.png`,
-        `${CDN}/2026/08/Untitled-design-56.png`,
-        `${CDN}/2026/08/Untitled-design-58.png`,
-        `${CDN}/2026/08/Untitled-design-57.png`,
-        `${CDN}/2026/07/WhatsApp-Image-2026-08-06-at-16.30.00.jpeg`,
+        '/assets/images/Untitled-design-55.png',
+        '/assets/images/Untitled-design-56.png',
+        '/assets/images/Untitled-design-58.png',
+        '/assets/images/Untitled-design-57.png',
+        '/assets/images/WhatsApp-Image-2026-08-06-at-16.30.00.jpeg',
       ],
 
       whyChooseUs: {
         cursiveSubtitle: 'Why Choose Us',
         heading: 'Why Choose BlackForest Holidays?',
-        bgImage: `${CDN}/2026/08/contact-pine-bg-2.jpg`,
+        bgImage: '/assets/images/contact-pine-bg-2.jpg',
         features: [
           { title: 'Expert Visa Guidance', desc: 'We provide clear, structured guidance to help you navigate specific visa requirements with confidence.' },
           { title: 'Document Verification', desc: 'Thorough review of your paperwork to help identify missing details or inconsistencies before submission.' },
@@ -195,11 +194,11 @@ export default function ConciergePage() {
         ctaLabel: 'Need Visa Assistance?',
         buttonText: 'Talk to Our Visa Experts',
         collageImages: [
-          `${CDN}/2026/08/Visitor-Visa-new-zealand.jpg`,
-          `${CDN}/2026/08/ChatGPT-Image-Aug-8-2026-06_30_11-PM.png`,
-          `${CDN}/2026/08/sacha-verheij-5bwgW8_9OPs-unsplash-scaled.jpg`,
+          '/assets/images/Visitor-Visa-new-zealand.jpg',
+          '/assets/images/ChatGPT-Image-Aug-8-2026-06_30_11-PM.png',
+          '/assets/images/sacha-verheij-5bwgW8_9OPs-unsplash-scaled.jpg',
         ],
-        watermark: 'https://blackforestholidays.com/wp-content/uploads/2021/07/about-compass.jpg',
+        watermark: '/assets/images/about-compass.jpg',
         quote: 'A Vision created for the activities to make sure you enjoy & get thrilled.',
       },
     },
@@ -207,14 +206,14 @@ export default function ConciergePage() {
     cruises: {
       title: 'Cruises',
       cursiveSubtitle: 'Cruises',
-      heroImage: `${CDN}/2026/08/pexels-g-isle-px-210751289-11820070-scaled.jpg`,
+      heroImage: '/assets/images/pexels-g-isle-px-210751289-11820070-scaled.jpg',
 
       intro: {
         heading: 'Discover the World, One Extraordinary Journey at a Time',
         paragraphs: [
           "Set sail on unforgettable journeys across the world's most spectacular coastlines and destinations with our cruise ticket booking services. BlackForest Holidays creates personalised cruise holidays that combine exceptional accommodation, fine dining, entertainment, and extraordinary experiences, allowing you to explore multiple destinations in one seamless and memorable journey.",
         ],
-        image: `${CDN}/2026/08/ChatGPT-Image-Aug-8-2026-06_20_36-PM.png`,
+        image: '/assets/images/ChatGPT-Image-Aug-8-2026-06_20_36-PM.png',
       },
 
       extraBlocks: [
@@ -243,16 +242,16 @@ export default function ConciergePage() {
       },
 
       carouselImages: [
-        `${CDN}/2026/08/Untitled-design-54.png`,
-        `${CDN}/2026/08/Untitled-design-52.png`,
-        `${CDN}/2026/08/Untitled-design-51.png`,
-        `${CDN}/2026/08/Untitled-design-53.png`,
+        '/assets/images/Untitled-design-54.png',
+        '/assets/images/Untitled-design-52.png',
+        '/assets/images/Untitled-design-51.png',
+        '/assets/images/Untitled-design-53.png',
       ],
 
       whyChooseUs: {
         cursiveSubtitle: 'Why Choose Us',
         heading: 'Why Choose BlackForest Holidays?',
-        bgImage: `${CDN}/2026/08/contact-pine-bg-2.jpg`,
+        bgImage: '/assets/images/contact-pine-bg-2.jpg',
         features: [
           { title: 'Expert Cruise Selection', desc: 'We help you choose the right cruise line, ship, itinerary, and cabin based on your preferences.' },
           { title: 'Personalised Planning', desc: 'Every cruise journey can be tailored with flights, hotels, transfers, excursions, and pre- or post-cruise stays.' },
@@ -267,15 +266,15 @@ export default function ConciergePage() {
         text: "Whether you're dreaming of a romantic Mediterranean voyage, a family cruise through the Caribbean, a luxury river journey through Europe, or an expedition to the world's remote corners, BlackForest Holidays helps turn your cruise dreams into an extraordinary journey.",
         ctaLabel: 'Sail Further. Discover More.',
         buttonText: 'Explore Cruise Holidays',
-        image: `${CDN}/2026/08/Horizon-Lounge-Dining-Venue-copy-scaled.avif`,
+        image: '/assets/images/Horizon-Lounge-Dining-Venue-copy-scaled.avif',
       },
 
       trailingCollage: {
         images: [
-          `${CDN}/2026/08/pngtree-cruise-ship-that-is-sitting-on-a-tropical-island-image_2615573.jpg`,
-          `${CDN}/2026/08/ChatGPT-Image-Aug-8-2026-06_49_29-PM.png`,
+          '/assets/images/pngtree-cruise-ship-that-is-sitting-on-a-tropical-island-image_2615573.jpg',
+          '/assets/images/ChatGPT-Image-Aug-8-2026-06_49_29-PM.png',
         ],
-        watermark: 'https://blackforestholidays.com/wp-content/uploads/2021/07/about-compass.jpg',
+        watermark: '/assets/images/about-compass.jpg',
         quote: 'A Vision created for the activities to make sure you enjoy & get thrilled.',
       },
     },

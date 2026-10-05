@@ -8,7 +8,7 @@ const policies = {
     slug: 'cancellation-refund-policy',
     title: 'Cancellation & Refund Policy',
     cursiveSubtitle: 'Policies & Guidelines',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/ChatGPT-Image-Aug-8-2026-06_30_11-PM-2.png',
+    heroImage: '/assets/images/ChatGPT-Image-Aug-8-2026-06_30_11-PM-2.png',
     intro: 'At BlackForest Holidays Private Limited, we understand that travel plans may change. Our cancellation and refund terms are subject to the policies of the airline, hotel, tour operator, cruise line, visa service provider, insurance company or other supplier involved in your booking.',
     sections: [
       {
@@ -114,7 +114,7 @@ const policies = {
     slug: 'terms-conditions',
     title: 'Terms & Conditions',
     cursiveSubtitle: 'Terms of Service & Agreement',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/—Pngtree—worldwide-flight-adventure-a-3d_5773140-scaled.jpg',
+    heroImage: '/assets/images/Pngtree-worldwide-flight-adventure-a-3d_5773140-scaled.jpg',
     intro: 'By making a booking or using the services of BlackForest Holidays Private Limited, you agree to the following Terms & Conditions.',
     sections: [
       {
@@ -208,7 +208,7 @@ const policies = {
     slug: 'privacy-policy',
     title: 'Privacy Policy',
     cursiveSubtitle: 'Privacy & Data Protection',
-    heroImage: 'https://blackforestholidays.com/wp-content/uploads/2026/08/alexey-starki-91ykdj2WQeg-unsplash-scaled.jpg',
+    heroImage: '/assets/images/alexey-starki-91ykdj2WQeg-unsplash-scaled.jpg',
     intro: 'At BlackForest Holidays Private Limited, we are committed to safeguarding your privacy and ensuring the security of your personal data. This Privacy Policy describes how we collect, use, process, and protect your information when you visit our website, enquire about our luxury packages, or utilize our travel booking and concierge services.',
     sections: [
       {

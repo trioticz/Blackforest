@@ -17,11 +17,11 @@ const Settings = sequelize.define('Settings', {
   },
   darkLogo: {
     type: DataTypes.STRING(1000),
-    defaultValue: 'https://blackforestholidays.com/wp-content/uploads/2021/07/white_logo.png'
+    defaultValue: '/assets/images/white_logo.png'
   },
   favicon: {
     type: DataTypes.STRING(1000),
-    defaultValue: 'https://blackforestholidays.com/wp-content/uploads/2026/07/cropped-cropped-Logo-02-1-1-32x32.png'
+    defaultValue: '/assets/images/cropped-cropped-Logo-02-1-1-32x32.png'
   },
   phone: {
     type: DataTypes.STRING,
