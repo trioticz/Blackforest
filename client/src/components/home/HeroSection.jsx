@@ -5,8 +5,26 @@ export default function HeroSection() {
   const videoRef = useRef(null);
   // Track mute state for UI only — actual mute is controlled via DOM ref
   const [isMuted, setIsMuted] = useState(true);
+  const [loadVideo, setLoadVideo] = useState(false);
+
+  // Defer heavy 12MB video loading until after initial paint & idle callback to maximize LCP & Mobile Speed
+  useEffect(() => {
+    const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 900));
+    const handle = idleCallback(() => {
+      const isSaveData = navigator.connection && navigator.connection.saveData;
+      if (!isSaveData) {
+        setLoadVideo(true);
+      }
+    });
+
+    return () => {
+      if (window.cancelIdleCallback) window.cancelIdleCallback(handle);
+      else clearTimeout(handle);
+    };
+  }, []);
 
   useEffect(() => {
+    if (!loadVideo) return;
     const video = videoRef.current;
     if (!video) return;
 
@@ -17,24 +35,20 @@ export default function HeroSection() {
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        // Browser blocked autoplay — still fine, video is there on first interaction
+        // Browser blocked autoplay — still fine
       });
     }
-  }, []);
+  }, [loadVideo]);
 
   const toggleMute = () => {
     const video = videoRef.current;
     if (!video) return;
 
     if (isMuted) {
-      // ── Unmute ──
-      // MUST set via DOM property — the JSX `muted` prop is a one-shot attribute
-      // that React does NOT update after mount, so it would never unmute.
       video.muted  = false;
       video.volume = 1.0;
       setIsMuted(false);
     } else {
-      // ── Mute ──
       video.muted = true;
       setIsMuted(true);
     }
@@ -43,27 +57,39 @@ export default function HeroSection() {
   return (
     <section className="relative w-full h-[85vh] sm:h-[90vh] md:h-[95vh] min-h-[520px] sm:min-h-[620px] max-h-[1050px] overflow-hidden bg-black flex items-center justify-center">
 
-      {/* ── Full-screen Background Video ── */}
+      {/* ── Background Poster & Video Layer ── */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/*
-          ⚠️  NO `muted` prop here on purpose.
-          The HTML `muted` attribute, once set in the DOM, cannot be cleared by React.
-          We start muted via the useEffect ref above instead.
-        */}
-        <video
-          ref={videoRef}
-          src="/hero-video-1080p60.mp4"
-          poster="/hero-poster.jpg"
-          autoPlay
-          loop
-          playsInline
-          preload="metadata"
-          className="w-full h-full object-cover object-center pointer-events-none select-none"
-          style={{
-            display: 'block',
-            filter: 'contrast(1.08) saturate(1.15) brightness(1.04)',
-          }}
-        />
+        {/* Instant responsive WebP poster for <0.4s LCP on mobile and desktop */}
+        <picture className="absolute inset-0 w-full h-full">
+          <source media="(max-width: 768px)" srcSet="/hero-poster-mobile.webp" type="image/webp" />
+          <source srcSet="/hero-poster.webp" type="image/webp" />
+          <img
+            src="/hero-poster.jpg"
+            alt="Black Forest Luxury Travel"
+            fetchpriority="high"
+            decoding="async"
+            width="1536"
+            height="1024"
+            className="w-full h-full object-cover object-center pointer-events-none select-none"
+          />
+        </picture>
+
+        {loadVideo && (
+          <video
+            ref={videoRef}
+            src="/hero-video-1080p60.mp4"
+            poster="/hero-poster.webp"
+            autoPlay
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover object-center pointer-events-none select-none animate-fadeIn"
+            style={{
+              display: 'block',
+              filter: 'contrast(1.08) saturate(1.15) brightness(1.04)',
+            }}
+          />
+        )}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -75,18 +101,20 @@ export default function HeroSection() {
       {/* Top gradient */}
       <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/50 via-black/15 to-transparent pointer-events-none z-10" />
 
-      {/* ── Sound Toggle Button ── */}
-      <button
-        onClick={toggleMute}
-        aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-        title={isMuted ? 'Click to hear sound' : 'Click to mute'}
-        className="absolute bottom-24 right-6 z-30 w-11 h-11 flex items-center justify-center rounded-full bg-black/55 border border-white/35 text-white backdrop-blur-sm hover:bg-black/75 transition-all duration-200 cursor-pointer"
-      >
-        {isMuted
-          ? <VolumeX className="w-5 h-5" />
-          : <Volume2 className="w-5 h-5" />
-        }
-      </button>
+      {/* ── Sound Toggle Button (Shown once video is active) ── */}
+      {loadVideo && (
+        <button
+          onClick={toggleMute}
+          aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+          title={isMuted ? 'Click to hear sound' : 'Click to mute'}
+          className="absolute bottom-24 right-6 z-30 w-11 h-11 flex items-center justify-center rounded-full bg-black/55 border border-white/35 text-white backdrop-blur-sm hover:bg-black/75 transition-all duration-200 cursor-pointer animate-fadeIn"
+        >
+          {isMuted
+            ? <VolumeX className="w-5 h-5" />
+            : <Volume2 className="w-5 h-5" />
+          }
+        </button>
+      )}
 
       {/* ── Wave cutout ── */}
       <div className="absolute bottom-[-1px] left-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
