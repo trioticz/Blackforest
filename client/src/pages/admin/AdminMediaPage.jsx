@@ -96,7 +96,16 @@ export default function AdminMediaPage() {
           {mediaList.map((m) => (
             <div key={m.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm flex flex-col justify-between group">
               <div className="h-32 bg-gray-100 relative overflow-hidden">
-                <img src={m.url} alt={m.filename} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                <img
+                  src={m.url || m.data}
+                  alt={m.filename}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  onError={(e) => {
+                    if (m.data && e.target.src !== m.data) {
+                      e.target.src = m.data;
+                    }
+                  }}
+                />
               </div>
               <div className="p-2.5 border-t border-gray-100 flex items-center justify-between text-xs">
                 <span className="truncate text-gray-600 font-medium text-[11px] max-w-[90px]">{m.originalName || m.filename}</span>

@@ -25,7 +25,23 @@ const Article = sequelize.define('Article', {
     allowNull: true
   },
   coverImage: {
-    type: DataTypes.STRING(1000),
+    type: DataTypes.TEXT('long'),
+    defaultValue: ''
+  },
+  detailImage1: {
+    type: DataTypes.TEXT('long'),
+    defaultValue: ''
+  },
+  detailImage2: {
+    type: DataTypes.TEXT('long'),
+    defaultValue: ''
+  },
+  quote: {
+    type: DataTypes.TEXT,
+    defaultValue: ''
+  },
+  quoteAuthor: {
+    type: DataTypes.STRING,
     defaultValue: ''
   },
   authorId: {

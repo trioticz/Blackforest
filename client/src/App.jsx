@@ -42,6 +42,7 @@ const AdminJournalPage = lazy(() => import('./pages/admin/AdminJournalPage'));
 const AdminExpertisePage = lazy(() => import('./pages/admin/AdminExpertisePage'));
 const AdminSEOPage = lazy(() => import('./pages/admin/AdminSEOPage'));
 const AdminUsersPage = lazy(() => import('./pages/admin/AdminUsersPage'));
+const AdminMediaPage = lazy(() => import('./pages/admin/AdminMediaPage'));
 
 function PageFallback() {
   return (
@@ -150,13 +151,13 @@ export default function App() {
                 <Route path="expertise" element={<AdminExpertisePage />} />
                 <Route path="seo" element={<AdminSEOPage />} />
                 <Route path="users" element={<AdminUsersPage />} />
+                <Route path="media" element={<AdminMediaPage />} />
 
                 {/* Removed Admin Modules redirected */}
                 <Route path="tours/*" element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="experiences/*" element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="services/*" element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="testimonials/*" element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="media/*" element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="navigation/*" element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="settings/*" element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="audit-logs/*" element={<Navigate to="/admin/dashboard" replace />} />

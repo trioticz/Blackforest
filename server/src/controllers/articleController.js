@@ -77,7 +77,7 @@ const getArticleBySlug = async (req, res, next) => {
 
 const createArticle = async (req, res, next) => {
   try {
-    const { title, slug: inputSlug, excerpt, content, coverImage, category, tags, publishedAt, featured, status, seoTitle, seoDescription, seoKeywords } = req.body;
+    const { title, slug: inputSlug, excerpt, content, coverImage, detailImage1, detailImage2, quote, quoteAuthor, category, tags, publishedAt, featured, status, seoTitle, seoDescription, seoKeywords } = req.body;
 
     if (!title) {
       return sendError(res, 'Article title is required', 400);
@@ -91,6 +91,10 @@ const createArticle = async (req, res, next) => {
       excerpt: excerpt || '',
       content: content || '',
       coverImage: coverImage || '',
+      detailImage1: detailImage1 || '',
+      detailImage2: detailImage2 || '',
+      quote: quote || '',
+      quoteAuthor: quoteAuthor || '',
       authorId: req.user?.id || null,
       category: category || 'Travel Guides',
       tags: Array.isArray(tags) ? tags : [],
@@ -124,7 +128,7 @@ const updateArticle = async (req, res, next) => {
       return sendError(res, 'Article not found', 404);
     }
 
-    const { title, slug: inputSlug, excerpt, content, coverImage, category, tags, publishedAt, featured, status, seoTitle, seoDescription, seoKeywords } = req.body;
+    const { title, slug: inputSlug, excerpt, content, coverImage, detailImage1, detailImage2, quote, quoteAuthor, category, tags, publishedAt, featured, status, seoTitle, seoDescription, seoKeywords } = req.body;
 
     if (title) article.title = title;
     if (inputSlug && inputSlug !== article.slug) {
@@ -133,6 +137,10 @@ const updateArticle = async (req, res, next) => {
     if (excerpt !== undefined) article.excerpt = excerpt;
     if (content !== undefined) article.content = content;
     if (coverImage !== undefined) article.coverImage = coverImage;
+    if (detailImage1 !== undefined) article.detailImage1 = detailImage1;
+    if (detailImage2 !== undefined) article.detailImage2 = detailImage2;
+    if (quote !== undefined) article.quote = quote;
+    if (quoteAuthor !== undefined) article.quoteAuthor = quoteAuthor;
     if (category !== undefined) article.category = category;
     if (tags !== undefined) article.tags = Array.isArray(tags) ? tags : [];
     if (publishedAt !== undefined) article.publishedAt = publishedAt;

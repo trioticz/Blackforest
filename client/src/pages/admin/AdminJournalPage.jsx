@@ -22,7 +22,9 @@ import {
   toggleBlogPublish,
   BLOGS_EVENT
 } from '../../utils/blogsManager';
+import { articleService } from '../../services/allServices';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField from '../../components/admin/ImageUploadField';
 
 export default function AdminJournalPage() {
   const [articles, setArticles] = useState(getStoredBlogs());
@@ -91,19 +93,36 @@ export default function AdminJournalPage() {
     setModalOpen(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title.trim()) {
       showToast('Article title is required', 'error');
       return;
     }
 
-    if (editingId) {
-      updateBlog(editingId, formData);
-      showToast('Article updated successfully!', 'success');
-    } else {
-      createBlog(formData);
-      showToast('New article published successfully!', 'success');
+    try {
+      if (editingId) {
+        updateBlog(editingId, formData);
+        // Sync with backend MySQL database
+        try {
+          await articleService.update(editingId, formData);
+        } catch (dbErr) {
+          console.warn('Backend database sync note:', dbErr?.message);
+        }
+        showToast('Article updated successfully!', 'success');
+      } else {
+        createBlog(formData);
+        // Sync with backend MySQL database
+        try {
+          await articleService.create(formData);
+        } catch (dbErr) {
+          console.warn('Backend database sync note:', dbErr?.message);
+        }
+        showToast('New article published successfully!', 'success');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to save article', 'error');
     }
     setModalOpen(false);
     reloadData();
@@ -396,39 +415,27 @@ export default function AdminJournalPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="block font-semibold text-zinc-700 uppercase mb-1">Cover Photo URL *</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.coverImage}
-                  onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
-                  placeholder="https://..."
-                  className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:bg-white focus:outline-none"
-                />
-              </div>
+              <ImageUploadField
+                label="Cover Photo"
+                required
+                value={formData.coverImage}
+                onChange={(url) => setFormData({ ...formData, coverImage: url })}
+                recommendedDimensions="1200 × 800 px"
+              />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block font-semibold text-zinc-700 uppercase mb-1">Detail Gallery Image 1</label>
-                  <input
-                    type="text"
-                    value={formData.detailImage1}
-                    onChange={(e) => setFormData({ ...formData, detailImage1: e.target.value })}
-                    placeholder="https://..."
-                    className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:bg-white focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block font-semibold text-zinc-700 uppercase mb-1">Detail Gallery Image 2</label>
-                  <input
-                    type="text"
-                    value={formData.detailImage2}
-                    onChange={(e) => setFormData({ ...formData, detailImage2: e.target.value })}
-                    placeholder="https://..."
-                    className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:bg-white focus:outline-none"
-                  />
-                </div>
+                <ImageUploadField
+                  label="Detail Gallery Image 1"
+                  value={formData.detailImage1}
+                  onChange={(url) => setFormData({ ...formData, detailImage1: url })}
+                  recommendedDimensions="800 × 600 px"
+                />
+                <ImageUploadField
+                  label="Detail Gallery Image 2"
+                  value={formData.detailImage2}
+                  onChange={(url) => setFormData({ ...formData, detailImage2: url })}
+                  recommendedDimensions="800 × 600 px"
+                />
               </div>
 
               <div>

@@ -8,6 +8,7 @@ import {
   Award,
   Globe,
   Users,
+  Image as ImageIcon,
   LogOut,
   ExternalLink,
   Menu as MenuIcon,
@@ -55,6 +56,7 @@ export default function AdminLayout() {
       items: [
         { label: 'Destinations', path: '/admin/destinations', icon: MapPin },
         { label: 'Blog Posts', path: '/admin/journal', icon: BookOpen },
+        { label: 'Media Library', path: '/admin/media', icon: ImageIcon },
         { label: 'Partner Expertise', path: '/admin/expertise', icon: Award },
       ]
     },

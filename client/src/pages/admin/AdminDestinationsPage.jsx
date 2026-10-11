@@ -6,7 +6,9 @@ import {
   updateDestinationDetails,
   DESTINATIONS_EVENT
 } from '../../utils/destinationsManager';
+import { destinationService } from '../../services/allServices';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField from '../../components/admin/ImageUploadField';
 
 export default function AdminDestinationsPage() {
   const [destinations, setDestinations] = useState(getStoredDestinations());
@@ -244,16 +246,13 @@ export default function AdminDestinationsPage() {
                 />
               </div>
 
-              <div>
-                <label className="block font-semibold text-zinc-700 uppercase mb-1">Hero Image URL</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.heroImage}
-                  onChange={(e) => setFormData({ ...formData, heroImage: e.target.value })}
-                  className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:bg-white focus:outline-none"
-                />
-              </div>
+              <ImageUploadField
+                label="Hero Image"
+                required
+                value={formData.heroImage}
+                onChange={(url) => setFormData({ ...formData, heroImage: url })}
+                recommendedDimensions="1600 × 900 px"
+              />
 
               <div className="flex items-center justify-between pt-2">
                 <span className="font-semibold text-zinc-700">Visibility Status</span>

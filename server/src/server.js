@@ -61,8 +61,27 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Serve static uploaded files
+// Serve static uploaded files with MySQL database fallback
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.get('/uploads/:filename', async (req, res, next) => {
+  try {
+    const { Media } = require('./models');
+    const media = await Media.findOne({ where: { filename: req.params.filename } });
+    if (media && media.data) {
+      const matches = media.data.match(/^data:([A-Za-z0-9\-+\/.]+);base64,(.+)$/);
+      if (matches && matches.length === 3) {
+        const mimeType = matches[1];
+        const buffer = Buffer.from(matches[2], 'base64');
+        res.set('Content-Type', mimeType);
+        res.set('Cache-Control', 'public, max-age=31536000');
+        return res.send(buffer);
+      }
+    }
+    return res.status(404).send('Not found');
+  } catch (err) {
+    next(err);
+  }
+});
 
 // Mount API Routes
 app.use('/api', apiRoutes);

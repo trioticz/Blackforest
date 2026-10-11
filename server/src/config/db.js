@@ -36,6 +36,16 @@ const connectDB = async () => {
     console.log(`✅ MySQL connected successfully via ${socketExists ? 'Socket (' + socketPath + ')' : 'TCP (' + (process.env.DB_HOST || '127.0.0.1') + ':' + (process.env.DB_PORT || '3306') + ')'}`);
     await sequelize.sync({ alter: false });
     console.log('✅ MySQL models synchronized');
+
+    // Safe inline migrations to ensure new media & article columns exist in MySQL
+    try {
+      await sequelize.query('ALTER TABLE `Media` ADD COLUMN `data` LONGTEXT NULL').catch(() => {});
+      await sequelize.query('ALTER TABLE `Articles` ADD COLUMN `detailImage1` LONGTEXT NULL').catch(() => {});
+      await sequelize.query('ALTER TABLE `Articles` ADD COLUMN `detailImage2` LONGTEXT NULL').catch(() => {});
+      await sequelize.query('ALTER TABLE `Articles` ADD COLUMN `quote` TEXT NULL').catch(() => {});
+      await sequelize.query('ALTER TABLE `Articles` ADD COLUMN `quoteAuthor` VARCHAR(255) NULL').catch(() => {});
+      await sequelize.query('ALTER TABLE `Articles` MODIFY COLUMN `coverImage` LONGTEXT NULL').catch(() => {});
+    } catch (_) {}
   } catch (error) {
     console.error('❌ MySQL Connection Error:', error.message);
     process.exit(1);

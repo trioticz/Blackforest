@@ -15,6 +15,10 @@ const Media = sequelize.define('Media', {
     type: DataTypes.STRING(1000),
     allowNull: false
   },
+  data: {
+    type: DataTypes.TEXT('long'),
+    allowNull: true
+  },
   alt: {
     type: DataTypes.STRING,
     defaultValue: ''
