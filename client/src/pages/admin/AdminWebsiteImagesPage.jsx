@@ -53,8 +53,18 @@ export default function AdminWebsiteImagesPage() {
   const { showToast } = useToast();
   const { refreshImages: refreshGlobalImages } = useWebsiteImages();
 
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState(() => {
+    try {
+      const local = websiteImageService.getLocalImages ? websiteImageService.getLocalImages({ preview: 'true' }) : null;
+      return local?.data?.images || [];
+    } catch {
+      return [];
+    }
+  });
+  const [loading, setLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(18);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedPage, setSelectedPage] = useState('All');
@@ -95,17 +105,22 @@ export default function AdminWebsiteImagesPage() {
   const [copiedKey, setCopiedKey] = useState(null);
   const [isUsingFallback, setIsUsingFallback] = useState(false);
 
-  const fetchImages = async () => {
+  const fetchImages = async (isManual = false) => {
     try {
-      setLoading(true);
+      if (isManual || images.length === 0) {
+        setIsRefreshing(true);
+      }
       const res = await websiteImageService.getAll({ preview: 'true' });
       if (res && res.success && res.data) {
         setImages(res.data.images || []);
         setIsUsingFallback(Boolean(res.data.isLocalFallback));
       }
     } catch (err) {
-      showToast('Failed to load website images: ' + (err.message || 'Server error'), 'error');
+      if (isManual) {
+        showToast('Sync notice: ' + (err.message || 'Server unreachable, using local cache'), 'info');
+      }
     } finally {
+      setIsRefreshing(false);
       setLoading(false);
     }
   };
@@ -113,6 +128,10 @@ export default function AdminWebsiteImagesPage() {
   useEffect(() => {
     fetchImages();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, selectedPage, statusFilter, searchQuery]);
 
   // Compute unique pages for filtering
   const availablePages = useMemo(() => {
@@ -170,6 +189,15 @@ export default function AdminWebsiteImagesPage() {
         return a.category.localeCompare(b.category);
       });
   }, [images, selectedCategory, selectedPage, statusFilter, searchQuery, sortBy]);
+
+  const totalPages = pageSize === 'All' ? 1 : Math.max(1, Math.ceil(filteredImages.length / Number(pageSize)));
+
+  const displayedImages = useMemo(() => {
+    if (pageSize === 'All') return filteredImages;
+    const size = Number(pageSize);
+    const start = (currentPage - 1) * size;
+    return filteredImages.slice(start, start + size);
+  }, [filteredImages, currentPage, pageSize]);
 
   const copyToClipboard = (text, key) => {
     navigator.clipboard.writeText(text);
@@ -428,12 +456,12 @@ export default function AdminWebsiteImagesPage() {
 
             {/* Refresh Button */}
             <button
-              onClick={fetchImages}
+              onClick={() => fetchImages(true)}
               aria-label="Refresh images"
               title="Refresh images list"
               className="p-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-600 rounded-xl transition-colors cursor-pointer"
             >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-[#27B8B1]' : ''}`} />
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-[#27B8B1]' : ''}`} />
             </button>
           </div>
         </div>
@@ -643,7 +671,7 @@ export default function AdminWebsiteImagesPage() {
         </div>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredImages.map((item) => (
+          {displayedImages.map((item) => (
             <ImageCard
               key={item.id}
               item={item}
@@ -672,7 +700,7 @@ export default function AdminWebsiteImagesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
-                {filteredImages.map((item) => (
+                {displayedImages.map((item) => (
                   <ImageRow
                     key={item.id}
                     item={item}
@@ -687,6 +715,96 @@ export default function AdminWebsiteImagesPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── Pagination Toolbar ── */}
+      {filteredImages.length > 0 && (
+        <div className="bg-white border border-gray-200/90 rounded-2xl p-4 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-xs text-zinc-500 font-medium">
+            Showing{' '}
+            <strong className="text-zinc-800">
+              {pageSize === 'All' ? 1 : (currentPage - 1) * Number(pageSize) + 1}
+            </strong>{' '}
+            to{' '}
+            <strong className="text-zinc-800">
+              {pageSize === 'All'
+                ? filteredImages.length
+                : Math.min(currentPage * Number(pageSize), filteredImages.length)}
+            </strong>{' '}
+            of <strong className="text-zinc-800">{filteredImages.length}</strong> images
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+              <span>Per page:</span>
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(e.target.value === 'All' ? 'All' : Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="px-2 py-1 bg-zinc-50 border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-700 focus:outline-none cursor-pointer"
+              >
+                <option value={18}>18</option>
+                <option value={36}>36</option>
+                <option value={60}>60</option>
+                <option value="All">All ({filteredImages.length})</option>
+              </select>
+            </div>
+
+            {pageSize !== 'All' && totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="px-2.5 py-1 text-xs font-medium rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  Prev
+                </button>
+
+                <div className="flex items-center gap-1 px-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => {
+                    if (
+                      pg === 1 ||
+                      pg === totalPages ||
+                      (pg >= currentPage - 1 && pg <= currentPage + 1)
+                    ) {
+                      return (
+                        <button
+                          key={pg}
+                          onClick={() => setCurrentPage(pg)}
+                          className={`w-7 h-7 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
+                            currentPage === pg
+                              ? 'bg-[#10221b] text-white shadow-2xs'
+                              : 'bg-white hover:bg-zinc-100 text-zinc-700 border border-zinc-200'
+                          }`}
+                        >
+                          {pg}
+                        </button>
+                      );
+                    }
+                    if (pg === currentPage - 2 || pg === currentPage + 2) {
+                      return (
+                        <span key={pg} className="text-xs text-zinc-400 px-0.5">
+                          …
+                        </span>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-2.5 py-1 text-xs font-medium rounded-lg border border-zinc-200 bg-white hover:bg-zinc-50 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  Next
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -965,6 +1083,8 @@ function ImageCard({ item, onUpload, onPreview, onPublish, onDiscard, onRestore,
         <img
           src={activeUrl}
           alt={item.alt_text || item.image_name}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           onError={(e) => {
             e.target.onerror = null;
@@ -1115,6 +1235,8 @@ function ImageRow({ item, onUpload, onPreview, onPublish, onDiscard, onRestore, 
           <img
             src={activeUrl}
             alt=""
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover"
           />
         </div>

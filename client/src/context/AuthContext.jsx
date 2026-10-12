@@ -13,7 +13,15 @@ export const AuthProvider = ({ children }) => {
     }
   });
   const [token, setToken] = useState(() => localStorage.getItem('bf_token') || null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    try {
+      const u = localStorage.getItem('bf_user');
+      const t = localStorage.getItem('bf_token');
+      return !Boolean(u && t);
+    } catch {
+      return false;
+    }
+  });
 
   useEffect(() => {
     const verifyToken = async () => {

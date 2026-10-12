@@ -23,9 +23,20 @@ export function WebsiteImagesProvider({ children }) {
     }
   });
 
-  const [imagesMap, setImagesMap] = useState({});
+  const [imagesMap, setImagesMap] = useState(() => {
+    try {
+      const initial = {};
+      const local = websiteImageService.getLocalImages ? websiteImageService.getLocalImages().data?.images || [] : [];
+      local.forEach((img) => {
+        initial[img.image_key] = img;
+      });
+      return initial;
+    } catch {
+      return {};
+    }
+  });
   const [pendingDraftCount, setPendingDraftCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Sync with URL query parameter changes
   useEffect(() => {

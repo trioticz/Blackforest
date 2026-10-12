@@ -373,9 +373,11 @@ function getLocalWebsiteImages(params = {}) {
 }
 
 export const websiteImageService = {
+  getLocalImages: (params) => getLocalWebsiteImages(params),
+
   getAll: async (params) => {
     try {
-      const res = await api.get('/website-images', { params });
+      const res = await api.get('/website-images', { params, timeout: 2000 });
       if (res && res.data && res.data.success && res.data.data?.images?.length > 0) {
         return res.data;
       }
