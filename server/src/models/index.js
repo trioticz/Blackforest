@@ -12,6 +12,7 @@ const Settings = require('./Settings');
 const Navigation = require('./Navigation');
 const Media = require('./Media');
 const AuditLog = require('./AuditLog');
+const WebsiteImage = require('./WebsiteImage');
 
 // Define Relationships
 TourPackage.belongsTo(Destination, { foreignKey: 'destinationId', as: 'destination' });
@@ -40,5 +41,7 @@ module.exports = {
   Settings,
   Navigation,
   Media,
-  AuditLog
+  AuditLog,
+  WebsiteImage
 };
+

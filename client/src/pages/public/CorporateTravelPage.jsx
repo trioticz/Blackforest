@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import HeroWave from '../../components/common/HeroWave';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 import { Link } from 'react-router-dom';
 
 function HandDrawnLeftArrow({ className = "w-12 h-6" }) {
@@ -86,6 +87,9 @@ function HandDrawnRightArrow({ className = "w-12 h-6" }) {
 }
 
 export default function CorporateTravelPage() {
+  const corporateHero = useWebsiteImage('hero.corporate', '/assets/images/how-corporate-travel-can-sail-through-uncertain-times-1920x1274-1.jpg');
+  const corporateLounge = useWebsiteImage('services.corporate.lounge', '/assets/images/corporate-travel.jpg');
+  const corporateMeeting = useWebsiteImage('services.corporate.meeting', '/assets/images/Untitled-design-23.png');
   const { settings } = useSettings();
 
   const carouselImages = [
@@ -118,7 +122,7 @@ export default function CorporateTravelPage() {
       <section className="relative h-[55vh] min-h-[460px] flex flex-col justify-end">
         <div className="absolute inset-0 z-0 bg-[#0a1712]">
           <img
-            src='/assets/images/how-corporate-travel-can-sail-through-uncertain-times-1920x1274-1.jpg'
+            src={corporateHero}
             alt="Corporate Travel"
             className="w-full h-full object-cover opacity-70"
           />
@@ -204,7 +208,7 @@ export default function CorporateTravelPage() {
                 {/* Back image - Two business women with luggage and teal border */}
                 <div className="w-[88%] ml-auto aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-[8px] sm:border-[10px] border-[#27B8B1] relative z-10">
                   <img
-                    src="/assets/images/corporate-travel.jpg"
+                    src={corporateLounge}
                     alt="Corporate business travel executives walking in airport"
                     className="w-full h-full object-cover"
                   />
@@ -213,7 +217,7 @@ export default function CorporateTravelPage() {
                 {/* Front overlapping image - Laptop visa application form */}
                 <div className="w-[74%] -mt-24 sm:-mt-28 lg:-mt-32 relative z-20 rounded-xl overflow-hidden shadow-2xl border-4 border-white">
                   <img
-                    src="/assets/images/Untitled-design-23.png"
+                    src={corporateMeeting}
                     alt="Visa application form on laptop"
                     className="w-full h-auto object-cover block"
                   />

@@ -1,13 +1,18 @@
 import React from 'react';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 
 export default function AboutMemoriesSection() {
+  const mapImg = useWebsiteImage('homepage.about_memories.map', '/map-intro.webp');
+  const bgPattern = useWebsiteImage('homepage.about_memories.bg_pattern', '/assets/images/home-intro-bg_d266ed.jpg');
+  const maskPine = useWebsiteImage('homepage.about_memories.mask_pine', '/assets/images/mask-pine.jpg');
+
   return (
     <section className="relative py-16 sm:py-20 lg:py-24 bg-white overflow-hidden z-10 render-defer">
       {/* ── Background Mountain / Forest Silhouettes matching Image 3 ── */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
         {/* Mountain contour outline across the section */}
         <img 
-          src="/assets/images/home-intro-bg_d266ed.jpg" 
+          src={bgPattern} 
           alt="" 
           aria-hidden="true" 
           loading="lazy"
@@ -23,7 +28,7 @@ export default function AboutMemoriesSection() {
           }}
         >
           <img 
-            src="/assets/images/mask-pine.jpg" 
+            src={maskPine} 
             alt="" 
             aria-hidden="true" 
             loading="lazy"
@@ -62,7 +67,7 @@ export default function AboutMemoriesSection() {
           <div className="lg:col-span-6 xl:col-span-6 flex justify-center items-center">
             <div className="w-full overflow-hidden rounded-2xl shadow-[0_12px_45px_rgba(0,0,0,0.12)] border border-gray-100/80 group">
               <img
-                src="/map-intro.webp"
+                src={mapImg}
                 alt="Let us plan your journey - Black Forest Holidays"
                 loading="lazy"
                 decoding="async"

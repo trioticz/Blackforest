@@ -1,53 +1,62 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 
 export default function ValuePropsSection() {
-  const colLeft = [
+  const bgImg = useWebsiteImage('homepage.value_props.bg', '/assets/images/value-props-bg.jpg');
+  const icon1 = useWebsiteImage('homepage.value_props.icon_1', '/assets/images/icon-img-1.png');
+  const icon2 = useWebsiteImage('homepage.value_props.icon_2', '/assets/images/icon-img-2.png');
+  const icon3 = useWebsiteImage('homepage.value_props.icon_3', '/assets/images/icon-img-3.png');
+  const icon4 = useWebsiteImage('homepage.value_props.icon_4', '/assets/images/icon-img-4.png');
+  const icon5 = useWebsiteImage('homepage.value_props.icon_5', '/assets/images/icon-img-5.png');
+  const icon6 = useWebsiteImage('homepage.value_props.icon_6', '/assets/images/icon-img-6.png');
+
+  const colLeft = useMemo(() => [
     {
       id: 1,
-      icon: '/assets/images/icon-img-1.png',
+      icon: icon1,
       title: 'Tailor-Made Journeys',
       desc: 'Travel experiences thoughtfully designed around your interests, style, and dreams.'
     },
     {
       id: 2,
-      icon: '/assets/images/icon-img-3.png',
+      icon: icon3,
       title: 'Expert Travel Design',
       desc: 'Our experienced travel specialists bring knowledge, care, and attention to every journey.'
     },
     {
       id: 3,
-      icon: '/assets/images/icon-img-5.png',
+      icon: icon5,
       title: 'Personalised Itineraries',
       desc: 'Every detail is thoughtfully planned around the way you want to explore the world.'
     }
-  ];
+  ], [icon1, icon3, icon5]);
 
-  const colRight = [
+  const colRight = useMemo(() => [
     {
       id: 4,
-      icon: '/assets/images/icon-img-2.png',
+      icon: icon2,
       title: 'Exceptional Experiences',
       desc: 'Discover extraordinary places and unforgettable moments, curated just for you.'
     },
     {
       id: 5,
-      icon: '/assets/images/icon-img-4.png',
+      icon: icon4,
       title: 'Journeys For Every Story',
       desc: 'From romantic escapes to family adventures, we create travel experiences that feel truly personal.'
     },
     {
       id: 6,
-      icon: '/assets/images/icon-img-6.png',
+      icon: icon6,
       title: 'Seamless Travel Support',
       desc: "From your first enquiry to your return home, we're here to make your journey effortless."
     }
-  ];
+  ], [icon2, icon4, icon6]);
 
   return (
     <section 
       className="relative py-16 sm:py-20 lg:py-24 bg-[#fbfaf8] overflow-hidden bg-cover bg-center bg-no-repeat render-defer"
       style={{
-        backgroundImage: "url('/assets/images/value-props-bg.jpg')"
+        backgroundImage: `url('${bgImg}')`
       }}
     >
       {/* Subtle soft warm radial highlight for perfect text contrast without washing out the landscape */}

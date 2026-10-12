@@ -281,3 +281,63 @@ export const searchService = {
     return res.data;
   }
 };
+
+export const websiteImageService = {
+  getAll: async (params) => {
+    const res = await api.get('/website-images', { params });
+    return res.data;
+  },
+  getByKey: async (key, params) => {
+    const res = await api.get(`/website-images/${encodeURIComponent(key)}`, { params });
+    return res.data;
+  },
+  upload: async (fileOrData, onProgress) => {
+    if (fileOrData instanceof File || fileOrData instanceof Blob) {
+      const formData = new FormData();
+      formData.append('file', fileOrData);
+      const res = await api.post('/website-images/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (progressEvent) => {
+          if (onProgress && progressEvent.total) {
+            const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            onProgress(percent);
+          }
+        }
+      });
+      return res.data;
+    } else {
+      // Base64 JSON
+      const res = await api.post('/website-images/upload', { data: fileOrData });
+      return res.data;
+    }
+  },
+  updateDraft: async (id, data) => {
+    const res = await api.patch(`/website-images/${id}`, data);
+    return res.data;
+  },
+  publish: async (id) => {
+    const res = await api.post(`/website-images/${id}/publish`);
+    return res.data;
+  },
+  publishAll: async () => {
+    const res = await api.post('/website-images/publish-all');
+    return res.data;
+  },
+  discardDraft: async (id) => {
+    const res = await api.post(`/website-images/${id}/discard-draft`);
+    return res.data;
+  },
+  restoreOriginal: async (id) => {
+    const res = await api.post(`/website-images/${id}/restore-original`);
+    return res.data;
+  },
+  create: async (data) => {
+    const res = await api.post('/website-images', data);
+    return res.data;
+  },
+  delete: async (id) => {
+    const res = await api.delete(`/website-images/${id}`);
+    return res.data;
+  }
+};
+

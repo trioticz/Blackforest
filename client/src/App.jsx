@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { SiteSettingsProvider } from './context/SiteSettingsContext';
 import { ToastProvider } from './context/ToastContext';
+import { WebsiteImagesProvider } from './context/WebsiteImagesContext';
 import ScrollToTop from './components/common/ScrollToTop';
 
 // Layouts
@@ -43,6 +44,7 @@ const AdminExpertisePage = lazy(() => import('./pages/admin/AdminExpertisePage')
 const AdminSEOPage = lazy(() => import('./pages/admin/AdminSEOPage'));
 const AdminUsersPage = lazy(() => import('./pages/admin/AdminUsersPage'));
 const AdminMediaPage = lazy(() => import('./pages/admin/AdminMediaPage'));
+const AdminWebsiteImagesPage = lazy(() => import('./pages/admin/AdminWebsiteImagesPage'));
 
 function PageFallback() {
   return (
@@ -57,12 +59,14 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <SiteSettingsProvider>
-          <ToastProvider>
-            <ScrollToTop />
-            <Suspense fallback={<PageFallback />}>
-              <Routes>
-              {/* Public Website Routes */}
-              <Route element={<PublicLayout />}>
+          <WebsiteImagesProvider>
+            <ToastProvider>
+              <ScrollToTop />
+              <Suspense fallback={<PageFallback />}>
+                <Routes>
+                {/* Public Website Routes */}
+                <Route element={<PublicLayout />}>
+
                 <Route path="/" element={<HomePage />} />
 
                 {/* Destinations */}
@@ -152,6 +156,7 @@ export default function App() {
                 <Route path="seo" element={<AdminSEOPage />} />
                 <Route path="users" element={<AdminUsersPage />} />
                 <Route path="media" element={<AdminMediaPage />} />
+                <Route path="website-images" element={<AdminWebsiteImagesPage />} />
 
                 {/* Removed Admin Modules redirected */}
                 <Route path="tours/*" element={<Navigate to="/admin/dashboard" replace />} />
@@ -165,8 +170,10 @@ export default function App() {
             </Routes>
             </Suspense>
           </ToastProvider>
+          </WebsiteImagesProvider>
         </SiteSettingsProvider>
       </AuthProvider>
     </BrowserRouter>
   );
 }
+

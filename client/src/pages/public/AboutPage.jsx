@@ -1,11 +1,19 @@
 import React from 'react';
 import HeroWave from '../../components/common/HeroWave';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 import { Link } from 'react-router-dom';
 
 export default function AboutPage() {
   const { settings, openEnquiryModal } = useSettings();
   const siteName = settings?.siteName || 'Blackforest Holidays';
+
+  const heroBanner = useWebsiteImage('hero.about', '/assets/images/about_hero_map.jpg');
+  const storyImg = useWebsiteImage('about.story.image', '/assets/images/ABOUT-US.png');
+  const philosophy1 = useWebsiteImage('about.philosophy.image_1', '/assets/images/about-img-3.png');
+  const philosophy2 = useWebsiteImage('about.philosophy.image_2', '/assets/images/Untitled-design.png');
+  const expertiseImg = useWebsiteImage('about.expertise.feature', '/assets/images/Blackforest-about-1.png');
+  const milestoneImg = useWebsiteImage('about.milestone.image', '/assets/images/Untitled-design-1.png');
 
   const testimonials = [
     {
@@ -47,7 +55,7 @@ export default function AboutPage() {
         {/* Background Image with warm antique map & currency notes matching reference */}
         <div className="absolute inset-0 z-0 bg-[#0a1712]">
           <img
-            src="/assets/images/about_hero_map.jpg"
+            src={heroBanner}
             alt={`About ${siteName}`}
             fetchpriority="high"
             decoding="async"
@@ -150,7 +158,7 @@ export default function AboutPage() {
               {/* Bali Water Temple (ABOUT-US.png) */}
               <div className="w-full aspect-[4/5] rounded-sm overflow-hidden shadow-sm bg-gray-50">
                 <img 
-                  src="/assets/images/ABOUT-US.png" 
+                  src={storyImg} 
                   alt="Ulun Danu Beratan Bali Water Temple" 
                   loading="lazy"
                   decoding="async"
@@ -165,7 +173,7 @@ export default function AboutPage() {
               {/* Safari Jeep Map Reading (about-img-3.png) */}
               <div className="w-full aspect-[16/10] rounded-sm overflow-hidden shadow-sm bg-gray-50">
                 <img 
-                  src="/assets/images/about-img-3.png" 
+                  src={philosophy1} 
                   alt="Couple with Safari Jeep Planning Adventure" 
                   loading="lazy"
                   decoding="async"
@@ -183,7 +191,7 @@ export default function AboutPage() {
               {/* Mountain Cliff Peak (Untitled-design.png) */}
               <div className="w-full aspect-square rounded-sm overflow-hidden shadow-sm bg-gray-50">
                 <img 
-                  src="/assets/images/Untitled-design.png" 
+                  src={philosophy2} 
                   alt="Mountain Peak and Pine Forest" 
                   loading="lazy"
                   decoding="async"
@@ -239,7 +247,7 @@ export default function AboutPage() {
               </div>
               <div className="w-full aspect-[4/3] rounded-sm overflow-hidden shadow-sm bg-gray-50">
                 <img 
-                  src="/assets/images/Blackforest-about-1.png" 
+                  src={expertiseImg} 
                   alt="Exclusive Escapes James Bond Island" 
                   loading="lazy"
                   decoding="async"
@@ -267,7 +275,7 @@ export default function AboutPage() {
               </div>
               <div className="w-full aspect-[4/3] rounded-sm overflow-hidden shadow-sm bg-gray-50">
                 <img 
-                  src="/assets/images/Untitled-design-1.png" 
+                  src={milestoneImg} 
                   alt="Curated Journeys Alpine Hikers" 
                   loading="lazy"
                   decoding="async"

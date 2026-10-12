@@ -9,6 +9,7 @@ import {
   Globe,
   Users,
   Image as ImageIcon,
+  SlidersHorizontal,
   LogOut,
   ExternalLink,
   Menu as MenuIcon,
@@ -54,6 +55,7 @@ export default function AdminLayout() {
     {
       group: 'Content & CMS',
       items: [
+        { label: 'Website Image Manager', path: '/admin/website-images', icon: SlidersHorizontal },
         { label: 'Destinations', path: '/admin/destinations', icon: MapPin },
         { label: 'Blog Posts', path: '/admin/journal', icon: BookOpen },
         { label: 'Media Library', path: '/admin/media', icon: ImageIcon },

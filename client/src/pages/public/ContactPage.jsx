@@ -4,12 +4,18 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { enquiryService } from '../../services/allServices';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 import HeroWave from '../../components/common/HeroWave';
 import OfficesMapSection from '../../components/contact/OfficesMapSection';
 
 export default function ContactPage() {
+  const contactHero = useWebsiteImage(
+    'hero.contact',
+    '/assets/images/buddhist-prayer-flags-himalaya-mountains-annapurna-base-camp-area-nepal-scaled.jpg'
+  );
   const { settings } = useSettings();
   const { showToast } = useToast();
+
   const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -74,7 +80,7 @@ export default function ContactPage() {
       <section className="relative h-[50vh] min-h-[420px] flex flex-col items-center justify-center">
         <div className="absolute inset-0 z-0 bg-[#0a1712]">
           <img
-            src="/assets/images/buddhist-prayer-flags-himalaya-mountains-annapurna-base-camp-area-nepal-scaled.jpg"
+            src={contactHero}
             alt="Contact Us"
             className="w-full h-full object-cover opacity-70"
           />

@@ -3,6 +3,7 @@ import { useParams, useLocation, Link } from 'react-router-dom';
 import { ArrowRight, CalendarCheck, CheckCircle2, ChevronDown, ChevronUp, Compass, ArrowLeft } from 'lucide-react';
 import { destinationService } from '../../services/allServices';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 import { allDestinationsData } from '../../data/destinationsData';
 import { isDestinationPublished, DESTINATIONS_EVENT } from '../../utils/destinationsManager';
 import { getPublishedExpertiseCards, EXPERTISE_EVENT } from '../../utils/expertiseManager';
@@ -63,6 +64,7 @@ function AnimatedCounter({ end, duration = 1800, suffix = '' }) {
 }
 
 export default function DestinationDetailPage({ forcedSlug }) {
+  const pineDivider = useWebsiteImage('other.pine_forest_divider', '/pine-forest.webp');
   const { slug: routeSlug } = useParams();
   const location = useLocation();
   const { openEnquiryModal } = useSettings();
@@ -218,7 +220,7 @@ export default function DestinationDetailPage({ forcedSlug }) {
         {/* Pine Forest Silhouette & Organic Wave Cut */}
         <div className="absolute bottom-0 left-0 w-full z-20 pointer-events-none overflow-hidden leading-none">
           <img
-            src="/pine-forest.webp"
+            src={pineDivider}
             alt="Black Forest Pine Trees"
             decoding="async"
             className="w-full h-24 sm:h-36 md:h-44 object-cover object-bottom"

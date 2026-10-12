@@ -1,74 +1,86 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 
-/**
- * Card order matches the reference site exactly (from screenshots):
- * Visible set 1: [Corporate] [Luxury★] [Honeymoon]
- * Visible set 2: [Inbond]    [Cruise★] [Visa]
- *
- * ★ = highlighted centre card (golden/orange title)
- *
- * Images: user downloaded 2nd1‥2nd6 from the reference site.
- * Mapping assumes reference-site DOM order = Luxury, Honeymoon, Inbond, Cruise, Visa, Corporate
- * The CAROUSEL starts with Corporate on the left so the first centre is Luxury.
- */
-const CARDS = [
+const DEFAULT_CARDS = [
   {
     id: 'visa',
+    key: 'homepage.intro.card_1',
     title: 'Visa &\nAir Tickets',
     description: 'Hassle-free visa processing and international flight bookings for a smooth, seamless journey.',
-    image: '/2nd1.webp',
+    defaultImage: '/2nd1.webp',
     titleColor: '#1c2b25',
   },
   {
     id: 'corporate',
+    key: 'homepage.intro.card_2',
     title: 'Corporate &\nGroup Packages',
     description: 'Effortless journeys for corporate teams, MICE groups, and private gatherings.',
-    image: '/2nd2.webp',
+    defaultImage: '/2nd2.webp',
     titleColor: '#c8860b',
   },
   {
     id: 'luxury',
+    key: 'homepage.intro.card_3',
     title: 'Luxury\nHolidays',
     description: 'Curated luxury experiences and bespoke escapes, personalised to every single detail.',
-    image: '/2nd3.webp',
+    defaultImage: '/2nd3.webp',
     titleColor: '#1c2b25',
   },
   {
     id: 'honeymoon',
+    key: 'homepage.intro.card_4',
     title: 'Honeymoon\nPackages',
     description: 'Romantic journeys and intimate getaways designed around your most unforgettable moments.',
-    image: '/2nd4.webp',
+    defaultImage: '/2nd4.webp',
     titleColor: '#1c2b25',
   },
   {
     id: 'inbound',
+    key: 'homepage.intro.card_5',
     title: 'Inbound &\nOutbound Travels',
     description: 'Curated international journeys from India and exceptional inbound travel experiences across India.',
-    image: '/2nd5.webp',
+    defaultImage: '/2nd5.webp',
     titleColor: '#c8860b',
   },
   {
     id: 'cruise',
+    key: 'homepage.intro.card_6',
     title: 'Cruise &\nGroup Trip',
     description: "Explore the world's most beautiful oceans and destinations with luxury cruises and guided group trips.",
-    image: '/2nd6.webp',
+    defaultImage: '/2nd6.webp',
     titleColor: '#1c2b25',
   },
 ];
 
 const PER_VIEW = 3;
-const MAX_INDEX = CARDS.length - PER_VIEW;   // 3
+const MAX_INDEX = DEFAULT_CARDS.length - PER_VIEW;   // 3
 const AUTO_MS = 3500;
 const DRAG_THRESH = 60;
 
 export default function IntroSection() {
+  const img1 = useWebsiteImage('homepage.intro.card_1', '/2nd1.webp');
+  const img2 = useWebsiteImage('homepage.intro.card_2', '/2nd2.webp');
+  const img3 = useWebsiteImage('homepage.intro.card_3', '/2nd3.webp');
+  const img4 = useWebsiteImage('homepage.intro.card_4', '/2nd4.webp');
+  const img5 = useWebsiteImage('homepage.intro.card_5', '/2nd5.webp');
+  const img6 = useWebsiteImage('homepage.intro.card_6', '/2nd6.webp');
+
+  const cards = useMemo(() => {
+    const imgs = [img1, img2, img3, img4, img5, img6];
+    return DEFAULT_CARDS.map((c, i) => ({
+      ...c,
+      image: imgs[i] || c.defaultImage
+    }));
+  }, [img1, img2, img3, img4, img5, img6]);
+
   const [idx, setIdx] = useState(0);
   const [delta, setDelta] = useState(0);
   const [dragging, setDragging] = useState(false);
   const startX = useRef(0);
   const isDown = useRef(false);
   const timer = useRef(null);
+
 
   /* ── auto-slide ── */
   const startAuto = useCallback(() => {
@@ -145,7 +157,7 @@ export default function IntroSection() {
               willChange: 'transform',
             }}
           >
-            {CARDS.map((card, i) => {
+            {cards.map((card, i) => {
               const isCentre = i === centreIdx;
               return (
                 <div

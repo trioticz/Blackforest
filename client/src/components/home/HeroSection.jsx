@@ -1,11 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 
 export default function HeroSection() {
   const videoRef = useRef(null);
   // Track mute state for UI only — actual mute is controlled via DOM ref
   const [isMuted, setIsMuted] = useState(true);
   const [loadVideo, setLoadVideo] = useState(false);
+
+  // Dynamic image management with high-performance fallbacks
+  const desktopPoster = useWebsiteImage('homepage.hero.desktop', '/hero-poster.webp');
+  const mobilePoster = useWebsiteImage('homepage.hero.mobile', '/hero-poster-mobile.webp');
+  const fallbackPoster = useWebsiteImage('homepage.hero.fallback', '/hero-poster.jpg');
 
   // Defer heavy 12MB video loading until after initial paint & idle callback to maximize LCP & Mobile Speed
   useEffect(() => {
@@ -61,10 +67,10 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0 overflow-hidden">
         {/* Instant responsive WebP poster for <0.4s LCP on mobile and desktop */}
         <picture className="absolute inset-0 w-full h-full">
-          <source media="(max-width: 768px)" srcSet="/hero-poster-mobile.webp" type="image/webp" />
-          <source srcSet="/hero-poster.webp" type="image/webp" />
+          <source media="(max-width: 768px)" srcSet={mobilePoster} type="image/webp" />
+          <source srcSet={desktopPoster} type="image/webp" />
           <img
-            src="/hero-poster.jpg"
+            src={fallbackPoster}
             alt="Black Forest Luxury Travel"
             fetchpriority="high"
             decoding="async"
@@ -78,7 +84,7 @@ export default function HeroSection() {
           <video
             ref={videoRef}
             src="/hero-video-1080p60.mp4"
-            poster="/hero-poster.webp"
+            poster={desktopPoster}
             autoPlay
             loop
             playsInline

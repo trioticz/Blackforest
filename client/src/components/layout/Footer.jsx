@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { MapPin, Mail, Phone } from 'lucide-react';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 import ExpertiseSection from '../home/ExpertiseSection';
 import FaqSection from '../common/FaqSection';
 
@@ -13,7 +14,8 @@ export default function Footer() {
     location.pathname === '/asian-countries' ||
     ['/africa', '/america', '/australia', '/europe', '/indian-ocean', '/indian_ocean', '/middle-east', '/middle_east_countries', '/south-asia'].includes(location.pathname);
 
-  const logo = settings?.logo || '/assets/images/white_logo.png';
+  const footerBg = useWebsiteImage('footer.bg', '/assets/images/footer-img.png');
+  const footerLogo = useWebsiteImage('footer.brand_logo', settings?.logo || '/assets/site/white_logo.png');
   const siteName = settings?.siteName || 'BlackForest Holidays';
 
   return (
@@ -28,7 +30,7 @@ export default function Footer() {
       <footer
         className="bg-[#0c1c16] text-white pt-16 pb-8 relative border-t border-[#1a382b]/40 bg-cover bg-top render-defer-lg"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(12, 28, 22, 0.85) 0%, rgba(12, 28, 22, 0.96) 45%, #0c1c16 100%), url('/assets/images/footer-img.png')`,
+          backgroundImage: `linear-gradient(to bottom, rgba(12, 28, 22, 0.85) 0%, rgba(12, 28, 22, 0.96) 45%, #0c1c16 100%), url('${footerBg}')`,
           backgroundPosition: 'top center',
           backgroundRepeat: 'no-repeat'
         }}

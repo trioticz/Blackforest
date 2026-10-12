@@ -1,58 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 
 export default function TestimonialSlider() {
-  const testimonials = [
+  const avatar1 = useWebsiteImage('testimonials.avatar_1', '/assets/site/avatar_siddharth.jpg');
+  const avatar2 = useWebsiteImage('testimonials.avatar_2', '/assets/site/avatar_harish.jpg');
+  const avatar3 = useWebsiteImage('testimonials.avatar_3', '/assets/site/avatar_revathi.jpg');
+  const avatar4 = useWebsiteImage('testimonials.avatar_4', '/assets/site/avatar_shashank.jpg');
+  const avatar5 = useWebsiteImage('testimonials.avatar_5', '/assets/site/avatar_sendhil.jpg');
+  const avatar6 = useWebsiteImage('testimonials.avatar_6', '/assets/site/avatar_rohan.jpg');
+  const avatar7 = useWebsiteImage('testimonials.avatar_7', '/assets/site/avatar_shanthi.jpg');
+
+  const testimonials = useMemo(() => [
     {
       id: 1,
       name: "Siddharth Dhar",
       time: "1 month ago",
-      image: "/assets/site/avatar_siddharth.jpg",
+      image: avatar1,
       review: "Managing travel logistics for an entire organisation is no small feat, but Leela from Black Forest Holidays makes it look effortless... Beyond her stellar booking management, her recent support with my US Visa applications was an absolute lifesaver. She walked me through the entire process step-by-step with crystal clear guidance."
     },
     {
       id: 2,
       name: "harish kongara",
       time: "2 months ago",
-      image: "/assets/site/avatar_harish.jpg",
+      image: avatar2,
       review: "Thank you Leela for your assistance in processing our Schengen visa. The whole process was clearly communicated and all our doubts were cleared upfront. Your guidance helped us in smooth navigation. Highly recommended!"
     },
     {
       id: 3,
       name: "revathi P",
       time: "3 months ago",
-      image: "/assets/site/avatar_revathi.jpg",
+      image: avatar3,
       review: "I am a Veterinary doctor living in Nilgiris, myself and my daughter had a trip to Germany in April 2026 to visit our German friend and family. Leela mam and Blackforest holidays helped me a lot from the time of Visa processing, ticket booking, and money exchange. We had a wonderful memorable trip!"
     },
     {
       id: 4,
       name: "Shashank S Thakur",
       time: "5 months ago",
-      image: "/assets/site/avatar_shashank.jpg",
+      image: avatar4,
       review: "Very prompt service. No hassle all the activities were handled smoothly. Cheers and thanks to Leela 👍 for the entire VISA process and seamless coordination."
     },
     {
       id: 5,
       name: "SENDHIL KUMAR V",
       time: "6 months ago",
-      image: "/assets/site/avatar_sendhil.jpg",
+      image: avatar5,
       review: "Absolutely wonderful and professional service! They confirmed trip bookings, helped in getting visa appointments during peak season in short time. Mrs. Leela clearly explained documents & financials statements needed for Visa. Top notch and dynamic agency!"
     },
     {
       id: 6,
       name: "rohan sharma",
       time: "7 months ago",
-      image: "/assets/site/avatar_rohan.jpg",
+      image: avatar6,
       review: "I had a great experience with Black Forest Travels for my Singapore visa. The entire process was incredibly smooth and hassle-free. What truly stood out was that everything was handled remotely, efficiently, and with complete clarity."
     },
     {
       id: 7,
       name: "shanthi shanmuga",
       time: "8 months ago",
-      image: "/assets/site/avatar_shanthi.jpg",
+      image: avatar7,
       review: "Our 7-day trip to Kashmir in the month of October with Black Forest Holidays was absolutely magical and truly unforgettable. From the moment we arrived until the end of the journey, everything was perfectly planned and executed. Truly a 5-star experience!"
     }
-  ];
+  ], [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7]);
+
 
   const [currentIndex, setCurrentIndex] = useState(0);
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { experiencesData } from '../../data/experiencesData';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 import { ArrowRight, Compass, Sparkles } from 'lucide-react';
 
 const ALL_EXPERIENCES = [
@@ -48,6 +49,7 @@ const ALL_EXPERIENCES = [
 ];
 
 export default function ExperiencesPage({ forcedSlug }) {
+  const expOverviewHero = useWebsiteImage('hero.experiences', '/assets/images/dino-reichmuth-A5rCN8626Ck-unsplash-scaled.jpg');
   const { slug: routeSlug } = useParams();
   const location = useLocation();
   const { openEnquiryModal } = useSettings();
@@ -101,7 +103,7 @@ export default function ExperiencesPage({ forcedSlug }) {
         <section className="relative h-[65vh] min-h-[500px] flex flex-col items-center justify-center">
           <div className="absolute inset-0 z-0">
             <img
-              src="/assets/images/dino-reichmuth-A5rCN8626Ck-unsplash-scaled.jpg"
+              src={expOverviewHero}
               alt="Curated Travel Experiences"
               className="w-full h-full object-cover"
             />

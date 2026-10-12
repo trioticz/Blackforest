@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 
 // Custom hook for animated counting
 const useCounter = (end, duration = 2000) => {
@@ -42,6 +43,7 @@ const useCounter = (end, duration = 2000) => {
 };
 
 export default function StatsSection() {
+  const statsBg = useWebsiteImage('homepage.stats.bg', '/assets/images/number-counter-bg.png');
   const { count: countIsland, ref: refIsland } = useCounter(50);
   const { count: countCountries, ref: refCountries } = useCounter(25);
   const { count: countTailor, ref: refTailor } = useCounter(150);
@@ -51,8 +53,9 @@ export default function StatsSection() {
       {/* Mountain silhouette background graphic at bottom */}
       <div
         className="absolute inset-0 z-0 opacity-20 pointer-events-none bg-bottom bg-cover"
-        style={{ backgroundImage: "url('/assets/images/number-counter-bg.png')" }}
+        style={{ backgroundImage: `url('${statsBg}')` }}
       />
+
 
       {/* Flying Birds Silhouette (Exact match to Image 4 top center) */}
       <div className="relative z-10 flex justify-center mb-6">

@@ -14,9 +14,13 @@ import {
   Plane
 } from 'lucide-react';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 import { getPublishedDestinations, DESTINATIONS_EVENT } from '../../utils/destinationsManager';
 
 export default function Header() {
+  const brandLogo = useWebsiteImage('header.brand_logo', '/assets/site/white_logo.png');
+  const mobileLogo = useWebsiteImage('header.mobile_logo', '/assets/site/white_logo.png');
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -25,6 +29,7 @@ export default function Header() {
     experiences: false,
     concierge: false
   });
+
   const [destinationsList, setDestinationsList] = useState(() => getPublishedDestinations());
 
   const { settings, openEnquiryModal, openSearchModal } = useSettings();
@@ -94,7 +99,7 @@ export default function Header() {
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <img
-              src="/assets/site/white_logo.png"
+              src={brandLogo}
               alt={settings.siteName || 'Blackforest Holidays'}
               width="180"
               height="48"
@@ -288,7 +293,7 @@ export default function Header() {
               {/* Drawer Top */}
               <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
                 <img
-                  src={settings.logo || '/assets/images/white_logo.png'}
+                  src={mobileLogo}
                   alt={settings.siteName}
                   className="h-9 w-auto"
                 />

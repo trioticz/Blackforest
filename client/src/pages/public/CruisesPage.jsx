@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 import HeroWave from '../../components/common/HeroWave';
 
 const cruiseUploadImages = [
@@ -21,6 +22,7 @@ const cruiseUploadImages = [
 ];
 
 export default function CruisesPage() {
+  const cruiseHero = useWebsiteImage('hero.cruises', '/assets/images/pexels-g-isle-px-210751289-11820070-scaled.jpg');
   const { openEnquiryModal } = useSettings();
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -57,7 +59,7 @@ export default function CruisesPage() {
       <section className="relative h-[65vh] min-h-[500px] flex flex-col items-center justify-center">
         <div className="absolute inset-0 z-0">
           <img
-            src={'/assets/images/pexels-g-isle-px-210751289-11820070-scaled.jpg'}
+            src={cruiseHero}
             alt="Cruises"
             className="w-full h-full object-cover"
           />

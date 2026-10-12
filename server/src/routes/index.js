@@ -15,6 +15,7 @@ const settingsRoutes = require('./settingsRoutes');
 const navigationRoutes = require('./navigationRoutes');
 const dashboardRoutes = require('./dashboardRoutes');
 const searchRoutes = require('./searchRoutes');
+const websiteImageRoutes = require('./websiteImageRoutes');
 
 // API Health Check
 router.get('/health', (req, res) => {
@@ -39,5 +40,7 @@ router.use('/settings', settingsRoutes);
 router.use('/navigation', navigationRoutes);
 router.use('/dashboard', dashboardRoutes);
 router.use('/search', searchRoutes);
+router.use('/website-images', websiteImageRoutes);
 
 module.exports = router;
+

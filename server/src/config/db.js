@@ -37,6 +37,16 @@ const connectDB = async () => {
     await sequelize.sync({ alter: false });
     console.log('✅ MySQL models synchronized');
 
+    // Ensure WebsiteImages table exists and seed default images
+    try {
+      const WebsiteImage = require('../models/WebsiteImage');
+      await WebsiteImage.sync();
+      const { seedWebsiteImages } = require('../seeds/websiteImagesSeed');
+      await seedWebsiteImages();
+    } catch (tblErr) {
+      console.warn('WebsiteImages table sync/seed warning:', tblErr.message);
+    }
+
     // Safe inline migrations to ensure new media & article columns exist in MySQL
     try {
       await sequelize.query('ALTER TABLE `Media` ADD COLUMN `data` LONGTEXT NULL').catch(() => {});
