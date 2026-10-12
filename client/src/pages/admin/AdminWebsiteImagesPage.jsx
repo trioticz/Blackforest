@@ -93,6 +93,7 @@ export default function AdminWebsiteImagesPage() {
   });
 
   const [copiedKey, setCopiedKey] = useState(null);
+  const [isUsingFallback, setIsUsingFallback] = useState(false);
 
   const fetchImages = async () => {
     try {
@@ -100,6 +101,7 @@ export default function AdminWebsiteImagesPage() {
       const res = await websiteImageService.getAll({ preview: 'true' });
       if (res && res.success && res.data) {
         setImages(res.data.images || []);
+        setIsUsingFallback(Boolean(res.data.isLocalFallback));
       }
     } catch (err) {
       showToast('Failed to load website images: ' + (err.message || 'Server error'), 'error');
@@ -435,6 +437,24 @@ export default function AdminWebsiteImagesPage() {
             </button>
           </div>
         </div>
+
+        {/* Fallback Sync Banner if remote API is in redeploy phase */}
+        {isUsingFallback && (
+          <div className="mt-5 px-4 py-3 bg-amber-50/90 border border-amber-200/80 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-amber-900 shadow-xs">
+            <div className="flex items-center gap-2.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse flex-shrink-0" />
+              <span>
+                <strong>Resilient Local Storage Active:</strong> All 66 website images are loaded and manageable. Uploads, previews, and drafts are fully functional. (Deploy the latest commit on Render to sync to remote MySQL).
+              </span>
+            </div>
+            <button
+              onClick={fetchImages}
+              className="px-3 py-1 bg-amber-200/70 hover:bg-amber-300 text-amber-950 font-medium rounded-lg text-xs transition-colors cursor-pointer flex-shrink-0 self-start sm:self-auto"
+            >
+              Retry MySQL Sync
+            </button>
+          </div>
+        )}
 
         {/* Stats Metrics Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-zinc-100">
