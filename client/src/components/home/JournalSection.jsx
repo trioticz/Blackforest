@@ -1,33 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getPublishedBlogs, BLOGS_EVENT } from '../../utils/blogsManager';
+
+const DEFAULT_ARTICLES = [
+  {
+    id: 1,
+    slug: 'safety-measures-for-safe-trekking-in-waterfalls',
+    title: 'Safety measures for safe trekking in waterfalls',
+    category: 'Travel tips',
+    date: 'July 10, 2021',
+    coverImage: '/assets/images/blog-010.jpg'
+  },
+  {
+    id: 2,
+    slug: '10-tips-for-best-winter-hiking-experience',
+    title: '10 Tips for best winter hiking experience',
+    category: 'Travel tips',
+    date: 'July 9, 2021',
+    coverImage: '/assets/images/blog-007.jpg'
+  },
+  {
+    id: 3,
+    slug: 'how-to-select-perfect-quality-camping-tent',
+    title: 'How to select perfect quality camping tent',
+    category: 'Travel tips',
+    date: 'July 8, 2021',
+    coverImage: '/assets/images/blog-006.jpg'
+  }
+];
 
 export default function JournalSection() {
-  const articles = [
-    {
-      id: 1,
-      slug: 'safety-measures-for-safe-trekking-in-waterfalls',
-      title: 'Safety measures for safe trekking in waterfalls',
-      category: 'Travel tips',
-      date: 'July 10, 2021',
-      coverImage: '/assets/images/blog-010.jpg'
-    },
-    {
-      id: 2,
-      slug: '10-tips-for-best-winter-hiking-experience',
-      title: '10 Tips for best winter hiking experience',
-      category: 'Travel tips',
-      date: 'July 9, 2021',
-      coverImage: '/assets/images/blog-007.jpg'
-    },
-    {
-      id: 3,
-      slug: 'how-to-select-perfect-quality-camping-tent',
-      title: 'How to select perfect quality camping tent',
-      category: 'Travel tips',
-      date: 'July 8, 2021',
-      coverImage: '/assets/images/blog-006.jpg'
-    }
-  ];
+  const [articles, setArticles] = useState(() => {
+    const published = getPublishedBlogs();
+    return published && published.length >= 3 ? published.slice(0, 3) : DEFAULT_ARTICLES;
+  });
+
+  useEffect(() => {
+    const updateArticles = () => {
+      const published = getPublishedBlogs();
+      if (published && published.length >= 3) {
+        setArticles(published.slice(0, 3));
+      }
+    };
+    window.addEventListener(BLOGS_EVENT, updateArticles);
+    window.addEventListener('storage', updateArticles);
+    return () => {
+      window.removeEventListener(BLOGS_EVENT, updateArticles);
+      window.removeEventListener('storage', updateArticles);
+    };
+  }, []);
 
   return (
     <section className="py-20 bg-white render-defer">
@@ -58,13 +79,18 @@ export default function JournalSection() {
               className="bg-white rounded-lg overflow-hidden group block transition-all duration-300 hover:-translate-y-1"
             >
               <div className="relative h-60 sm:h-64 overflow-hidden rounded-md mb-4 bg-gray-100 shadow-sm border border-gray-100">
-                <img 
-                  src={article.coverImage} 
-                  alt={article.title} 
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+                <picture>
+                  {article.coverImage && article.coverImage.endsWith('.jpg') && (
+                    <source srcSet={article.coverImage.replace('.jpg', '.webp')} type="image/webp" />
+                  )}
+                  <img 
+                    src={article.coverImage} 
+                    alt={article.title} 
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </picture>
               </div>
               <div>
                 <span className="text-[#f29727] text-xs font-bold uppercase tracking-wider mb-2 block font-sans">

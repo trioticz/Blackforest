@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'bf_blogs_v1';
+const STORAGE_KEY = 'bf_blogs_v2';
 export const BLOGS_EVENT = 'bf_blogs_updated';
 
 export const initialBlogs = [
@@ -6,7 +6,7 @@ export const initialBlogs = [
     id: 1,
     title: 'Safety measures for safe trekking in waterfalls',
     slug: 'safety-measures-for-safe-trekking-in-waterfalls',
-    category: 'Trekking & Safety',
+    category: 'Travel tips',
     author: 'Blackforest',
     authorAvatar: '/assets/images/cropped-cropped-Logo-02-1-1-180x180.png',
     date: 'July 10, 2021',
@@ -35,13 +35,57 @@ Always keep a minimum safe distance of 15 to 20 feet from the slippery precipice
   },
   {
     id: 2,
+    title: '10 Tips for best winter hiking experience',
+    slug: '10-tips-for-best-winter-hiking-experience',
+    category: 'Travel tips',
+    author: 'Blackforest Alpine Specialist',
+    authorAvatar: '/assets/images/cropped-cropped-Logo-02-1-1-180x180.png',
+    date: 'July 9, 2021',
+    coverImage: '/assets/images/blog-007.jpg',
+    detailImage1: '/assets/images/blog-detail-001.jpg',
+    detailImage2: '/assets/images/blog-detail-002.jpg',
+    excerpt: 'Essential insulation layering, snow avalanche awareness, and hydration strategies for unforgettable winter alpine trails.',
+    content: `Winter hiking transforms familiar trails into breathtaking snowscapes of silent beauty and crystalline wonder. However, sub-zero temperatures, early sunsets, and frozen terrain require thoughtful preparation and specialized techniques.
+
+Master the three-layer clothing system: a moisture-wicking synthetic or merino wool base layer to keep sweat off your skin, an insulating fleece or down mid-layer for warmth, and a windproof waterproof outer shell. Never wear cotton, as it absorbs moisture and accelerates hypothermia. Pack microspikes or crampons for icy slopes, trekking poles with snow baskets, and an insulated thermos filled with hot herbal tea to stay hydrated throughout your ascent.`,
+    quote: 'In the depth of winter, I finally learned that within me there lay an invincible summer.',
+    quoteAuthor: 'Albert Camus',
+    tags: ['Winter Hiking', 'Snow', 'Mountains', 'Alpine', 'Travel Tips'],
+    commentsCount: 0,
+    comments: [],
+    status: 'published'
+  },
+  {
+    id: 3,
+    title: 'How to select perfect quality camping tent',
+    slug: 'how-to-select-perfect-quality-camping-tent',
+    category: 'Travel tips',
+    author: 'Outdoor Expedition Lead',
+    authorAvatar: '/assets/images/cropped-cropped-Logo-02-1-1-180x180.png',
+    date: 'July 8, 2021',
+    coverImage: '/assets/images/blog-006.jpg',
+    detailImage1: '/assets/images/blog-detail-001.jpg',
+    detailImage2: '/assets/images/blog-detail-006.jpg',
+    excerpt: 'Selecting the right tent weight, hydrostatic head ratings, aerodynamic geometry, and vestibule storage for extreme weather.',
+    content: `A reliable camping tent is your sanctuary against howling alpine gales, relentless downpours, and freezing mountain nights. When evaluating shelters, your choice comes down to balancing liveable interior space against pack weight and storm resilience.
+
+For three-season backpacking, prioritize double-wall dome or semi-geodesic designs with a ripstop nylon or silicone-treated fly boasting a minimum 3,000mm hydrostatic head rating. Check for aluminum alloy poles rather than brittle fiberglass, fully seam-taped bathtub floors, and ample dual vestibules to stow wet boots and packs outside your sleeping compartment.`,
+    quote: 'A tent beneath alpine stars is worth more than a thousand luxury rooms.',
+    quoteAuthor: 'John Muir',
+    tags: ['Camping', 'Tents', 'Backpacking', 'Gear', 'Travel Tips'],
+    commentsCount: 0,
+    comments: [],
+    status: 'published'
+  },
+  {
+    id: 4,
     title: 'Top 10 must-see spots for nature lovers',
     slug: 'top-10-must-see-spots',
     category: 'Trekking',
     author: 'Blackforest Specialist',
     authorAvatar: '/assets/images/cropped-cropped-Logo-02-1-1-180x180.png',
     date: 'August 15, 2024',
-    coverImage: '/assets/images/blog-010.jpg',
+    coverImage: '/assets/images/blog-waterfall-trekking.jpg',
     detailImage1: '/assets/images/blog-detail-001.jpg',
     detailImage2: '/assets/images/blog-detail-002.jpg',
     excerpt: 'From misty alpine peaks in the Swiss Alps to untamed African wildlife reserves and pristine tropical fjords, explore our premier nature trails.',
@@ -56,14 +100,14 @@ Our top curated spots encompass the serene glacial lakes of the Bernese Oberland
     status: 'published'
   },
   {
-    id: 3,
+    id: 5,
     title: 'Unforgettable cultural experiences in Kyoto',
     slug: 'kyoto-culture',
     category: 'Culture',
     author: 'Kyoto Cultural Concierge',
     authorAvatar: '/assets/images/cropped-cropped-Logo-02-1-1-180x180.png',
     date: 'September 2, 2024',
-    coverImage: '/assets/images/blog-007.jpg',
+    coverImage: '/assets/images/himeji-castle-with-beautiful-cherry-blossom-spring-season-hyogo-near-osaka-japan-scaled.jpg',
     detailImage1: '/assets/images/blog-detail-001.jpg',
     detailImage2: '/assets/images/blog-detail-004.jpg',
     excerpt: 'Wander through thousand-year-old cedar shrines, savor authentic Kaiseki dining, and experience Zen tranquility in historic Japanese gardens.',
@@ -73,28 +117,6 @@ A curated visit to Kyoto is incomplete without participating in a private Chado 
     quote: 'To understand Japan, one must first feel the stillness of Kyoto in the dawn mist.',
     quoteAuthor: 'Kenji Takahashi, Kyoto Artisan',
     tags: ['Culture', 'Kyoto', 'Japan', 'Heritage'],
-    commentsCount: 0,
-    comments: [],
-    status: 'published'
-  },
-  {
-    id: 4,
-    title: 'How to safely pack for a backcountry camping trip',
-    slug: 'camping-guide',
-    category: 'Camping',
-    author: 'Outdoor Expedition Lead',
-    authorAvatar: '/assets/images/cropped-cropped-Logo-02-1-1-180x180.png',
-    date: 'October 12, 2024',
-    coverImage: '/assets/images/blog-006.jpg',
-    detailImage1: '/assets/images/blog-detail-001.jpg',
-    detailImage2: '/assets/images/blog-detail-006.jpg',
-    excerpt: 'Mastering the art of lightweight packing, moisture management, and backcountry campsite safety for multi-day expeditions.',
-    content: `Venturing beyond established campgrounds into the deep backcountry requires meticulous preparation. Every ounce on your back impacts your endurance, and every forgotten emergency essential can turn an invigorating wilderness journey into a hazardous trial.
-
-Organize your backpack using the three-zone weight distribution system: lightweight sleeping gear at the bottom, heaviest items (tent, food canister, water filters) pressed close against your upper spine, and frequently accessed items (rain shell, first-aid kit, trail snacks) stored in the top lid. Always carry water purification tablets alongside your mechanical filter, and never store scented toiletries inside your sleeping tent in bear country.`,
-    quote: 'Preparation is the supreme key to backcountry freedom and self-reliance.',
-    quoteAuthor: 'Elena Vance, Alpine Guide',
-    tags: ['Camping', 'Backcountry', 'Gear', 'Safety'],
     commentsCount: 0,
     comments: [],
     status: 'published'
