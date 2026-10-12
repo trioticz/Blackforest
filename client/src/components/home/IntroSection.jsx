@@ -229,7 +229,7 @@ export default function IntroSection() {
 
         {/* ── Dots ── */}
         <div className="flex justify-center items-center gap-[9px] mt-10">
-          {CARDS.map((_, i) => {
+          {cards.map((_, i) => {
             const active = i === centreIdx;
             return (
               <button
