@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 
 const DEFAULT_CARDS = [
   {
@@ -59,6 +60,10 @@ const AUTO_MS = 3500;
 const DRAG_THRESH = 60;
 
 export default function IntroSection() {
+  const { content, isVisible } = useWebsiteContent('home.intro', {
+    cards: DEFAULT_CARDS
+  });
+
   const img1 = useWebsiteImage('homepage.intro.card_1', '/2nd1.webp');
   const img2 = useWebsiteImage('homepage.intro.card_2', '/2nd2.webp');
   const img3 = useWebsiteImage('homepage.intro.card_3', '/2nd3.webp');
@@ -66,13 +71,17 @@ export default function IntroSection() {
   const img5 = useWebsiteImage('homepage.intro.card_5', '/2nd5.webp');
   const img6 = useWebsiteImage('homepage.intro.card_6', '/2nd6.webp');
 
+  const baseCards = Array.isArray(content.cards) && content.cards.length > 0 ? content.cards : DEFAULT_CARDS;
+
   const cards = useMemo(() => {
     const imgs = [img1, img2, img3, img4, img5, img6];
-    return DEFAULT_CARDS.map((c, i) => ({
+    return baseCards.map((c, i) => ({
       ...c,
-      image: imgs[i] || c.defaultImage
+      image: imgs[i] || c.image || c.defaultImage
     }));
-  }, [img1, img2, img3, img4, img5, img6]);
+  }, [baseCards, img1, img2, img3, img4, img5, img6]);
+
+  if (!isVisible) return null;
 
   const [idx, setIdx] = useState(0);
   const [delta, setDelta] = useState(0);

@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Plane, ShieldCheck, Car } from 'lucide-react';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 import HeroWave from '../../components/common/HeroWave';
 
 
@@ -9,6 +10,7 @@ export default function ConciergePage() {
   const location = useLocation();
   const path = location.pathname;
   const { openEnquiryModal } = useSettings();
+  const { content: conciergeContent } = useWebsiteContent('concierge.hero', null);
 
   let serviceKey = 'flights';
   if (path.includes('visa-assistance')) serviceKey = 'visas';
@@ -327,12 +329,12 @@ export default function ConciergePage() {
 
         <div className="relative z-10 text-white flex flex-col items-center text-center px-4">
           <h1 className="text-4xl md:text-5xl lg:text-[60px] font-bold tracking-tight mb-4 drop-shadow-xl font-sans">
-            {data.title}
+            {(serviceKey === 'flights' && conciergeContent?.headline) ? conciergeContent.headline : data.title}
           </h1>
           <div className="flex items-center justify-center gap-2 text-sm md:text-base font-light drop-shadow-md tracking-wider">
             <Link to="/" className="hover:text-gray-200 transition-colors">Home</Link>
             <span className="text-[10px] opacity-80">▾</span>
-            <span className="text-white">{data.title}</span>
+            <span className="text-white">{(serviceKey === 'flights' && conciergeContent?.headline) ? conciergeContent.headline : data.title}</span>
           </div>
         </div>
 

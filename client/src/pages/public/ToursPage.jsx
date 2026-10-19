@@ -3,10 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { Clock, Star, MapPin, Search, ArrowRight, Compass } from 'lucide-react';
 import { tourService } from '../../services/allServices';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 
 export default function ToursPage({ defaultCategory = 'international' }) {
   const location = useLocation();
   const isIndia = location.pathname.includes('india') || defaultCategory === 'india';
+  const { content: toursHeroContent } = useWebsiteContent('tours.hero', null);
 
   const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,15 +46,15 @@ export default function ToursPage({ defaultCategory = 'international' }) {
       <div className="bg-[#10221b] text-white py-16 px-4 sm:px-6 lg:px-8 mb-12">
         <div className="max-w-7xl mx-auto text-center">
           <span className="text-xs uppercase font-bold tracking-widest text-[#f29727] block mb-2">
-            {isIndia ? 'Incredible India Escapes' : 'International Expeditions'}
+            {toursHeroContent?.badge || (isIndia ? 'Incredible India Escapes' : 'International Expeditions')}
           </span>
           <h1 className="text-4xl sm:text-5xl font-sans font-bold text-white mb-4">
-            {isIndia ? 'Indian Tour Packages' : 'International Tour Packages'}
+            {toursHeroContent?.headline || (isIndia ? 'Indian Tour Packages' : 'International Tour Packages')}
           </h1>
           <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto">
-            {isIndia
+            {toursHeroContent?.subheadline || (isIndia
               ? 'From the backwaters of Kerala and misty Nilgiri hills to Andaman turquoise lagoons and Rajasthan palaces.'
-              : 'Handcrafted luxury tours across Europe, Africa, America, Far East Asia, Australia, and Indian Ocean atolls.'}
+              : 'Handcrafted luxury tours across Europe, Africa, America, Far East Asia, Australia, and Indian Ocean atolls.')}
           </p>
 
           {/* Search Box */}

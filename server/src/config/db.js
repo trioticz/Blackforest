@@ -47,6 +47,26 @@ const connectDB = async () => {
       console.warn('WebsiteImages table sync/seed warning:', tblErr.message);
     }
 
+    // Ensure PageSections table exists and seed default sections
+    try {
+      const PageSection = require('../models/PageSection');
+      await PageSection.sync();
+      const { seedPageSections } = require('../seeds/pageSectionsSeed');
+      await seedPageSections();
+    } catch (tblErr) {
+      console.warn('PageSections table sync/seed warning:', tblErr.message);
+    }
+
+    // Ensure ContentBlocks table exists and seed default blocks
+    try {
+      const ContentBlock = require('../models/ContentBlock');
+      await ContentBlock.sync();
+      const { seedContentBlocks } = require('../seeds/contentBlocksSeed');
+      await seedContentBlocks();
+    } catch (tblErr) {
+      console.warn('ContentBlocks table sync/seed warning:', tblErr.message);
+    }
+
     // Safe inline migrations to ensure new media & article columns exist in MySQL
     try {
       await sequelize.query('ALTER TABLE `Media` ADD COLUMN `data` LONGTEXT NULL').catch(() => {});

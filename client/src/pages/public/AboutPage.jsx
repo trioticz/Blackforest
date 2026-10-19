@@ -2,11 +2,24 @@ import React from 'react';
 import HeroWave from '../../components/common/HeroWave';
 import { useSettings } from '../../context/SiteSettingsContext';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 import { Link } from 'react-router-dom';
 
 export default function AboutPage() {
   const { settings, openEnquiryModal } = useSettings();
   const siteName = settings?.siteName || 'Blackforest Holidays';
+
+  const { content: heroContent } = useWebsiteContent('about.hero', {
+    headline: 'About Us',
+    subheadline: 'Crafting thoughtful, immersive, and unforgettable journeys across the globe since 2018.'
+  });
+
+  const { content: storyContent } = useWebsiteContent('about.story', {
+    badge: 'Travel Dream Begins',
+    heading: 'Redefining the Way You Explore the World',
+    paragraph_1: 'BlackForest Holidays Pvt Ltd is premier travel partner for bespoke and unforgettable experiences. Since 2017, we have been crafting elegant, tailor-made journeys with seamless planning and exceptional attention to detail.',
+    paragraph_2: 'Every trip we design is a perfect blend of comfort, exclusivity, and personalized service — creating travel experiences that are truly exceptional.'
+  });
 
   const heroBanner = useWebsiteImage('hero.about', '/assets/images/about_hero_map.jpg');
   const storyImg = useWebsiteImage('about.story.image', '/assets/images/ABOUT-US.png');
@@ -71,7 +84,7 @@ export default function AboutPage() {
         {/* Title & Breadcrumb Centered */}
         <div className="relative z-10 text-white flex flex-col items-center justify-center text-center mt-auto mb-auto pt-16">
           <h1 className="text-4xl sm:text-5xl lg:text-[58px] font-bold tracking-tight mb-3 drop-shadow-lg font-sans">
-            About Us
+            {heroContent.headline || 'About Us'}
           </h1>
           <div className="flex items-center justify-center gap-2 text-sm md:text-base font-light tracking-wide text-gray-100">
             <Link to="/" className="hover:text-white transition-colors">Home</Link>
@@ -115,10 +128,10 @@ export default function AboutPage() {
               className="text-2xl sm:text-3xl block mb-1 font-cursive"
               style={{ color: "#27B8B1" }}
             >
-              Travel Dream Begins
+              {storyContent.badge || 'Travel Dream Begins'}
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#7cb342] leading-tight font-sans">
-              Redefining the Way You Explore the World
+              {storyContent.heading || 'Redefining the Way You Explore the World'}
             </h2>
           </div>
 
@@ -136,10 +149,10 @@ export default function AboutPage() {
               
               <div className="text-gray-600 text-[14.5px] leading-[1.8] font-light space-y-4">
                 <p>
-                  BlackForest Holidays Pvt Ltd is premier travel partner for bespoke and unforgettable experiences. Since 2017, we have been crafting elegant, tailor-made journeys with seamless planning and exceptional attention to detail.
+                  {storyContent.paragraph_1 || 'BlackForest Holidays Pvt Ltd is premier travel partner for bespoke and unforgettable experiences. Since 2017, we have been crafting elegant, tailor-made journeys with seamless planning and exceptional attention to detail.'}
                 </p>
                 <p>
-                  Every trip we design is a perfect blend of comfort, exclusivity, and personalized service — creating travel experiences that are truly exceptional.
+                  {storyContent.paragraph_2 || 'Every trip we design is a perfect blend of comfort, exclusivity, and personalized service — creating travel experiences that are truly exceptional.'}
                 </p>
               </div>
 

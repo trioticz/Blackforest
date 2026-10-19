@@ -5,10 +5,27 @@ import { useToast } from '../../context/ToastContext';
 import { enquiryService } from '../../services/allServices';
 import { useSettings } from '../../context/SiteSettingsContext';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 import HeroWave from '../../components/common/HeroWave';
 import OfficesMapSection from '../../components/contact/OfficesMapSection';
 
 export default function ContactPage() {
+  const { content: heroContent } = useWebsiteContent('contact.hero', {
+    headline: 'Reach Out to Our Specialists',
+    subheadline: 'Whether you have a specific destination in mind or need inspiration, we are here to help.'
+  });
+
+  const { content: officesContent } = useWebsiteContent('contact.offices', {
+    bengaluru_title: 'Bengaluru Office',
+    bengaluru_address: '737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Indiranagar, Bengaluru 560038',
+    bengaluru_phone: '+91 90432 02008',
+    bengaluru_email: 'info@blackforestholidays.com',
+    coimbatore_title: 'Coimbatore Head Office',
+    coimbatore_address: '76, 1st Floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore 641012',
+    coimbatore_phone: '+91 90432 02009',
+    coimbatore_email: 'booking@blackforestholidays.com'
+  });
+
   const contactHero = useWebsiteImage(
     'hero.contact',
     '/assets/images/buddhist-prayer-flags-himalaya-mountains-annapurna-base-camp-area-nepal-scaled.jpg'
@@ -363,10 +380,10 @@ export default function ContactPage() {
                       <Mail className="w-3.5 h-3.5" />
                     </div>
                     <a
-                      href="mailto:info@blackforestholidays.com"
+                      href={`mailto:${officesContent.bengaluru_email || 'info@blackforestholidays.com'}`}
                       className="hover:text-[#5ba14a] transition-colors font-normal text-gray-800"
                     >
-                      info@blackforestholidays.com
+                      {officesContent.bengaluru_email || 'info@blackforestholidays.com'}
                     </a>
                   </div>
 
@@ -376,13 +393,17 @@ export default function ContactPage() {
                       <Phone className="w-3.5 h-3.5" />
                     </div>
                     <div className="font-normal text-gray-800">
-                      <a href="tel:+919742877700" className="hover:text-[#5ba14a] transition-colors">
-                        +91 9742877700
+                      <a href={`tel:${officesContent.bengaluru_phone || '+919043202008'}`} className="hover:text-[#5ba14a] transition-colors">
+                        {officesContent.bengaluru_phone || '+91 90432 02008'}
                       </a>
-                      <span> / </span>
-                      <a href="tel:9742977700" className="hover:text-[#5ba14a] transition-colors">
-                        9742977700
-                      </a>
+                      {officesContent.coimbatore_phone && (
+                        <>
+                          <span> / </span>
+                          <a href={`tel:${officesContent.coimbatore_phone}`} className="hover:text-[#5ba14a] transition-colors">
+                            {officesContent.coimbatore_phone}
+                          </a>
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -392,7 +413,7 @@ export default function ContactPage() {
                       <MapPin className="w-3.5 h-3.5" />
                     </div>
                     <span className="font-normal text-gray-800 leading-relaxed max-w-md">
-                      737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Binnamangala, Indiranagar, Bengaluru, Karnataka 560038
+                      {officesContent.bengaluru_address || '737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Binnamangala, Indiranagar, Bengaluru, Karnataka 560038'}
                     </span>
                   </div>
 
@@ -402,7 +423,7 @@ export default function ContactPage() {
                       <MapPin className="w-3.5 h-3.5" />
                     </div>
                     <span className="font-normal text-gray-800 leading-relaxed max-w-md">
-                      76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012
+                      {officesContent.coimbatore_address || '76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012'}
                     </span>
                   </div>
 

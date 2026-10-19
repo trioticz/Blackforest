@@ -1,7 +1,13 @@
 import React, { useMemo } from 'react';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 
 export default function ValuePropsSection() {
+  const { content, isVisible } = useWebsiteContent('home.value_props', {
+    heading: 'Why Travel With Black Forest',
+    subheading: 'Six reasons why our guests entrust their journeys to our care'
+  });
+
   const bgImg = useWebsiteImage('homepage.value_props.bg', '/assets/images/value-props-bg.jpg');
   const icon1 = useWebsiteImage('homepage.value_props.icon_1', '/assets/images/icon-img-1.png');
   const icon2 = useWebsiteImage('homepage.value_props.icon_2', '/assets/images/icon-img-2.png');
@@ -10,47 +16,51 @@ export default function ValuePropsSection() {
   const icon5 = useWebsiteImage('homepage.value_props.icon_5', '/assets/images/icon-img-5.png');
   const icon6 = useWebsiteImage('homepage.value_props.icon_6', '/assets/images/icon-img-6.png');
 
+  const items = Array.isArray(content.items) && content.items.length >= 6 ? content.items : null;
+
   const colLeft = useMemo(() => [
     {
       id: 1,
       icon: icon1,
-      title: 'Tailor-Made Journeys',
-      desc: 'Travel experiences thoughtfully designed around your interests, style, and dreams.'
+      title: items ? items[0].title : 'Tailor-Made Journeys',
+      desc: items ? items[0].desc : 'Travel experiences thoughtfully designed around your interests, style, and dreams.'
     },
     {
       id: 2,
       icon: icon3,
-      title: 'Expert Travel Design',
-      desc: 'Our experienced travel specialists bring knowledge, care, and attention to every journey.'
+      title: items ? items[1].title : 'Expert Travel Design',
+      desc: items ? items[1].desc : 'Our experienced travel specialists bring knowledge, care, and attention to every journey.'
     },
     {
       id: 3,
       icon: icon5,
-      title: 'Personalised Itineraries',
-      desc: 'Every detail is thoughtfully planned around the way you want to explore the world.'
+      title: items ? items[2].title : 'Personalised Itineraries',
+      desc: items ? items[2].desc : 'Every detail is thoughtfully planned around the way you want to explore the world.'
     }
-  ], [icon1, icon3, icon5]);
+  ], [items, icon1, icon3, icon5]);
 
   const colRight = useMemo(() => [
     {
       id: 4,
       icon: icon2,
-      title: 'Exceptional Experiences',
-      desc: 'Discover extraordinary places and unforgettable moments, curated just for you.'
+      title: items ? items[3].title : 'Exceptional Experiences',
+      desc: items ? items[3].desc : 'Discover extraordinary places and unforgettable moments, curated just for you.'
     },
     {
       id: 5,
       icon: icon4,
-      title: 'Journeys For Every Story',
-      desc: 'From romantic escapes to family adventures, we create travel experiences that feel truly personal.'
+      title: items ? items[4].title : 'Journeys For Every Story',
+      desc: items ? items[4].desc : 'From romantic escapes to family adventures, we create travel experiences that feel truly personal.'
     },
     {
       id: 6,
       icon: icon6,
-      title: 'Seamless Travel Support',
-      desc: "From your first enquiry to your return home, we're here to make your journey effortless."
+      title: items ? items[5].title : 'Seamless Travel Support',
+      desc: items ? items[5].desc : "From your first enquiry to your return home, we're here to make your journey effortless."
     }
-  ], [icon2, icon4, icon6]);
+  ], [items, icon2, icon4, icon6]);
+
+  if (!isVisible) return null;
 
   return (
     <section 

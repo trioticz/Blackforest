@@ -1,12 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 
 export default function HeroSection() {
   const videoRef = useRef(null);
   // Track mute state for UI only — actual mute is controlled via DOM ref
   const [isMuted, setIsMuted] = useState(true);
   const [loadVideo, setLoadVideo] = useState(false);
+
+  // Dynamic CMS content
+  const { content, isVisible } = useWebsiteContent('home.hero', {
+    video_url: '/hero-video-1080p60.mp4',
+    show_sound_toggle: true
+  });
 
   // Dynamic image management with high-performance fallbacks
   const desktopPoster = useWebsiteImage('homepage.hero.desktop', '/hero-poster.webp');
@@ -60,6 +67,8 @@ export default function HeroSection() {
     }
   };
 
+  if (!isVisible) return null;
+
   return (
     <section className="relative w-full h-[85vh] sm:h-[90vh] md:h-[95vh] min-h-[520px] sm:min-h-[620px] max-h-[1050px] overflow-hidden bg-black flex items-center justify-center">
 
@@ -83,7 +92,7 @@ export default function HeroSection() {
         {loadVideo && (
           <video
             ref={videoRef}
-            src="/hero-video-1080p60.mp4"
+            src={content.video_url || "/hero-video-1080p60.mp4"}
             poster={desktopPoster}
             autoPlay
             loop

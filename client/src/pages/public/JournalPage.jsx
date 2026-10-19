@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Search, ArrowRight, BookOpen, Clock, Tag } from 'lucide-react';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 import { getPublishedBlogs, BLOGS_EVENT } from '../../utils/blogsManager';
 
 export default function JournalPage() {
   const [articles, setArticles] = useState([]);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const { content: journalHeroContent } = useWebsiteContent('journal.hero', null);
 
   const categories = [
     { id: 'all', label: 'All Dispatches' },
@@ -56,13 +58,13 @@ export default function JournalPage() {
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="text-xs uppercase font-bold tracking-widest text-[#f29727] block mb-3">
-            The Blackforest Journal
+            {journalHeroContent?.badge || 'The Blackforest Journal'}
           </span>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-sans font-bold text-white mb-4">
-            Curated Stories For Curious Travelers
+            {journalHeroContent?.headline || 'Curated Stories For Curious Travelers'}
           </h1>
           <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Practical packing guides, mountain safety protocols, and insider chronicles from our private travel specialists.
+            {journalHeroContent?.subheadline || 'Practical packing guides, mountain safety protocols, and insider chronicles from our private travel specialists.'}
           </p>
 
           <div className="max-w-md mx-auto mt-8 relative">

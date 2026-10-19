@@ -1,37 +1,48 @@
 import React, { useState } from 'react';
 import { ChevronDown, HelpCircle, MessageSquare } from 'lucide-react';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
+
+const DEFAULT_FAQS = [
+  {
+    question: 'How do I book a tour package with BlackForest Holidays?',
+    answer: 'You can easily request a booking or quote by clicking "Enquire Now" or "Plan My Trip" on any tour page, sending us a message via WhatsApp, or calling our helpline at +91 90432 02008 / 90432 02009. Our travel specialists will promptly assist you with custom quotes and bookings.'
+  },
+  {
+    question: 'Can I fully customize my travel itinerary?',
+    answer: 'Yes! All our international and domestic holiday packages are fully customizable. Whether you want to change hotel categories, extend your stay, add private tours, or choose specific flights, our travel experts design every itinerary around your preferences.'
+  },
+  {
+    question: 'Do you assist with Visas, Flight Bookings, and Travel Insurance?',
+    answer: 'Absolutely. We provide comprehensive end-to-end travel services including international and domestic flight bookings, complete visa guidance and processing support, luxury hotel reservations, and comprehensive travel insurance coverage.'
+  },
+  {
+    question: 'What payment methods do you accept?',
+    answer: 'We accept all major payment methods including credit/debit cards, Net Banking, UPI (GPay, PhonePe, Paytm), and direct bank transfers. We also offer flexible partial payment schedules for advance tour bookings.'
+  },
+  {
+    question: 'What is your cancellation and refund policy?',
+    answer: 'Our cancellation policies depend on flight ticket terms and hotel supplier guidelines. In general, cancellations made well in advance receive maximum eligible refunds. Detailed terms are shared prior to booking confirmation, and refund processing is handled swiftly.'
+  },
+  {
+    question: 'Will I have 24/7 support during my trip?',
+    answer: 'Yes! From the moment your journey begins until you return home, you will have access to a dedicated travel concierge and 24/7 emergency support hotline for seamless assistance anytime during your trip.'
+  }
+];
 
 export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState(null);
   const { openEnquiryModal } = useSettings();
 
-  const faqs = [
-    {
-      question: 'How do I book a tour package with BlackForest Holidays?',
-      answer: 'You can easily request a booking or quote by clicking "Enquire Now" or "Plan My Trip" on any tour page, sending us a message via WhatsApp, or calling our helpline at +91 9742877700 / 9742977700. Our travel specialists will promptly assist you with custom quotes and bookings.'
-    },
-    {
-      question: 'Can I fully customize my travel itinerary?',
-      answer: 'Yes! All our international and domestic holiday packages are fully customizable. Whether you want to change hotel categories, extend your stay, add private tours, or choose specific flights, our travel experts design every itinerary around your preferences.'
-    },
-    {
-      question: 'Do you assist with Visas, Flight Bookings, and Travel Insurance?',
-      answer: 'Absolutely. We provide comprehensive end-to-end travel services including international and domestic flight bookings, complete visa guidance and processing support, luxury hotel reservations, and comprehensive travel insurance coverage.'
-    },
-    {
-      question: 'What payment methods do you accept?',
-      answer: 'We accept all major payment methods including credit/debit cards, Net Banking, UPI (GPay, PhonePe, Paytm), and direct bank transfers. We also offer flexible partial payment schedules for advance tour bookings.'
-    },
-    {
-      question: 'What is your cancellation and refund policy?',
-      answer: 'Our cancellation policies depend on flight ticket terms and hotel supplier guidelines. In general, cancellations made well in advance receive maximum eligible refunds. Detailed terms are shared prior to booking confirmation, and refund processing is handled swiftly.'
-    },
-    {
-      question: 'Will I have 24/7 support during my trip?',
-      answer: 'Yes! From the moment your journey begins until you return home, you will have access to a dedicated travel concierge and 24/7 emergency support hotline for seamless assistance anytime during your trip.'
-    }
-  ];
+  const { content, isVisible } = useWebsiteContent('global.faq', {
+    heading: 'Frequently Asked Questions',
+    subheading: 'Find answers to common questions about our customized holiday packages, bookings, visas, and travel support.',
+    faqs: DEFAULT_FAQS
+  });
+
+  if (!isVisible) return null;
+
+  const faqs = Array.isArray(content.faqs) && content.faqs.length > 0 ? content.faqs : DEFAULT_FAQS;
 
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -54,10 +65,10 @@ export default function FaqSection() {
             <span>Got Questions?</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase text-[#10221b] tracking-tight font-sans">
-            Frequently Asked <span className="text-[#27B8B1]">Questions</span>
+            {content.heading || 'Frequently Asked Questions'}
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-600 font-light leading-relaxed">
-            Find answers to common questions about our customized holiday packages, bookings, visas, and travel support.
+            {content.subheading || 'Find answers to common questions about our customized holiday packages, bookings, visas, and travel support.'}
           </p>
         </div>
 

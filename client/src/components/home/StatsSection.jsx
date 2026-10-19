@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 
 // Custom hook for animated counting
 const useCounter = (end, duration = 2000) => {
@@ -43,10 +44,22 @@ const useCounter = (end, duration = 2000) => {
 };
 
 export default function StatsSection() {
+  const { content, isVisible } = useWebsiteContent('home.stats', {
+    heading: 'Our Journey in Numbers',
+    subheading: 'Milestones of trust, happiness, and unforgettable destinations',
+    stats: [
+      { value: 50, suffix: '+', label: 'Island Destinations' },
+      { value: 25, suffix: '+', label: 'Countries' },
+      { value: 150, suffix: '+', label: 'Tailor-Made Journeys' }
+    ]
+  });
+
   const statsBg = useWebsiteImage('homepage.stats.bg', '/assets/images/number-counter-bg.png');
   const { count: countIsland, ref: refIsland } = useCounter(50);
   const { count: countCountries, ref: refCountries } = useCounter(25);
   const { count: countTailor, ref: refTailor } = useCounter(150);
+
+  if (!isVisible) return null;
 
   return (
     <section className="relative py-16 sm:py-20 lg:py-24 bg-[#f4f7f4] text-[#10221b] overflow-hidden render-defer">

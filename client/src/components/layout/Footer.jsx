@@ -2,12 +2,29 @@ import { Link, useLocation } from 'react-router-dom';
 import { MapPin, Mail, Phone } from 'lucide-react';
 import { useSettings } from '../../context/SiteSettingsContext';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 import ExpertiseSection from '../home/ExpertiseSection';
 import FaqSection from '../common/FaqSection';
 
 export default function Footer() {
   const { settings } = useSettings();
   const location = useLocation();
+
+  const { content } = useWebsiteContent('global.footer', {
+    column_1_title: 'Reach Us',
+    address_bangalore: '737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Binnamangala, Indiranagar, Bengaluru, Karnataka 560038',
+    column_2_title: 'Head Office',
+    address_coimbatore: '76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012',
+    phone_numbers: '+91 90432 02008 / +91 90432 02009',
+    emails: 'info@blackforestholidays.com / booking@blackforestholidays.com',
+    copyright: '© 2026 Black Forest Holidays Pvt. Ltd. All rights reserved.',
+    social_links: {
+      facebook: 'https://facebook.com',
+      twitter: 'https://twitter.com',
+      linkedin: 'https://linkedin.com',
+      instagram: 'https://instagram.com'
+    }
+  });
 
   const isDestinationPage =
     location.pathname.startsWith('/destinations') ||
@@ -54,26 +71,24 @@ export default function Footer() {
             {/* Column 1: Reach Us (4 cols with left padding so it's not stuck on the extreme left edge) */}
             <div className="md:col-span-5 lg:col-span-5 md:pl-6 lg:pl-10 space-y-5">
               <h3 className="text-2xl sm:text-[26px] font-bold text-white font-sans tracking-wide">
-                Reach Us
+                {content.column_1_title || 'Reach Us'}
               </h3>
 
               {/* Address (Formatted exactly like reference) */}
               <div className="flex items-start gap-3.5 text-sm sm:text-[15px] text-gray-200 leading-relaxed max-w-md">
                 <MapPin className="w-5 h-5 text-white shrink-0 mt-1" />
                 <div className="space-y-0.5 font-light">
-                  <p>737, 3rd Floor, Kheny Plaza
-                    CMH Main Road, 2nd Cross
-                    Rd, Binnamangala, Indiranagar,
-                    Bengaluru, Karnataka 560038</p>
+                  <p className="whitespace-pre-line">
+                    {content.address_bangalore || '737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Binnamangala, Indiranagar, Bengaluru, Karnataka 560038'}
+                  </p>
                 </div>
               </div>
-
 
               {/* 4 Social Icon Buttons in White Rounded Squares */}
               <div className="flex items-center gap-3 pt-3">
                 {/* Facebook */}
                 <a
-                  href="https://facebook.com"
+                  href={content.social_links?.facebook || settings?.socialLinks?.facebook || 'https://facebook.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
@@ -84,7 +99,7 @@ export default function Footer() {
 
                 {/* Twitter / X */}
                 <a
-                  href="https://twitter.com"
+                  href={content.social_links?.twitter || settings?.socialLinks?.twitter || 'https://twitter.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Twitter"
@@ -97,7 +112,7 @@ export default function Footer() {
 
                 {/* LinkedIn */}
                 <a
-                  href="https://linkedin.com"
+                  href={content.social_links?.linkedin || settings?.socialLinks?.linkedin || 'https://linkedin.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
@@ -110,7 +125,7 @@ export default function Footer() {
 
                 {/* Instagram */}
                 <a
-                  href="https://instagram.com"
+                  href={content.social_links?.instagram || settings?.socialLinks?.instagram || 'https://instagram.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
@@ -128,12 +143,14 @@ export default function Footer() {
             {/* Column 2: Head Office */}
             <div className="md:col-span-4 lg:col-span-4 space-y-5 md:pl-2">
               <h3 className="text-2xl sm:text-[26px] font-bold text-white font-sans tracking-wide">
-                Head Office
+                {content.column_2_title || 'Head Office'}
               </h3>
               <div className="flex items-start gap-3.5 text-sm sm:text-[15px] text-gray-200 leading-relaxed max-w-sm">
                 <MapPin className="w-5 h-5 text-white shrink-0 mt-1" />
                 <div className="space-y-0.5 font-light">
-                  <p className='text-[16px]'>76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012</p>
+                  <p className="text-[16px] whitespace-pre-line">
+                    {content.address_coimbatore || '76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012'}
+                  </p>
                 </div>
               </div>
 
@@ -141,26 +158,18 @@ export default function Footer() {
               <div className="flex items-center gap-3.5 text-sm sm:text-[15px] text-gray-200 pt-1">
                 <Mail className="w-4 h-4 text-white shrink-0" />
                 <p>
-                  <a
-                    href="mailto:info@blackforestholidays.com"
-                    className="hover:text-[#27B8B1] transition-colors font-light"
-                  >
-                    info@blackforestholidays.com
-                  </a>
+                  <span className="font-light">
+                    {content.emails || 'info@blackforestholidays.com / booking@blackforestholidays.com'}
+                  </span>
                 </p>
               </div>
 
-              {/* Phone (Formatted on two lines) */}
+              {/* Phone */}
               <div className="flex items-start gap-3.5 text-sm sm:text-[15px] text-gray-200 pt-1">
                 <Phone className="w-4 h-4 text-white shrink-0 mt-1" />
-                <div className="font-light flex">
+                <div className="font-light">
                   <p>
-                    <a href="tel:+919742877700" className="hover:text-[#27B8B1] transition-colors block">
-                      +91 9742877700 /
-                    </a>
-                    <a href="tel:9742977700" className="hover:text-[#27B8B1] transition-colors block">
-                      9742977700
-                    </a>
+                    {content.phone_numbers || '+91 90432 02008 / +91 90432 02009'}
                   </p>
                 </div>
               </div>
@@ -172,8 +181,6 @@ export default function Footer() {
                 Useful Links
               </h3>
               <ul className="space-y-2.5 text-sm sm:text-[15px] text-gray-300 font-light">
-
-
                 <li><p>
                   <Link to="/work-with-us" className="hover:text-[#27B8B1] transition-colors">
                     Work With Us
@@ -208,7 +215,7 @@ export default function Footer() {
           {/* Bottom Dotted Rule and Centered Copyright */}
           <div className="border-t border-dotted border-gray-600/70 pt-6 text-center text-xs sm:text-sm text-gray-400 font-light">
             <p>
-              {settings?.copyright || '© 2026 BlackForest Holidays. All rights reserved.'}
+              {content.copyright || settings?.copyright || '© 2026 BlackForest Holidays. All rights reserved.'}
             </p>
           </div>
 

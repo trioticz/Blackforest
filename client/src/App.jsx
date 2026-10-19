@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import { SiteSettingsProvider } from './context/SiteSettingsContext';
 import { ToastProvider } from './context/ToastContext';
 import { WebsiteImagesProvider } from './context/WebsiteImagesContext';
+import { WebsiteContentProvider } from './context/WebsiteContentContext';
 import ScrollToTop from './components/common/ScrollToTop';
 
 // Layouts
@@ -46,6 +47,22 @@ const AdminUsersPage = lazy(() => import('./pages/admin/AdminUsersPage'));
 const AdminMediaPage = lazy(() => import('./pages/admin/AdminMediaPage'));
 const AdminWebsiteImagesPage = lazy(() => import('./pages/admin/AdminWebsiteImagesPage'));
 
+// Website CMS Modules
+const AdminPagesPage = lazy(() => import('./pages/admin/AdminPagesPage'));
+const AdminSectionsPage = lazy(() => import('./pages/admin/AdminSectionsPage'));
+const AdminBannersPage = lazy(() => import('./pages/admin/AdminBannersPage'));
+const AdminContentBlocksPage = lazy(() => import('./pages/admin/AdminContentBlocksPage'));
+const AdminFooterPage = lazy(() => import('./pages/admin/AdminFooterPage'));
+const AdminRevisionsPage = lazy(() => import('./pages/admin/AdminRevisionsPage'));
+const AdminContactInfoPage = lazy(() => import('./pages/admin/AdminContactInfoPage'));
+const AdminNavigationPage = lazy(() => import('./pages/admin/AdminNavigationPage'));
+const AdminSettingsPage = lazy(() => import('./pages/admin/AdminSettingsPage'));
+const AdminTestimonialsPage = lazy(() => import('./pages/admin/AdminTestimonialsPage'));
+const AdminServicesPage = lazy(() => import('./pages/admin/AdminServicesPage'));
+const AdminToursPage = lazy(() => import('./pages/admin/AdminToursPage'));
+const AdminTourFormPage = lazy(() => import('./pages/admin/AdminTourFormPage'));
+const AdminAuditLogsPage = lazy(() => import('./pages/admin/AdminAuditLogsPage'));
+
 function PageFallback() {
   return (
     <div className="min-h-[50vh] flex flex-col items-center justify-center bg-[#f7f9f8] py-16" aria-busy="true" aria-label="Loading page">
@@ -60,10 +77,11 @@ export default function App() {
       <AuthProvider>
         <SiteSettingsProvider>
           <WebsiteImagesProvider>
-            <ToastProvider>
-              <ScrollToTop />
-              <Suspense fallback={<PageFallback />}>
-                <Routes>
+            <WebsiteContentProvider>
+              <ToastProvider>
+                <ScrollToTop />
+                <Suspense fallback={<PageFallback />}>
+                  <Routes>
                 {/* Public Website Routes */}
                 <Route element={<PublicLayout />}>
 
@@ -158,18 +176,29 @@ export default function App() {
                 <Route path="media" element={<AdminMediaPage />} />
                 <Route path="website-images" element={<AdminWebsiteImagesPage />} />
 
-                {/* Removed Admin Modules redirected */}
-                <Route path="tours/*" element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="experiences/*" element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="services/*" element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="testimonials/*" element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="navigation/*" element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="settings/*" element={<Navigate to="/admin/dashboard" replace />} />
-                <Route path="audit-logs/*" element={<Navigate to="/admin/dashboard" replace />} />
+                {/* Website CMS Modules */}
+                <Route path="pages" element={<AdminPagesPage />} />
+                <Route path="sections" element={<AdminSectionsPage />} />
+                <Route path="banners" element={<AdminBannersPage />} />
+                <Route path="content-blocks" element={<AdminContentBlocksPage />} />
+                <Route path="footer" element={<AdminFooterPage />} />
+                <Route path="revisions" element={<AdminRevisionsPage />} />
+                <Route path="contact-info" element={<AdminContactInfoPage />} />
+
+                {/* Content & Catalog Modules */}
+                <Route path="tours" element={<AdminToursPage />} />
+                <Route path="tours/new" element={<AdminTourFormPage />} />
+                <Route path="tours/:id" element={<AdminTourFormPage />} />
+                <Route path="testimonials" element={<AdminTestimonialsPage />} />
+                <Route path="services" element={<AdminServicesPage />} />
+                <Route path="navigation" element={<AdminNavigationPage />} />
+                <Route path="settings" element={<AdminSettingsPage />} />
+                <Route path="audit-logs" element={<AdminAuditLogsPage />} />
               </Route>
             </Routes>
             </Suspense>
-          </ToastProvider>
+            </ToastProvider>
+            </WebsiteContentProvider>
           </WebsiteImagesProvider>
         </SiteSettingsProvider>
       </AuthProvider>

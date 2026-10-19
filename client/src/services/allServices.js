@@ -609,4 +609,382 @@ export const websiteImageService = {
   }
 };
 
+// ── PAGE SECTION & CMS SERVICES ──
+import { defaultPageSections, defaultContentBlocks } from '../data/defaultPageSections';
+
+const STORAGE_KEY_SECTION_OVERRIDES = 'bf_page_sections_overrides';
+const STORAGE_KEY_BLOCK_OVERRIDES = 'bf_content_blocks_overrides';
+
+function getLocalSectionOverrides() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_SECTION_OVERRIDES);
+    return raw ? JSON.parse(raw) : {};
+  } catch (_) {
+    return {};
+  }
+}
+
+function saveLocalSectionOverrides(overrides) {
+  try {
+    localStorage.setItem(STORAGE_KEY_SECTION_OVERRIDES, JSON.stringify(overrides));
+  } catch (_) {}
+}
+
+export const pageSectionService = {
+  getLocalSections: (params = {}) => {
+    const isPreview = params.preview === 'true' || params.preview === true;
+    const page = params.page_slug;
+    const overrides = getLocalSectionOverrides();
+
+    let list = defaultPageSections.map((sec, idx) => {
+      const ov = overrides[sec.section_key] || {};
+      const hasDraft = ov.draft_content !== undefined ? ov.draft_content !== null : false;
+      const content = ov.content || sec.content;
+      const draftContent = ov.draft_content !== undefined ? ov.draft_content : null;
+      const activeContent = isPreview && hasDraft ? draftContent : content;
+      const isVisible = ov.is_visible !== undefined ? ov.is_visible : sec.is_visible;
+      const order = ov.order_index !== undefined ? ov.order_index : sec.order_index;
+
+      return {
+        id: idx + 1,
+        page_slug: sec.page_slug,
+        section_key: sec.section_key,
+        section_name: ov.section_name || sec.section_name,
+        order_index: order,
+        is_visible: isVisible,
+        content: content,
+        draft_content: draftContent,
+        active_content: activeContent,
+        has_draft: hasDraft,
+        publication_status: hasDraft ? 'draft' : 'published',
+        original_content: sec.content
+      };
+    });
+
+    if (page && page !== 'all') {
+      list = list.filter((s) => s.page_slug === page);
+    }
+
+    list.sort((a, b) => a.order_index - b.order_index);
+    const pendingDraftCount = list.filter((s) => s.has_draft).length;
+
+    return {
+      success: true,
+      data: {
+        sections: list,
+        total: list.length,
+        pendingDraftCount,
+        isPreviewMode: isPreview
+      }
+    };
+  },
+
+  getAll: async (params = {}) => {
+    try {
+      const res = await api.get('/page-sections', { params });
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+    return pageSectionService.getLocalSections(params);
+  },
+
+  getByKey: async (sectionKey, params = {}) => {
+    try {
+      const res = await api.get(`/page-sections/${sectionKey}`, { params });
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+    const local = pageSectionService.getLocalSections(params).data?.sections || [];
+    const sec = local.find((s) => s.section_key === sectionKey);
+    return { success: Boolean(sec), data: sec };
+  },
+
+  saveDraft: async (idOrKey, data) => {
+    try {
+      const res = await api.put(`/page-sections/${idOrKey}/draft`, data);
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalSectionOverrides();
+    const key = String(idOrKey);
+    overrides[key] = {
+      ...(overrides[key] || {}),
+      draft_content: data.content,
+      publication_status: 'draft',
+      updated_at: new Date().toISOString()
+    };
+    if (data.section_name !== undefined) overrides[key].section_name = data.section_name;
+    if (data.is_visible !== undefined) overrides[key].is_visible = data.is_visible;
+    saveLocalSectionOverrides(overrides);
+
+    return { success: true, message: 'Draft saved in local storage', data: overrides[key] };
+  },
+
+  publish: async (idOrKey, data = {}) => {
+    try {
+      const res = await api.post(`/page-sections/${idOrKey}/publish`, data);
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalSectionOverrides();
+    const key = String(idOrKey);
+    const cur = overrides[key] || {};
+    const defaultSec = defaultPageSections.find((s) => s.section_key === key);
+    const newContent = data.content !== undefined ? data.content : (cur.draft_content || cur.content || defaultSec?.content);
+
+    overrides[key] = {
+      ...cur,
+      content: newContent,
+      draft_content: null,
+      publication_status: 'published',
+      updated_at: new Date().toISOString()
+    };
+    saveLocalSectionOverrides(overrides);
+
+    return { success: true, message: 'Published to live website', data: overrides[key] };
+  },
+
+  publishAll: async () => {
+    try {
+      const res = await api.post('/page-sections/publish-all');
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalSectionOverrides();
+    let publishedCount = 0;
+    Object.keys(overrides).forEach((k) => {
+      if (overrides[k].draft_content) {
+        overrides[k].content = overrides[k].draft_content;
+        overrides[k].draft_content = null;
+        overrides[k].publication_status = 'published';
+        publishedCount += 1;
+      }
+    });
+    saveLocalSectionOverrides(overrides);
+    return { success: true, data: { publishedCount }, message: 'All pending sections published' };
+  },
+
+  discardDraft: async (idOrKey) => {
+    try {
+      const res = await api.post(`/page-sections/${idOrKey}/discard-draft`);
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalSectionOverrides();
+    const key = String(idOrKey);
+    if (overrides[key]) {
+      overrides[key].draft_content = null;
+      overrides[key].publication_status = 'published';
+      saveLocalSectionOverrides(overrides);
+    }
+    return { success: true, message: 'Draft discarded' };
+  },
+
+  restoreOriginal: async (idOrKey) => {
+    try {
+      const res = await api.post(`/page-sections/${idOrKey}/restore-original`);
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalSectionOverrides();
+    const key = String(idOrKey);
+    const item = defaultPageSections.find((s) => s.section_key === key);
+    overrides[key] = {
+      ...(overrides[key] || {}),
+      content: item?.content,
+      draft_content: null,
+      publication_status: 'published'
+    };
+    saveLocalSectionOverrides(overrides);
+    return { success: true, message: 'Restored to default original content' };
+  },
+
+  reorder: async (orders) => {
+    try {
+      const res = await api.post('/page-sections/reorder', { orders });
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalSectionOverrides();
+    orders.forEach((item) => {
+      const key = item.section_key;
+      overrides[key] = {
+        ...(overrides[key] || {}),
+        order_index: item.order_index
+      };
+    });
+    saveLocalSectionOverrides(overrides);
+    return { success: true, message: 'Order updated' };
+  },
+
+  toggleVisibility: async (idOrKey, is_visible) => {
+    try {
+      const res = await api.post(`/page-sections/${idOrKey}/toggle-visibility`, { is_visible });
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalSectionOverrides();
+    const key = String(idOrKey);
+    overrides[key] = {
+      ...(overrides[key] || {}),
+      is_visible
+    };
+    saveLocalSectionOverrides(overrides);
+    return { success: true, message: 'Visibility updated' };
+  }
+};
+
+function getLocalBlockOverrides() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_BLOCK_OVERRIDES);
+    return raw ? JSON.parse(raw) : {};
+  } catch (_) {
+    return {};
+  }
+}
+
+function saveLocalBlockOverrides(overrides) {
+  try {
+    localStorage.setItem(STORAGE_KEY_BLOCK_OVERRIDES, JSON.stringify(overrides));
+  } catch (_) {}
+}
+
+export const contentBlockService = {
+  getLocalBlocks: (params = {}) => {
+    const isPreview = params.preview === 'true' || params.preview === true;
+    const cat = params.category;
+    const overrides = getLocalBlockOverrides();
+
+    let list = defaultContentBlocks.map((b, idx) => {
+      const ov = overrides[b.block_key] || {};
+      const hasDraft = ov.draft_content !== undefined ? ov.draft_content !== null : false;
+      const content = ov.content || b.content;
+      const draftContent = ov.draft_content !== undefined ? ov.draft_content : null;
+      const activeContent = isPreview && hasDraft ? draftContent : content;
+
+      return {
+        id: idx + 1,
+        block_key: b.block_key,
+        block_name: ov.block_name || b.block_name,
+        category: b.category,
+        content: content,
+        draft_content: draftContent,
+        active_content: activeContent,
+        has_draft: hasDraft,
+        is_active: ov.is_active !== undefined ? ov.is_active : true,
+        publication_status: hasDraft ? 'draft' : 'published'
+      };
+    });
+
+    if (cat) {
+      list = list.filter((b) => b.category === cat);
+    }
+
+    const pendingDraftCount = list.filter((b) => b.has_draft).length;
+    return {
+      success: true,
+      data: {
+        blocks: list,
+        total: list.length,
+        pendingDraftCount,
+        isPreviewMode: isPreview
+      }
+    };
+  },
+
+  getAll: async (params = {}) => {
+    try {
+      const res = await api.get('/content-blocks', { params });
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+    return contentBlockService.getLocalBlocks(params);
+  },
+
+  getByKey: async (blockKey, params = {}) => {
+    try {
+      const res = await api.get(`/content-blocks/${blockKey}`, { params });
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+    const local = contentBlockService.getLocalBlocks(params).data?.blocks || [];
+    const b = local.find((item) => item.block_key === blockKey);
+    return { success: Boolean(b), data: b };
+  },
+
+  saveDraft: async (idOrKey, data) => {
+    try {
+      const res = await api.put(`/content-blocks/${idOrKey}/draft`, data);
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalBlockOverrides();
+    const key = String(idOrKey);
+    overrides[key] = {
+      ...(overrides[key] || {}),
+      draft_content: data.content,
+      publication_status: 'draft',
+      updated_at: new Date().toISOString()
+    };
+    saveLocalBlockOverrides(overrides);
+    return { success: true, message: 'Draft saved in local storage', data: overrides[key] };
+  },
+
+  publish: async (idOrKey, data = {}) => {
+    try {
+      const res = await api.post(`/content-blocks/${idOrKey}/publish`, data);
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalBlockOverrides();
+    const key = String(idOrKey);
+    const cur = overrides[key] || {};
+    const defaultBlock = defaultContentBlocks.find((b) => b.block_key === key);
+    const newContent = data.content !== undefined ? data.content : (cur.draft_content || cur.content || defaultBlock?.content);
+
+    overrides[key] = {
+      ...cur,
+      content: newContent,
+      draft_content: null,
+      publication_status: 'published',
+      updated_at: new Date().toISOString()
+    };
+    saveLocalBlockOverrides(overrides);
+    return { success: true, message: 'Block published to live website', data: overrides[key] };
+  },
+
+  publishAll: async () => {
+    try {
+      const res = await api.post('/content-blocks/publish-all');
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalBlockOverrides();
+    let publishedCount = 0;
+    Object.keys(overrides).forEach((k) => {
+      if (overrides[k].draft_content) {
+        overrides[k].content = overrides[k].draft_content;
+        overrides[k].draft_content = null;
+        overrides[k].publication_status = 'published';
+        publishedCount += 1;
+      }
+    });
+    saveLocalBlockOverrides(overrides);
+    return { success: true, data: { publishedCount }, message: 'All pending blocks published' };
+  },
+
+  discardDraft: async (idOrKey) => {
+    try {
+      const res = await api.post(`/content-blocks/${idOrKey}/discard-draft`);
+      if (res?.data?.success) return res.data;
+    } catch (_) {}
+
+    const overrides = getLocalBlockOverrides();
+    const key = String(idOrKey);
+    if (overrides[key]) {
+      overrides[key].draft_content = null;
+      overrides[key].publication_status = 'published';
+      saveLocalBlockOverrides(overrides);
+    }
+    return { success: true, message: 'Draft discarded' };
+  }
+};
+
+
 

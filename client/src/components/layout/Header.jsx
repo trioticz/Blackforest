@@ -15,11 +15,29 @@ import {
 } from 'lucide-react';
 import { useSettings } from '../../context/SiteSettingsContext';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent, useContentBlock } from '../../context/WebsiteContentContext';
 import { getPublishedDestinations, DESTINATIONS_EVENT } from '../../utils/destinationsManager';
 
 export default function Header() {
   const brandLogo = useWebsiteImage('header.brand_logo', '/assets/site/white_logo.png');
   const mobileLogo = useWebsiteImage('header.mobile_logo', '/assets/site/white_logo.png');
+
+  // Dynamic CMS content for Header & Announcement
+  const { content: headerContent } = useWebsiteContent('global.header', {
+    announcement_text: 'Plan your 2026 holiday escape with Black Forest Holidays — Personalized travel experiences',
+    announcement_active: true,
+    phone: '+91 90432 02008',
+    phone_label: 'Call Us',
+    cta_label: 'Plan My Trip',
+    cta_url: '#enquiry'
+  });
+
+  const { content: announcementContent, isActive: announcementIsActive } = useContentBlock('banner.announcement', {
+    text: 'Plan your 2026 holiday escape with Black Forest Holidays — Personalized travel experiences',
+    link_url: '/destinations',
+    link_text: 'Explore Now',
+    is_active: true
+  });
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -90,11 +108,26 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-[#10221b] text-white py-4 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-[#10221b] text-white ${
         isScrolled ? 'shadow-xl' : ''
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Dynamic Announcement Bar from CMS */}
+      {announcementIsActive && announcementContent?.text && (
+        <div className="bg-[#09120e] text-zinc-300 text-xs py-1.5 px-4 text-center border-b border-white/[0.08] flex items-center justify-center gap-2">
+          <span>{announcementContent.text}</span>
+          {announcementContent.link_url && (
+            <Link
+              to={announcementContent.link_url}
+              className="font-semibold text-[#27B8B1] hover:underline ml-1"
+            >
+              {announcementContent.link_text || 'Explore'} →
+            </Link>
+          )}
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-3 group">

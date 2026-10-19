@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSettings } from '../../context/SiteSettingsContext';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 import HeroWave from '../../components/common/HeroWave';
 
 const cruiseUploadImages = [
@@ -24,6 +25,10 @@ const cruiseUploadImages = [
 export default function CruisesPage() {
   const cruiseHero = useWebsiteImage('hero.cruises', '/assets/images/pexels-g-isle-px-210751289-11820070-scaled.jpg');
   const { openEnquiryModal } = useSettings();
+  const { content: cruisesContent } = useWebsiteContent('cruises.hero', {
+    headline: 'Cruises',
+    subheadline: 'Sail the world’s most magnificent waterways aboard world-class luxury cruise liners.'
+  });
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const carouselImages = cruiseUploadImages;
@@ -68,7 +73,7 @@ export default function CruisesPage() {
 
         <div className="relative z-10 text-white flex flex-col items-center text-center px-4">
           <h1 className="text-4xl md:text-5xl lg:text-[60px] font-bold tracking-tight mb-4 drop-shadow-xl font-sans">
-            Cruises
+            {cruisesContent?.headline || 'Cruises'}
           </h1>
           <div className="flex items-center justify-center gap-2 text-sm md:text-base font-light drop-shadow-md tracking-wider">
             <Link to="/" className="hover:text-gray-200 transition-colors">Home</Link>

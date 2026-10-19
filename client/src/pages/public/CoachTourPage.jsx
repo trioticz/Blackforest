@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 import HeroWave from '../../components/common/HeroWave';
 import { ChevronRight, ChevronLeft, MapPin, Calendar, Compass } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -7,6 +8,11 @@ import { Link } from 'react-router-dom';
 export default function CoachTourPage() {
   const { settings, openEnquiryModal } = useSettings();
   const siteName = settings?.siteName || 'Blackforest Holidays';
+  const { content: coachContent } = useWebsiteContent('coach_tour.hero', {
+    headline: 'Coach Tours',
+    badge: 'Escorted Group Journeys',
+    subheadline: 'Travel in luxury and comfort across the world’s most picturesque panoramic routes.'
+  });
   const packages = [
     {
       id: 1,
@@ -114,10 +120,10 @@ export default function CoachTourPage() {
         {/* Content with breadcrumb */}
         <div className="relative z-10 text-white mt-16 flex flex-col items-center pb-32 text-center">
           <span className="text-[#f29727] text-xs uppercase font-bold tracking-[0.25em] mb-2">
-            Escorted Group Journeys
+            {coachContent?.badge || 'Escorted Group Journeys'}
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-[60px] font-bold tracking-tight mb-4 drop-shadow-xl font-sans">
-            Coach Tours
+            {coachContent?.headline || 'Coach Tours'}
           </h1>
           <div className="flex items-center justify-center gap-2 text-sm md:text-base font-light drop-shadow-md tracking-wider">
             <Link to="/" className="hover:text-gray-200 transition-colors">Home</Link>

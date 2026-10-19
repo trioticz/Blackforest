@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import HeroWave from '../../components/common/HeroWave';
 import { useSettings } from '../../context/SiteSettingsContext';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 import { Link } from 'react-router-dom';
 
 function HandDrawnLeftArrow({ className = "w-12 h-6" }) {
@@ -91,6 +92,10 @@ export default function CorporateTravelPage() {
   const corporateLounge = useWebsiteImage('services.corporate.lounge', '/assets/images/corporate-travel.jpg');
   const corporateMeeting = useWebsiteImage('services.corporate.meeting', '/assets/images/Untitled-design-23.png');
   const { settings } = useSettings();
+  const { content: corporateContent } = useWebsiteContent('corporate.hero', {
+    headline: 'Corporate & Group Travel',
+    subheadline: 'World-class corporate travel management, incentive tours, conferences, and executive retreats.'
+  });
 
   const carouselImages = [
     { src: '/assets/images/Untitled-design-26.png', alt: 'Corporate business traveler at terminal' },
@@ -130,7 +135,7 @@ export default function CorporateTravelPage() {
 
         <div className="relative z-10 text-white mt-16 flex flex-col items-center pb-28">
           <h1 className="text-4xl md:text-5xl lg:text-[56px] font-sans font-bold tracking-tight mb-4 drop-shadow-xl text-center">
-            Corporate & Group Travel
+            {corporateContent?.headline || 'Corporate & Group Travel'}
           </h1>
           <div className="flex items-center justify-center gap-2 text-sm md:text-base font-light drop-shadow-md tracking-wider">
             <Link to="/" className="hover:text-gray-200 transition-colors">Home</Link>

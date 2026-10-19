@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { MapPin, ArrowRight, Compass, Search } from 'lucide-react';
 import { destinationService } from '../../services/allServices';
 import { useSettings } from '../../context/SiteSettingsContext';
+import { useWebsiteContent } from '../../context/WebsiteContentContext';
 import { isDestinationPublished, DESTINATIONS_EVENT } from '../../utils/destinationsManager';
 
 export default function DestinationsPage() {
@@ -12,6 +13,7 @@ export default function DestinationsPage() {
   const [selectedRegion, setSelectedRegion] = useState(routeRegion || 'all');
   const [search, setSearch] = useState('');
   const { openEnquiryModal } = useSettings();
+  const { content: destHeroContent } = useWebsiteContent('destinations.hero', null);
 
   const regions = [
     { id: 'all', label: 'All Regions' },
@@ -77,13 +79,13 @@ export default function DestinationsPage() {
       <div className="bg-[#10221b] text-white py-16 px-4 sm:px-6 lg:px-8 mb-12">
         <div className="max-w-7xl mx-auto text-center">
           <span className="text-xs uppercase font-bold tracking-widest text-[#f29727] block mb-2">
-            Global Destinations Portfolio
+            {destHeroContent?.badge || 'Global Destinations Portfolio'}
           </span>
           <h1 className="text-4xl sm:text-5xl font-sans font-bold text-white mb-4">
-            Discover Your Next Horizon
+            {destHeroContent?.headline || 'Discover Your Next Horizon'}
           </h1>
           <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto">
-            From the snow-crowned summits of the Swiss Alps to the secluded overwater atolls of the Maldives and the sacred temples of India.
+            {destHeroContent?.subheadline || 'From the snow-crowned summits of the Swiss Alps to the secluded overwater atolls of the Maldives and the sacred temples of India.'}
           </p>
 
           {/* Search bar */}

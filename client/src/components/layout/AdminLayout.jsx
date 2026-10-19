@@ -14,7 +14,18 @@ import {
   ExternalLink,
   Menu as MenuIcon,
   X,
-  Compass
+  Compass,
+  Layers,
+  Film,
+  Boxes,
+  History,
+  Plane,
+  Star,
+  Sparkles,
+  Building,
+  Settings,
+  FileText,
+  Dock
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
@@ -53,20 +64,38 @@ export default function AdminLayout() {
       ]
     },
     {
-      group: 'Content & CMS',
+      group: 'Website CMS',
       items: [
-        { label: 'Website Image Manager', path: '/admin/website-images', icon: SlidersHorizontal },
+        { label: 'Pages & Layouts', path: '/admin/pages', icon: Layers },
+        { label: 'Section Manager', path: '/admin/sections', icon: SlidersHorizontal },
+        { label: 'Website Image Manager', path: '/admin/website-images', icon: ImageIcon },
+        { label: 'Banners & Sliders', path: '/admin/banners', icon: Film },
+        { label: 'Reusable Content Blocks', path: '/admin/content-blocks', icon: Boxes },
+        { label: 'Header & Navigation', path: '/admin/navigation', icon: Compass },
+        { label: 'Footer Manager', path: '/admin/footer', icon: Dock },
+        { label: 'Drafts & Revisions', path: '/admin/revisions', icon: History },
+      ]
+    },
+    {
+      group: 'Catalog & Content',
+      items: [
         { label: 'Destinations', path: '/admin/destinations', icon: MapPin },
-        { label: 'Blog Posts', path: '/admin/journal', icon: BookOpen },
+        { label: 'Tour Packages', path: '/admin/tours', icon: Plane },
+        { label: 'Travel Journal', path: '/admin/journal', icon: BookOpen },
+        { label: 'Testimonials', path: '/admin/testimonials', icon: Star },
+        { label: 'Specialized Services', path: '/admin/services', icon: Sparkles },
         { label: 'Media Library', path: '/admin/media', icon: ImageIcon },
         { label: 'Partner Expertise', path: '/admin/expertise', icon: Award },
       ]
     },
     {
-      group: 'Settings',
+      group: 'Settings & Config',
       items: [
+        { label: 'Contact & Branches', path: '/admin/contact-info', icon: Building },
+        { label: 'Global Website Settings', path: '/admin/settings', icon: Settings },
         { label: 'SEO Management', path: '/admin/seo', icon: Globe },
-        ...(isAdmin ? [{ label: 'Administrators', path: '/admin/users', icon: Users }] : [])
+        ...(isAdmin ? [{ label: 'Administrators & Roles', path: '/admin/users', icon: Users }] : []),
+        { label: 'Audit Logs', path: '/admin/audit-logs', icon: FileText },
       ]
     }
   ];
