@@ -730,6 +730,7 @@ export default function AdminDestinationsPage() {
                         ...contentForm,
                         intro: { ...contentForm.intro, img1: url }
                       })}
+                      compact={true}
                       recommendedDimensions="800 × 600 px"
                     />
                     <ImageUploadField
@@ -739,6 +740,7 @@ export default function AdminDestinationsPage() {
                         ...contentForm,
                         intro: { ...contentForm.intro, img2: url }
                       })}
+                      compact={true}
                       recommendedDimensions="800 × 600 px"
                     />
                   </div>
@@ -788,20 +790,23 @@ export default function AdminDestinationsPage() {
                       {contentForm.countries.map((country, idx) => (
                         <div
                           key={idx}
-                          className="p-4 bg-zinc-50 rounded-xl border border-zinc-200/90 grid grid-cols-1 md:grid-cols-12 gap-4 items-start"
+                          className="p-4 bg-white rounded-xl border border-zinc-200/90 shadow-2xs hover:shadow-xs transition-shadow flex flex-col sm:flex-row gap-5 items-start"
                         >
-                          <div className="md:col-span-3">
+                          {/* Dedicated Photo Thumbnail Card (Compact Mode) */}
+                          <div className="w-full sm:w-48 shrink-0">
                             <ImageUploadField
                               label={`Photo #${idx + 1}`}
                               value={country.image || ''}
                               onChange={(url) => handleUpdateCountry(idx, 'image', url)}
+                              compact={true}
                               recommendedDimensions="600 × 400 px"
                             />
                           </div>
 
-                          <div className="md:col-span-8 space-y-2">
+                          {/* Place Details Column */}
+                          <div className="flex-1 w-full space-y-2.5 min-w-0">
                             <div>
-                              <label className="block text-[11px] font-semibold text-zinc-700 uppercase mb-0.5">
+                              <label className="block text-[11px] font-semibold text-zinc-700 uppercase mb-1">
                                 Place / Country Name
                               </label>
                               <input
@@ -809,30 +814,31 @@ export default function AdminDestinationsPage() {
                                 value={country.name || ''}
                                 onChange={(e) => handleUpdateCountry(idx, 'name', e.target.value)}
                                 placeholder="e.g. South Africa, Kenya, Switzerland"
-                                className="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:outline-none"
+                                className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-zinc-800"
                               />
                             </div>
 
                             <div>
-                              <label className="block text-[11px] font-semibold text-zinc-700 uppercase mb-0.5">
+                              <label className="block text-[11px] font-semibold text-zinc-700 uppercase mb-1">
                                 Description / Highlights
                               </label>
                               <textarea
-                                rows={2}
+                                rows={3}
                                 value={country.desc || ''}
                                 onChange={(e) => handleUpdateCountry(idx, 'desc', e.target.value)}
                                 placeholder="Brief overview of highlights, tours, and experiences in this place..."
-                                className="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:outline-none"
+                                className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-zinc-800 leading-relaxed"
                               />
                             </div>
                           </div>
 
-                          <div className="md:col-span-1 flex justify-end">
+                          {/* Delete Country Action */}
+                          <div className="self-start pt-1">
                             <button
                               type="button"
                               onClick={() => handleRemoveCountry(idx)}
-                              className="p-1.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-lg cursor-pointer transition-colors"
-                              title="Delete Country"
+                              className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-lg cursor-pointer transition-colors"
+                              title="Delete Country / Place"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
