@@ -7,6 +7,7 @@ import {
   EXPERTISE_EVENT
 } from '../../utils/expertiseManager';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField from '../../components/admin/ImageUploadField';
 
 export default function AdminExpertisePage() {
   const [cards, setCards] = useState(getStoredExpertiseCards());
@@ -220,16 +221,15 @@ export default function AdminExpertisePage() {
                 />
               </div>
 
-              <div>
-                <label className="block font-semibold text-zinc-700 uppercase mb-1">Logo Image URL</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-900 focus:bg-white focus:outline-none"
-                />
-              </div>
+              <ImageUploadField
+                label="Partner Logo Image"
+                value={formData.image}
+                onChange={(url) => setFormData({ ...formData, image: url })}
+                required
+                objectFit="contain"
+                recommendedDimensions="Horizontal logo (approx 200x80px)"
+                helperText="Upload a logo file (PNG, JPG, SVG, WEBP) or drag & drop"
+              />
 
               <div>
                 <label className="block font-semibold text-zinc-700 uppercase mb-1">Official Website URL</label>

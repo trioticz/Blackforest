@@ -10,7 +10,8 @@ export default function ImageUploadField({
   required = false,
   recommendedDimensions = '',
   helperText = '',
-  compact = false
+  compact = false,
+  objectFit = 'cover'
 }) {
   const [uploading, setUploading] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
@@ -121,7 +122,7 @@ export default function ImageUploadField({
               <img
                 src={value}
                 alt={label}
-                className="w-full h-full object-cover"
+                className={`w-full h-full ${objectFit === 'contain' ? 'object-contain p-2 bg-white' : 'object-cover'}`}
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = '/assets/images/cropped-cropped-Logo-02-1-1-180x180.png';
@@ -197,11 +198,11 @@ export default function ImageUploadField({
           {value ? (
             <div className="relative border border-zinc-200 rounded-xl p-3 bg-zinc-50 flex items-center gap-4 transition-all hover:border-zinc-300">
               {/* Thumbnail */}
-              <div className="w-20 h-20 rounded-lg overflow-hidden bg-zinc-200 shrink-0 border border-zinc-300/80 relative group shadow-xs">
+              <div className="w-20 h-20 rounded-lg overflow-hidden bg-zinc-100 shrink-0 border border-zinc-300/80 relative group shadow-xs flex items-center justify-center">
                 <img
                   src={value}
                   alt="Preview"
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full ${objectFit === 'contain' ? 'object-contain p-1.5 bg-white' : 'object-cover'}`}
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = '/assets/images/cropped-cropped-Logo-02-1-1-180x180.png';
