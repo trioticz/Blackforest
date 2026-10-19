@@ -5,7 +5,7 @@ import { destinationService } from '../../services/allServices';
 import { useSettings } from '../../context/SiteSettingsContext';
 import { useWebsiteImage } from '../../context/WebsiteImagesContext';
 import { allDestinationsData } from '../../data/destinationsData';
-import { isDestinationPublished, DESTINATIONS_EVENT } from '../../utils/destinationsManager';
+import { isDestinationPublished, getDestinationFullContent, DESTINATIONS_EVENT } from '../../utils/destinationsManager';
 import { getPublishedExpertiseCards, EXPERTISE_EVENT } from '../../utils/expertiseManager';
 import { resolveImageUrl, handleImageError } from '../../utils/imageHelper';
 
@@ -87,6 +87,7 @@ export default function DestinationDetailPage({ forcedSlug }) {
   const [loading, setLoading] = useState(false);
   const [isPublished, setIsPublished] = useState(() => isDestinationPublished(cleanSlug));
   const [partnerCards, setPartnerCards] = useState(() => getPublishedExpertiseCards());
+  const [contentData, setContentData] = useState(() => getDestinationFullContent(cleanSlug));
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -98,6 +99,7 @@ export default function DestinationDetailPage({ forcedSlug }) {
   useEffect(() => {
     const updatePublishStatus = () => {
       setIsPublished(isDestinationPublished(cleanSlug));
+      setContentData(getDestinationFullContent(cleanSlug));
     };
     const updatePartners = () => {
       setPartnerCards(getPublishedExpertiseCards());
@@ -122,6 +124,7 @@ export default function DestinationDetailPage({ forcedSlug }) {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setActiveTab(1);
+    setContentData(getDestinationFullContent(cleanSlug));
 
     const fetchDestination = async () => {
       setLoading(true);
@@ -140,15 +143,15 @@ export default function DestinationDetailPage({ forcedSlug }) {
     fetchDestination();
   }, [cleanSlug]);
 
-  const regionName = staticData.name;
-  const name = destination?.name || staticData.name;
-  const intro = staticData.intro;
-  const tabs = staticData.tabs;
-  const parallaxBanner = staticData.parallaxBanner;
-  const countries = staticData.countries || [];
-  const faqs = staticData.faqs || [];
-  const stats = staticData.stats;
-  const heroImage = staticData.heroImage || destination?.heroImage;
+  const regionName = contentData?.name || destination?.name || staticData.name;
+  const name = contentData?.name || destination?.name || staticData.name;
+  const intro = contentData?.intro || staticData.intro;
+  const tabs = contentData?.tabs || staticData.tabs;
+  const parallaxBanner = contentData?.parallaxBanner || staticData.parallaxBanner;
+  const countries = contentData?.countries || staticData.countries || [];
+  const faqs = contentData?.faqs || staticData.faqs || [];
+  const stats = contentData?.stats || staticData.stats;
+  const heroImage = contentData?.heroImage || destination?.heroImage || staticData.heroImage;
 
   // If unpublished by admin, do not show on website
   if (!isPublished) {

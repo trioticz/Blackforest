@@ -4,7 +4,7 @@ import { MapPin, ArrowRight, Compass, Search } from 'lucide-react';
 import { destinationService } from '../../services/allServices';
 import { useSettings } from '../../context/SiteSettingsContext';
 import { useWebsiteContent } from '../../context/WebsiteContentContext';
-import { isDestinationPublished, DESTINATIONS_EVENT } from '../../utils/destinationsManager';
+import { isDestinationPublished, getStoredDestinations, DESTINATIONS_EVENT } from '../../utils/destinationsManager';
 
 export default function DestinationsPage() {
   const { region: routeRegion } = useParams();
@@ -44,12 +44,57 @@ export default function DestinationsPage() {
       if (search.trim()) {
         params.search = search.trim();
       }
-      const res = await destinationService.getAll(params);
-      if (res.success && res.data) {
-        const list = res.data.destinations || [];
-        // Only show destinations that are published in admin controls
-        setDestinations(list.filter(d => isDestinationPublished(d.slug)));
+
+      let list = [];
+      try {
+        const res = await destinationService.getAll(params);
+        if (res?.success && res.data?.destinations) {
+          list = res.data.destinations;
+        }
+      } catch (e) {
+        // Fallback to local
       }
+
+      // Merge with stored destinations to ensure newly added or locally edited items always appear
+      const stored = getStoredDestinations();
+      stored.forEach(sd => {
+        const existingIdx = list.findIndex(d => d.slug === sd.slug);
+        if (existingIdx >= 0) {
+          list[existingIdx] = {
+            ...list[existingIdx],
+            name: sd.name || list[existingIdx].name,
+            heroImage: sd.heroImage || list[existingIdx].heroImage,
+            thumbnail: sd.heroImage || list[existingIdx].thumbnail,
+            shortDescription: sd.tagline || list[existingIdx].shortDescription,
+            isPublished: sd.isPublished
+          };
+        } else {
+          // New custom destination
+          list.push({
+            id: sd.id,
+            name: sd.name,
+            slug: sd.slug,
+            region: sd.slug,
+            country: sd.name,
+            heroImage: sd.heroImage,
+            thumbnail: sd.heroImage,
+            shortDescription: sd.tagline,
+            isPublished: sd.isPublished
+          });
+        }
+      });
+
+      // Filter by publish status and active search/region filters
+      let filteredList = list.filter(d => isDestinationPublished(d.slug));
+      if (selectedRegion !== 'all') {
+        filteredList = filteredList.filter(d => (d.region || '').toLowerCase().includes(selectedRegion.toLowerCase()) || (d.slug || '').toLowerCase().includes(selectedRegion.toLowerCase()));
+      }
+      if (search.trim()) {
+        const q = search.trim().toLowerCase();
+        filteredList = filteredList.filter(d => (d.name || '').toLowerCase().includes(q) || (d.shortDescription || '').toLowerCase().includes(q) || (d.slug || '').toLowerCase().includes(q));
+      }
+
+      setDestinations(filteredList);
     } catch (err) {
       console.error('Error fetching destinations:', err);
     } finally {

@@ -1,6 +1,7 @@
 import { allDestinationsData } from '../data/destinationsData';
 
 const STORAGE_KEY = 'bf_destinations_v1';
+const CONTENT_STORAGE_PREFIX = 'bf_dest_content_';
 export const DESTINATIONS_EVENT = 'bf_destinations_updated';
 
 // Default 8 destinations
@@ -85,11 +86,16 @@ export function getStoredDestinations() {
     if (!raw) return initialEightDestinations;
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed) && parsed.length > 0) {
-      // Ensure all 8 slugs exist
-      return initialEightDestinations.map(item => {
+      // 1. Merge the standard 8 destinations
+      const initialMerged = initialEightDestinations.map(item => {
         const found = parsed.find(p => p.slug === item.slug);
         return found ? { ...item, ...found } : item;
       });
+
+      // 2. Append any custom destinations added by the admin
+      const customAdded = parsed.filter(p => !initialEightDestinations.some(init => init.slug === p.slug));
+
+      return [...initialMerged, ...customAdded];
     }
   } catch (err) {
     console.error('Error reading destinations from storage', err);
@@ -130,6 +136,51 @@ export function updateDestinationDetails(slug, details) {
   return updated.find(d => d.slug === slug);
 }
 
+export function addDestination(newDest) {
+  const list = getStoredDestinations();
+  const rawSlug = newDest.slug || newDest.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const cleanSlug = rawSlug.trim() || `dest-${Date.now()}`;
+
+  const destItem = {
+    id: Date.now(),
+    slug: cleanSlug,
+    name: newDest.name,
+    tagline: newDest.tagline || '',
+    heroImage: newDest.heroImage || '/assets/images/family-holidays-nsw-main.jpg',
+    countriesCount: Array.isArray(newDest.countries) ? newDest.countries.length : 0,
+    isPublished: newDest.isPublished !== false,
+    isCustom: true
+  };
+
+  const existingIdx = list.findIndex(d => d.slug === cleanSlug);
+  let updatedList;
+  if (existingIdx >= 0) {
+    updatedList = [...list];
+    updatedList[existingIdx] = { ...updatedList[existingIdx], ...destItem };
+  } else {
+    updatedList = [...list, destItem];
+  }
+
+  saveStoredDestinations(updatedList);
+
+  if (newDest.content) {
+    saveDestinationFullContent(cleanSlug, newDest.content);
+  }
+
+  return destItem;
+}
+
+export function deleteDestination(slug) {
+  const list = getStoredDestinations();
+  const updated = list.filter(d => d.slug !== slug);
+  saveStoredDestinations(updated);
+  try {
+    localStorage.removeItem(CONTENT_STORAGE_PREFIX + slug);
+  } catch (e) {}
+  window.dispatchEvent(new Event(DESTINATIONS_EVENT));
+  return true;
+}
+
 export function isDestinationPublished(slug) {
   const cleanSlug = (slug || '').toLowerCase().replace(/^\//, '');
   const list = getStoredDestinations();
@@ -140,4 +191,118 @@ export function isDestinationPublished(slug) {
 export function getPublishedDestinations() {
   const list = getStoredDestinations();
   return list.filter(d => d.isPublished !== false);
+}
+
+/**
+ * Returns full rich content for a destination (intro story, countries, tabs, highlights, parallax banner, FAQs)
+ * Merges baseline static data with any admin overrides from localStorage.
+ */
+export function getDestinationFullContent(slug) {
+  const cleanSlug = (slug || '').toLowerCase().replace(/^\//, '');
+  const base = allDestinationsData[cleanSlug] || {
+    name: cleanSlug.charAt(0).toUpperCase() + cleanSlug.slice(1).replace(/-/g, ' '),
+    slug: cleanSlug,
+    heroImage: '/assets/images/sean-robertson-5ftxFgXLtkI-unsplash-scaled.jpg',
+    tagline: 'Untamed Wilderness & Curated Luxury',
+    intro: {
+      eyebrow: 'Where Every Horizon Tells a Story',
+      title: `Luxury Escapes Across ${cleanSlug.charAt(0).toUpperCase() + cleanSlug.slice(1).replace(/-/g, ' ')}`,
+      description: 'Experience unparalleled elegance, secluded retreats, and bespoke itineraries designed by private luxury travel specialists.',
+      img1: '/assets/images/sutirta-budiman-kjOBqwMUnWw-unsplash-scaled.jpg',
+      img2: '/assets/images/sean-robertson-5ftxFgXLtkI-unsplash-scaled.jpg'
+    },
+    tabs: {
+      tab1: {
+        label: 'Why Blackforest Holidays?',
+        subtitle: 'Every Journey Feels Legendary',
+        title: 'Where Wild Expeditions Meet Luxury Retreats',
+        description: 'At Black Forest Holidays, we go beyond standard tourism. With bespoke planning, local concierge access, and vetted accommodations, every trip is seamless and unforgettable.',
+        image: '/assets/images/hendrik-cornelissen-qs4E9t0hJc0-unsplash-scaled.jpg'
+      },
+      tab2: {
+        label: 'Destinations',
+        subtitle: 'Our Curated Footprint',
+        title: 'Island Blues to Mountain Views',
+        items: [],
+        image: '/assets/images/ahmed-shabana-ADa9bb3tqR4-unsplash-scaled.jpg'
+      },
+      tab3: {
+        label: 'Highlights',
+        subtitle: 'Signature Experiences',
+        title: 'Highlights',
+        highlights: [
+          '1. Private guided excursions with master naturalists',
+          '2. Handpicked 5-star boutique lodgings and heritage stays',
+          '3. Seamless VIP ground handling and private airport transfers',
+          '4. Dedicated 24/7 travel concierge throughout your journey'
+        ],
+        image: '/assets/images/sergi-ferrete-YXwt-vJ3szA-unsplash-scaled.jpg'
+      }
+    },
+    parallaxBanner: {
+      eyebrow: 'Start a trip now',
+      title: 'Discover the World Through a Lens of Luxury',
+      subtitle: 'Everything you need for an extraordinary journey.',
+      buttonText: 'CONTACT US',
+      buttonLink: '/contact',
+      bgImage: '/assets/images/4.png'
+    },
+    countries: [],
+    faqs: []
+  };
+
+  try {
+    const raw = localStorage.getItem(CONTENT_STORAGE_PREFIX + cleanSlug);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return {
+        ...base,
+        ...parsed,
+        intro: { ...base.intro, ...(parsed.intro || {}) },
+        tabs: {
+          tab1: { ...base.tabs?.tab1, ...(parsed.tabs?.tab1 || {}) },
+          tab2: { ...base.tabs?.tab2, ...(parsed.tabs?.tab2 || {}) },
+          tab3: { ...base.tabs?.tab3, ...(parsed.tabs?.tab3 || {}) }
+        },
+        parallaxBanner: { ...base.parallaxBanner, ...(parsed.parallaxBanner || {}) },
+        countries: Array.isArray(parsed.countries) ? parsed.countries : base.countries || [],
+        faqs: Array.isArray(parsed.faqs) ? parsed.faqs : base.faqs || []
+      };
+    }
+  } catch (err) {
+    console.error('Error reading destination content', err);
+  }
+
+  return base;
+}
+
+/**
+ * Saves the rich content for a destination and updates countriesCount in the main destinations list.
+ */
+export function saveDestinationFullContent(slug, content) {
+  const cleanSlug = (slug || '').toLowerCase().replace(/^\//, '');
+  try {
+    localStorage.setItem(CONTENT_STORAGE_PREFIX + cleanSlug, JSON.stringify(content));
+
+    // Update countries count in main destinations list
+    const list = getStoredDestinations();
+    const count = Array.isArray(content.countries) ? content.countries.length : 0;
+    const updated = list.map(d => {
+      if (d.slug === cleanSlug) {
+        return {
+          ...d,
+          name: content.name || d.name,
+          tagline: content.tagline || d.tagline,
+          heroImage: content.heroImage || d.heroImage,
+          countriesCount: count
+        };
+      }
+      return d;
+    });
+    saveStoredDestinations(updated);
+
+    window.dispatchEvent(new Event(DESTINATIONS_EVENT));
+  } catch (err) {
+    console.error('Error saving destination content', err);
+  }
 }
