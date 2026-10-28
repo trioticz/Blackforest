@@ -81,8 +81,6 @@ export default function IntroSection() {
     }));
   }, [baseCards, img1, img2, img3, img4, img5, img6]);
 
-  if (!isVisible) return null;
-
   const [idx, setIdx] = useState(0);
   const [delta, setDelta] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -120,6 +118,8 @@ export default function IntroSection() {
   };
 
   const centreIdx = idx + 1; // which CARDS[] entry is currently in the centre slot
+
+  if (!isVisible) return null;
 
   return (
     <section className="relative py-14 sm:py-18 lg:py-24 overflow-hidden z-10 bg-white render-defer">
