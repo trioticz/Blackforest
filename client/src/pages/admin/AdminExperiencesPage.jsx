@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Compass, PlusCircle, Edit, Trash2, X } from 'lucide-react';
 import { experienceService } from '../../services/allServices';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField from '../../components/admin/ImageUploadField';
 
 export default function AdminExperiencesPage() {
   const [experiences, setExperiences] = useState([]);
@@ -155,13 +156,20 @@ export default function AdminExperiencesPage() {
                   <option value="culture">Culture & Heritage</option>
                 </select>
               </div>
-              <div>
-                <label className="block font-bold mb-1">Thumbnail URL</label>
-                <input type="text" value={formData.thumbnail} onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border rounded-lg" />
-              </div>
-              <div>
-                <label className="block font-bold mb-1">Hero Image URL</label>
-                <input type="text" value={formData.heroImage} onChange={(e) => setFormData({ ...formData, heroImage: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border rounded-lg" />
+              <div className="space-y-3 pt-1">
+                <ImageUploadField
+                  label="Experience Thumbnail"
+                  value={formData.thumbnail}
+                  onChange={(url) => setFormData({ ...formData, thumbnail: url })}
+                  compact
+                  helperText="Card thumbnail photo"
+                />
+                <ImageUploadField
+                  label="Hero Banner Image"
+                  value={formData.heroImage}
+                  onChange={(url) => setFormData({ ...formData, heroImage: url })}
+                  helperText="Header hero banner photo"
+                />
               </div>
               <div>
                 <label className="block font-bold mb-1">Description</label>

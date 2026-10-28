@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { pageSectionService, contentBlockService } from '../../services/allServices';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField from '../../components/admin/ImageUploadField';
 
 export default function AdminBannersPage() {
   const { showToast } = useToast();
@@ -352,13 +353,37 @@ export default function AdminBannersPage() {
             />
           </div>
 
-          <div className="sm:col-span-2">
-            <label className="text-xs font-semibold text-zinc-700">Video File URL</label>
-            <input
-              type="text"
+          <div className="sm:col-span-2 pt-2 border-t border-zinc-100">
+            <ImageUploadField
+              label="Hero Background Video"
               value={heroForm.video_url}
-              onChange={(e) => setHeroForm({ ...heroForm, video_url: e.target.value })}
-              className="w-full mt-1 px-3 py-2 text-xs bg-white border border-zinc-200 rounded-lg"
+              onChange={(url) => setHeroForm({ ...heroForm, video_url: url })}
+              mediaType="video"
+              helperText="Upload background video (MP4, WEBM, MOV up to 100MB) or enter URL"
+            />
+          </div>
+
+          <div className="sm:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            <ImageUploadField
+              label="Desktop Poster Image"
+              value={heroForm.desktop_poster}
+              onChange={(url) => setHeroForm({ ...heroForm, desktop_poster: url })}
+              compact
+              helperText="Desktop fallback poster"
+            />
+            <ImageUploadField
+              label="Mobile Poster Image"
+              value={heroForm.mobile_poster}
+              onChange={(url) => setHeroForm({ ...heroForm, mobile_poster: url })}
+              compact
+              helperText="Mobile fallback poster"
+            />
+            <ImageUploadField
+              label="Fallback Poster Image"
+              value={heroForm.fallback_poster}
+              onChange={(url) => setHeroForm({ ...heroForm, fallback_poster: url })}
+              compact
+              helperText="Standard fallback image"
             />
           </div>
         </div>

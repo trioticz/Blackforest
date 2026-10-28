@@ -52,9 +52,9 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-// Request Parsing
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// Request Parsing (Support up to 100MB for media uploads and base64 DB storage)
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
 // Request Logging
 if (process.env.NODE_ENV === 'development') {

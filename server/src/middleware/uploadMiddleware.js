@@ -26,13 +26,23 @@ const fileFilter = (req, file, cb) => {
     'image/png',
     'image/webp',
     'image/svg+xml',
-    'image/gif'
+    'image/gif',
+    'image/avif',
+    'video/mp4',
+    'video/webm',
+    'video/ogg',
+    'video/quicktime',
+    'video/x-msvideo'
   ];
 
-  if (allowedMimeTypes.includes(file.mimetype)) {
+  if (
+    allowedMimeTypes.includes(file.mimetype) ||
+    file.mimetype.startsWith('image/') ||
+    file.mimetype.startsWith('video/')
+  ) {
     cb(null, true);
   } else {
-    cb(new Error('Only JPEG, PNG, WEBP, GIF, and SVG images are allowed'), false);
+    cb(new Error('Only JPEG, PNG, WEBP, GIF, SVG images and MP4, WEBM, MOV videos are allowed'), false);
   }
 };
 
@@ -40,7 +50,7 @@ const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 10 * 1024 * 1024 // 10MB limit
+    fileSize: 100 * 1024 * 1024 // 100MB limit for images and videos
   }
 });
 

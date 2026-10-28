@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Star, PlusCircle, Edit, Trash2, X, Quote } from 'lucide-react';
 import { testimonialService } from '../../services/allServices';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField from '../../components/admin/ImageUploadField';
 
 export default function AdminTestimonialsPage() {
   const [testimonials, setTestimonials] = useState([]);
@@ -167,9 +168,13 @@ export default function AdminTestimonialsPage() {
                 <label className="block font-bold mb-1">Rating (1 to 5)</label>
                 <input type="number" min="1" max="5" value={formData.rating} onChange={(e) => setFormData({ ...formData, rating: Number(e.target.value) })} className="w-full px-3 py-2 bg-gray-50 border rounded-lg" />
               </div>
-              <div>
-                <label className="block font-bold mb-1">Traveler Photo URL</label>
-                <input type="text" value={formData.photo} onChange={(e) => setFormData({ ...formData, photo: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border rounded-lg" />
+              <div className="pt-1">
+                <ImageUploadField
+                  label="Traveler Avatar / Photo"
+                  value={formData.photo}
+                  onChange={(url) => setFormData({ ...formData, photo: url })}
+                  helperText="Upload guest portrait photo (PNG, JPG, WEBP)"
+                />
               </div>
               <div>
                 <label className="block font-bold mb-1">Review Quote *</label>

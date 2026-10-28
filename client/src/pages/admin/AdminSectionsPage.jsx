@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { pageSectionService } from '../../services/allServices';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField, { isVideoUrl } from '../../components/admin/ImageUploadField';
 
 const PAGE_OPTIONS = [
   { slug: 'all', label: 'All Pages' },
@@ -242,6 +243,48 @@ export default function AdminSectionsPage() {
     });
   }, [sections, searchTerm, selectedPage]);
 
+  const isMediaField = (fieldName, val) => {
+    const lower = (fieldName || '').toLowerCase();
+    if (
+      lower.includes('image') ||
+      lower.includes('img') ||
+      lower.includes('video') ||
+      lower.includes('poster') ||
+      lower.includes('banner') ||
+      lower.includes('photo') ||
+      lower.includes('logo') ||
+      lower.includes('avatar') ||
+      lower.includes('thumbnail') ||
+      lower.includes('cover') ||
+      lower.endsWith('_bg') ||
+      lower === 'bg'
+    ) {
+      return true;
+    }
+    if (typeof val === 'string' && val) {
+      const clean = val.split('?')[0].toLowerCase();
+      if (
+        clean.match(/\.(jpeg|jpg|png|webp|svg|gif|avif|mp4|webm|mov|ogg)($|\?)/i) ||
+        clean.startsWith('/uploads/') ||
+        clean.startsWith('/assets/images/') ||
+        clean.startsWith('data:image/') ||
+        clean.startsWith('data:video/')
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const isVideoField = (fieldName, val) => {
+    const lower = (fieldName || '').toLowerCase();
+    if (lower.includes('video')) return true;
+    if (typeof val === 'string' && val) {
+      return isVideoUrl(val);
+    }
+    return false;
+  };
+
   // Helper to render dynamic form fields
   const renderFieldInput = (key, value, parentKey = '') => {
     const fullKey = parentKey ? `${parentKey}.${key}` : key;
@@ -263,6 +306,27 @@ export default function AdminSectionsPage() {
       );
     }
 
+    // Media (Image or Video) Upload Field
+    if (isMediaField(key, value)) {
+      const isVid = isVideoField(key, value);
+      return (
+        <div key={fullKey} className="pt-1.5 pb-2">
+          <ImageUploadField
+            label={label}
+            value={value || ''}
+            onChange={(newUrl) => updateField(fullKey, newUrl)}
+            mediaType={isVid ? 'video' : 'any'}
+            objectFit={key.toLowerCase().includes('logo') || key.toLowerCase().includes('icon') ? 'contain' : 'cover'}
+            helperText={
+              isVid
+                ? 'Upload video file (MP4, WEBM, MOV) or enter URL'
+                : 'Upload image file (PNG, JPG, WEBP, SVG) or enter URL'
+            }
+          />
+        </div>
+      );
+    }
+
     if (Array.isArray(value)) {
       return (
         <div key={fullKey} className="space-y-3 pt-3 border-t border-zinc-200">
@@ -278,23 +342,63 @@ export default function AdminSectionsPage() {
                   Item #{idx + 1}
                 </span>
                 {typeof item === 'object' && item !== null ? (
-                  Object.keys(item).map((subKey) => (
-                    <div key={subKey} className="space-y-1">
-                      <label className="text-[11px] font-medium text-zinc-600 capitalize">
-                        {subKey.replace(/_/g, ' ')}
-                      </label>
-                      <input
-                        type="text"
-                        value={item[subKey] || ''}
-                        onChange={(e) => {
-                          const newArr = [...value];
-                          newArr[idx] = { ...newArr[idx], [subKey]: e.target.value };
-                          updateField(fullKey, newArr);
-                        }}
-                        className="w-full text-xs px-2.5 py-1.5 bg-white border border-zinc-200 rounded focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
-                      />
-                    </div>
-                  ))
+                  Object.keys(item).map((subKey) => {
+                    const subVal = item[subKey];
+                    if (isMediaField(subKey, subVal)) {
+                      const isVid = isVideoField(subKey, subVal);
+                      return (
+                        <div key={subKey} className="pt-1 pb-1">
+                          <ImageUploadField
+                            label={subKey.replace(/_/g, ' ')}
+                            value={subVal || ''}
+                            onChange={(newUrl) => {
+                              const newArr = [...value];
+                              newArr[idx] = { ...newArr[idx], [subKey]: newUrl };
+                              updateField(fullKey, newArr);
+                            }}
+                            compact
+                            mediaType={isVid ? 'video' : 'any'}
+                            objectFit={
+                              subKey.toLowerCase().includes('logo') || subKey.toLowerCase().includes('icon')
+                                ? 'contain'
+                                : 'cover'
+                            }
+                          />
+                        </div>
+                      );
+                    }
+                    return (
+                      <div key={subKey} className="space-y-1">
+                        <label className="text-[11px] font-medium text-zinc-600 capitalize">
+                          {subKey.replace(/_/g, ' ')}
+                        </label>
+                        <input
+                          type="text"
+                          value={item[subKey] || ''}
+                          onChange={(e) => {
+                            const newArr = [...value];
+                            newArr[idx] = { ...newArr[idx], [subKey]: e.target.value };
+                            updateField(fullKey, newArr);
+                          }}
+                          className="w-full text-xs px-2.5 py-1.5 bg-white border border-zinc-200 rounded focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                        />
+                      </div>
+                    );
+                  })
+                ) : isMediaField(key, item) ? (
+                  <div key={idx} className="pt-1">
+                    <ImageUploadField
+                      label={`Item #${idx + 1}`}
+                      value={item || ''}
+                      onChange={(newUrl) => {
+                        const newArr = [...value];
+                        newArr[idx] = newUrl;
+                        updateField(fullKey, newArr);
+                      }}
+                      compact
+                      mediaType={isVideoField(key, item) ? 'video' : 'any'}
+                    />
+                  </div>
                 ) : (
                   <input
                     type="text"

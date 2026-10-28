@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { contentBlockService } from '../../services/allServices';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField, { isVideoUrl } from '../../components/admin/ImageUploadField';
 
 export default function AdminContentBlocksPage() {
   const { showToast } = useToast();
@@ -212,6 +213,41 @@ export default function AdminContentBlocksPage() {
                         checked={val}
                         onChange={(e) => setFormData({ ...formData, [key]: e.target.checked })}
                         className="w-4 h-4 rounded text-emerald-600 cursor-pointer"
+                      />
+                    </div>
+                  );
+                }
+
+                const lowerKey = key.toLowerCase();
+                const isMedia =
+                  lowerKey.includes('image') ||
+                  lowerKey.includes('img') ||
+                  lowerKey.includes('video') ||
+                  lowerKey.includes('poster') ||
+                  lowerKey.includes('banner') ||
+                  lowerKey.includes('photo') ||
+                  lowerKey.includes('logo') ||
+                  lowerKey.includes('thumbnail') ||
+                  (typeof val === 'string' &&
+                    (/\.(jpe?g|png|webp|svg|gif|avif|mp4|webm|mov)($|\?)/i.test(val) ||
+                      val.startsWith('/uploads/') ||
+                      val.startsWith('/assets/images/')));
+
+                if (isMedia) {
+                  const isVid = lowerKey.includes('video') || isVideoUrl(val);
+                  return (
+                    <div key={key} className="pt-1.5 pb-2">
+                      <ImageUploadField
+                        label={label}
+                        value={val || ''}
+                        onChange={(newUrl) => setFormData({ ...formData, [key]: newUrl })}
+                        mediaType={isVid ? 'video' : 'any'}
+                        objectFit={lowerKey.includes('logo') || lowerKey.includes('icon') ? 'contain' : 'cover'}
+                        helperText={
+                          isVid
+                            ? 'Upload video file (MP4, WEBM, MOV) or enter URL'
+                            : 'Upload image file (PNG, JPG, WEBP, SVG) or enter URL'
+                        }
                       />
                     </div>
                   );

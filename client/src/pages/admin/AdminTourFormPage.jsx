@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { tourService, destinationService } from '../../services/allServices';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField from '../../components/admin/ImageUploadField';
 
 export default function AdminTourFormPage() {
   const { id } = useParams();
@@ -376,16 +377,13 @@ export default function AdminTourFormPage() {
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
-                Cover Photo URL
-              </label>
-              <input
-                type="text"
+            <div className="pt-1">
+              <ImageUploadField
+                label="Tour Package Cover Photo"
                 value={formData.coverImage}
-                onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
-                placeholder="https://images.unsplash.com/..."
-                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#10221b]"
+                onChange={(url) => setFormData({ ...formData, coverImage: url })}
+                required
+                helperText="Upload landscape cover photo for tour cards & header"
               />
             </div>
           </div>

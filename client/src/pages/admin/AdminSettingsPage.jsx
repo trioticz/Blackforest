@@ -3,6 +3,7 @@ import { Settings, Save, CheckCircle2, Phone, Mail, MessageCircle, MapPin, Globe
 import { settingsService } from '../../services/allServices';
 import { useSettings } from '../../context/SiteSettingsContext';
 import { useToast } from '../../context/ToastContext';
+import ImageUploadField from '../../components/admin/ImageUploadField';
 
 export default function AdminSettingsPage() {
   const { settings, refreshSettings } = useSettings();
@@ -92,14 +93,20 @@ export default function AdminSettingsPage() {
             <label className="block font-bold text-gray-700 uppercase mb-1">Site Title</label>
             <input type="text" value={formData.siteName} onChange={(e) => setFormData({ ...formData, siteName: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border rounded-lg text-sm" />
           </div>
-          <div>
-            <label className="block font-bold text-gray-700 uppercase mb-1">Logo URL (Header & Footer)</label>
-            <input type="text" value={formData.logo} onChange={(e) => setFormData({ ...formData, logo: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border rounded-lg text-sm" />
-          </div>
-          <div>
-            <label className="block font-bold text-gray-700 uppercase mb-1">Dark Mode Logo URL</label>
-            <input type="text" value={formData.darkLogo} onChange={(e) => setFormData({ ...formData, darkLogo: e.target.value })} className="w-full px-3 py-2 bg-gray-50 border rounded-lg text-sm" />
-          </div>
+          <ImageUploadField
+            label="Main Brand Logo (Header & Footer)"
+            value={formData.logo}
+            onChange={(url) => setFormData({ ...formData, logo: url })}
+            objectFit="contain"
+            helperText="Upload transparent PNG or SVG logo for navigation and footer"
+          />
+          <ImageUploadField
+            label="Dark Mode / Inverted Logo"
+            value={formData.darkLogo}
+            onChange={(url) => setFormData({ ...formData, darkLogo: url })}
+            objectFit="contain"
+            helperText="White/inverted logo variant for dark backgrounds"
+          />
           <div>
             <label className="block font-bold text-gray-700 uppercase mb-1">Footer Bio Description</label>
             <textarea rows={3} value={formData.footerText} onChange={(e) => setFormData({ ...formData, footerText: e.target.value })} className="w-full p-2.5 bg-gray-50 border rounded-lg text-sm" />
