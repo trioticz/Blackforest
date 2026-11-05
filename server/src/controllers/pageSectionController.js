@@ -1,5 +1,20 @@
 const { PageSection } = require('../models');
 const { Op } = require('sequelize');
+const { defaultPageSections } = require('../seeds/pageSectionsSeed');
+
+const safeParseJSON = (data) => {
+  if (data === null || data === undefined) return null;
+  if (typeof data === 'object') return data;
+  if (typeof data === 'string') {
+    try {
+      const parsed = JSON.parse(data);
+      return typeof parsed === 'object' && parsed !== null ? parsed : data;
+    } catch (_) {
+      return data;
+    }
+  }
+  return data;
+};
 
 const findSection = async (idOrKey) => {
   if (!idOrKey) return null;
@@ -8,6 +23,31 @@ const findSection = async (idOrKey) => {
     if (byId) return byId;
   }
   return await PageSection.findOne({ where: { section_key: idOrKey } });
+};
+
+const findOrCreateSection = async (idOrKey, extraDefaults = {}) => {
+  if (!idOrKey) return null;
+  let sec = await findSection(idOrKey);
+  if (!sec) {
+    const def = (defaultPageSections || []).find((s) => s.section_key === idOrKey) || {};
+    try {
+      sec = await PageSection.create({
+        page_slug: def.page_slug || (String(idOrKey).includes('.') ? String(idOrKey).split('.')[0] : 'global'),
+        section_key: idOrKey,
+        section_name: extraDefaults.section_name || def.section_name || String(idOrKey),
+        order_index: def.order_index || 0,
+        is_visible: def.is_visible !== undefined ? def.is_visible : true,
+        content: extraDefaults.content !== undefined ? extraDefaults.content : (def.content || {}),
+        original_content: def.content || extraDefaults.content || {},
+        draft_content: null,
+        publication_status: 'published',
+        updated_by: 'System'
+      });
+    } catch (_) {
+      sec = await findSection(idOrKey);
+    }
+  }
+  return sec;
 };
 
 // GET /api/page-sections
@@ -38,11 +78,15 @@ exports.getAllSections = async (req, res) => {
 
     const transformed = sections.map((sec) => {
       const plain = sec.get({ plain: true });
-      const hasDraft = plain.draft_content !== null && plain.draft_content !== undefined;
-      const activeContent = isPreview && hasDraft ? plain.draft_content : plain.content;
+      const content = safeParseJSON(plain.content);
+      const draftContent = safeParseJSON(plain.draft_content);
+      const hasDraft = draftContent !== null && draftContent !== undefined;
+      const activeContent = isPreview && hasDraft ? draftContent : content;
 
       return {
         ...plain,
+        content,
+        draft_content: draftContent,
         active_content: activeContent,
         has_draft: hasDraft
       };
@@ -74,7 +118,7 @@ exports.getSection = async (req, res) => {
     const { preview } = req.query;
     const isPreview = preview === 'true' || preview === '1';
 
-    const sec = await findSection(idOrKey);
+    const sec = await findOrCreateSection(idOrKey);
     if (!sec) {
       return res.status(404).json({
         success: false,
@@ -83,13 +127,17 @@ exports.getSection = async (req, res) => {
     }
 
     const plain = sec.get({ plain: true });
-    const hasDraft = plain.draft_content !== null;
-    const activeContent = isPreview && hasDraft ? plain.draft_content : plain.content;
+    const content = safeParseJSON(plain.content);
+    const draftContent = safeParseJSON(plain.draft_content);
+    const hasDraft = draftContent !== null;
+    const activeContent = isPreview && hasDraft ? draftContent : content;
 
     return res.status(200).json({
       success: true,
       data: {
         ...plain,
+        content,
+        draft_content: draftContent,
         active_content: activeContent,
         has_draft: hasDraft
       }
@@ -110,16 +158,17 @@ exports.saveDraft = async (req, res) => {
     const { idOrKey } = req.params;
     const { content, section_name, is_visible } = req.body;
 
-    const sec = await findSection(idOrKey);
+    const sec = await findOrCreateSection(idOrKey, { section_name, content });
     if (!sec) {
-      return res.status(404).json({
+      return res.status(500).json({
         success: false,
-        message: `Page section '${idOrKey}' not found`
+        message: `Failed to initialize page section '${idOrKey}'`
       });
     }
 
+    const parsedContent = safeParseJSON(content);
     const updates = {
-      draft_content: content !== undefined ? content : sec.draft_content || sec.content,
+      draft_content: parsedContent !== undefined ? parsedContent : sec.draft_content || sec.content,
       publication_status: 'draft',
       updated_by: req.user?.name || req.body.updated_by || 'Admin'
     };
@@ -129,10 +178,14 @@ exports.saveDraft = async (req, res) => {
 
     await sec.update(updates);
 
+    const plain = sec.get({ plain: true });
+    plain.content = safeParseJSON(plain.content);
+    plain.draft_content = safeParseJSON(plain.draft_content);
+
     return res.status(200).json({
       success: true,
       message: 'Draft saved successfully',
-      data: sec
+      data: plain
     });
   } catch (error) {
     console.error('Error saving draft:', error);
@@ -150,22 +203,28 @@ exports.publishSection = async (req, res) => {
     const { idOrKey } = req.params;
     const { content, section_name, is_visible } = req.body || {};
 
-    const sec = await findSection(idOrKey);
+    const sec = await findOrCreateSection(idOrKey, { section_name, content });
     if (!sec) {
-      return res.status(404).json({
+      return res.status(500).json({
         success: false,
-        message: `Page section '${idOrKey}' not found`
+        message: `Failed to initialize page section '${idOrKey}'`
       });
     }
 
-    const newContent = content !== undefined ? content : (sec.draft_content !== null ? sec.draft_content : sec.content);
+    const parsedContent = safeParseJSON(content);
+    const secDraft = safeParseJSON(sec.draft_content);
+    const secContent = safeParseJSON(sec.content);
+
+    const newContent = parsedContent !== undefined && parsedContent !== null
+      ? parsedContent
+      : (secDraft !== null ? secDraft : secContent);
 
     // Append to version history (keep last 10 revisions)
     const history = Array.isArray(sec.version_history) ? [...sec.version_history] : [];
     history.unshift({
       timestamp: new Date().toISOString(),
       published_by: req.user?.name || 'Admin',
-      content_snapshot: sec.content
+      content_snapshot: secContent
     });
     if (history.length > 10) history.pop();
 
@@ -182,10 +241,14 @@ exports.publishSection = async (req, res) => {
 
     await sec.update(updates);
 
+    const plain = sec.get({ plain: true });
+    plain.content = safeParseJSON(plain.content);
+    plain.draft_content = null;
+
     return res.status(200).json({
       success: true,
       message: 'Section published successfully to live website',
-      data: sec
+      data: plain
     });
   } catch (error) {
     console.error('Error publishing section:', error);

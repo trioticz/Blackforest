@@ -52,7 +52,7 @@ export default function AdminLoginPage() {
           <div className="w-14 h-14 bg-[#10221b] text-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
             <Lock className="w-7 h-7" />
           </div>
-          <span className="text-xs uppercase font-bold tracking-widest text-[#10221b] block mb-1">
+          <span className="text-xs uppercase font-bold tracking-widest text-[#0fef99] block mb-1">
             Secure Management
           </span>
           <h2 className="text-2xl font-serif font-bold text-[#10221b]">

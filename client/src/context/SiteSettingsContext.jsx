@@ -37,7 +37,17 @@ export const SiteSettingsProvider = ({ children }) => {
 
   const fetchSettingsAndNav = useCallback(async () => {
     try {
-      // Mocked to prevent API proxy errors when no backend is running
+      const res = await settingsService.get();
+      if (res?.data) {
+        setSettings((prev) => ({
+          ...prev,
+          ...res.data,
+          socialLinks: res.data.socialLinks || prev.socialLinks
+        }));
+      }
+    } catch (_) {}
+
+    try {
       const dummyNav = [
         { id: 1, title: 'Destinations', path: '/destinations', hasDropdown: true },
         { id: 2, title: 'Experiences', path: '/experiences', hasDropdown: true },
@@ -57,6 +67,18 @@ export const SiteSettingsProvider = ({ children }) => {
 
   useEffect(() => {
     fetchSettingsAndNav();
+
+    const handleSync = () => {
+      fetchSettingsAndNav();
+    };
+
+    window.addEventListener('bf_content_updated', handleSync);
+    window.addEventListener('storage', handleSync);
+
+    return () => {
+      window.removeEventListener('bf_content_updated', handleSync);
+      window.removeEventListener('storage', handleSync);
+    };
   }, [fetchSettingsAndNav]);
 
   const openEnquiryModal = (prefill = {}) => {

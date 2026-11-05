@@ -87,7 +87,20 @@ export function WebsiteContentProvider({ children }) {
       if (secRes.status === 'fulfilled' && secRes.value?.success && secRes.value?.data) {
         const sMap = {};
         (secRes.value.data.sections || []).forEach((sec) => {
-          sMap[sec.section_key] = sec;
+          let content = sec.content;
+          if (typeof content === 'string') {
+            try { content = JSON.parse(content); } catch (_) {}
+          }
+          let activeContent = sec.active_content;
+          if (typeof activeContent === 'string') {
+            try { activeContent = JSON.parse(activeContent); } catch (_) {}
+          }
+          sMap[sec.section_key] = {
+            ...sec,
+            content: typeof content === 'object' && content !== null ? content : {},
+            active_content:
+              typeof activeContent === 'object' && activeContent !== null ? activeContent : content
+          };
         });
         setSectionsMap((prev) => ({ ...prev, ...sMap }));
         totalDrafts += secRes.value.data.pendingDraftCount || 0;
@@ -96,7 +109,20 @@ export function WebsiteContentProvider({ children }) {
       if (blkRes.status === 'fulfilled' && blkRes.value?.success && blkRes.value?.data) {
         const bMap = {};
         (blkRes.value.data.blocks || []).forEach((b) => {
-          bMap[b.block_key] = b;
+          let content = b.content;
+          if (typeof content === 'string') {
+            try { content = JSON.parse(content); } catch (_) {}
+          }
+          let activeContent = b.active_content;
+          if (typeof activeContent === 'string') {
+            try { activeContent = JSON.parse(activeContent); } catch (_) {}
+          }
+          bMap[b.block_key] = {
+            ...b,
+            content: typeof content === 'object' && content !== null ? content : {},
+            active_content:
+              typeof activeContent === 'object' && activeContent !== null ? activeContent : content
+          };
         });
         setBlocksMap((prev) => ({ ...prev, ...bMap }));
         totalDrafts += blkRes.value.data.pendingDraftCount || 0;
@@ -112,6 +138,43 @@ export function WebsiteContentProvider({ children }) {
 
   useEffect(() => {
     loadContent();
+  }, [loadContent]);
+
+  // Sync across tabs, events, or when window regains visibility
+  useEffect(() => {
+    const handleSync = (e) => {
+      if (e?.detail?.key && e?.detail?.content) {
+        const isPreview = sessionStorage.getItem('bf_preview_mode') === 'true';
+        setSectionsMap((prev) => ({
+          ...prev,
+          [e.detail.key]: {
+            ...(prev[e.detail.key] || {}),
+            section_key: e.detail.key,
+            content: e.detail.content,
+            active_content: e.detail.content,
+            has_draft: e.detail.action === 'draft',
+            publication_status: e.detail.action === 'draft' ? 'draft' : 'published'
+          }
+        }));
+      }
+      loadContent();
+    };
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        loadContent();
+      }
+    };
+
+    window.addEventListener('bf_content_updated', handleSync);
+    window.addEventListener('storage', handleSync);
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      window.removeEventListener('bf_content_updated', handleSync);
+      window.removeEventListener('storage', handleSync);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, [loadContent]);
 
   const togglePreviewMode = (enable) => {
@@ -158,8 +221,19 @@ export function WebsiteContentProvider({ children }) {
           isDraft: false
         };
       }
+      let rawContent = sec.active_content || sec.content || fallbackContent;
+      if (typeof rawContent === 'string') {
+        try {
+          rawContent = JSON.parse(rawContent);
+        } catch (_) {}
+      }
+      const mergedContent =
+        typeof rawContent === 'object' && rawContent !== null
+          ? { ...fallbackContent, ...rawContent }
+          : fallbackContent;
+
       return {
-        content: sec.active_content || sec.content || fallbackContent,
+        content: mergedContent,
         section: sec,
         isVisible: sec.is_visible !== false,
         isDraft: Boolean(sec.has_draft)
@@ -179,8 +253,19 @@ export function WebsiteContentProvider({ children }) {
           isDraft: false
         };
       }
+      let rawContent = b.active_content || b.content || fallbackContent;
+      if (typeof rawContent === 'string') {
+        try {
+          rawContent = JSON.parse(rawContent);
+        } catch (_) {}
+      }
+      const mergedContent =
+        typeof rawContent === 'object' && rawContent !== null
+          ? { ...fallbackContent, ...rawContent }
+          : fallbackContent;
+
       return {
-        content: b.active_content || b.content || fallbackContent,
+        content: mergedContent,
         block: b,
         isActive: b.is_active !== false,
         isDraft: Boolean(b.has_draft)

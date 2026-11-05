@@ -35,6 +35,17 @@ export default function Footer() {
   const footerLogo = useWebsiteImage('footer.brand_logo', settings?.logo || '/assets/site/white_logo.png');
   const siteName = settings?.siteName || 'BlackForest Holidays';
 
+  const socialLinks =
+    typeof content.social_links === 'string'
+      ? (() => {
+          try {
+            return JSON.parse(content.social_links);
+          } catch {
+            return {};
+          }
+        })()
+      : content.social_links || {};
+
   return (
     <>
       {/* Global FAQ Section for all pages (suppressed on destination pages which have their own dedicated Quick Questions section) */}
@@ -88,7 +99,7 @@ export default function Footer() {
               <div className="flex items-center gap-3 pt-3">
                 {/* Facebook */}
                 <a
-                  href={content.social_links?.facebook || settings?.socialLinks?.facebook || 'https://facebook.com'}
+                  href={socialLinks?.facebook || settings?.socialLinks?.facebook || 'https://facebook.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
@@ -99,7 +110,7 @@ export default function Footer() {
 
                 {/* Twitter / X */}
                 <a
-                  href={content.social_links?.twitter || settings?.socialLinks?.twitter || 'https://twitter.com'}
+                  href={socialLinks?.twitter || settings?.socialLinks?.twitter || 'https://twitter.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Twitter"
@@ -112,7 +123,7 @@ export default function Footer() {
 
                 {/* LinkedIn */}
                 <a
-                  href={content.social_links?.linkedin || settings?.socialLinks?.linkedin || 'https://linkedin.com'}
+                  href={socialLinks?.linkedin || settings?.socialLinks?.linkedin || 'https://linkedin.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
@@ -125,7 +136,7 @@ export default function Footer() {
 
                 {/* Instagram */}
                 <a
-                  href={content.social_links?.instagram || settings?.socialLinks?.instagram || 'https://instagram.com'}
+                  href={socialLinks?.instagram || settings?.socialLinks?.instagram || 'https://instagram.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"

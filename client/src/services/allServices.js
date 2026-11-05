@@ -698,9 +698,14 @@ export const pageSectionService = {
   },
 
   saveDraft: async (idOrKey, data) => {
+    let apiData = null;
+    let apiSuccess = false;
     try {
       const res = await api.put(`/page-sections/${idOrKey}/draft`, data);
-      if (res?.data?.success) return res.data;
+      if (res?.data?.success) {
+        apiSuccess = true;
+        apiData = res.data;
+      }
     } catch (_) {}
 
     const overrides = getLocalSectionOverrides();
@@ -715,20 +720,38 @@ export const pageSectionService = {
     if (data.is_visible !== undefined) overrides[key].is_visible = data.is_visible;
     saveLocalSectionOverrides(overrides);
 
-    return { success: true, message: 'Draft saved in local storage', data: overrides[key] };
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('bf_content_updated', {
+          detail: { key, action: 'draft', content: data.content }
+        })
+      );
+    }
+
+    return apiSuccess
+      ? apiData
+      : { success: true, message: 'Draft saved in local storage', data: overrides[key] };
   },
 
   publish: async (idOrKey, data = {}) => {
+    let apiData = null;
+    let apiSuccess = false;
     try {
       const res = await api.post(`/page-sections/${idOrKey}/publish`, data);
-      if (res?.data?.success) return res.data;
+      if (res?.data?.success) {
+        apiSuccess = true;
+        apiData = res.data;
+      }
     } catch (_) {}
 
     const overrides = getLocalSectionOverrides();
     const key = String(idOrKey);
     const cur = overrides[key] || {};
     const defaultSec = defaultPageSections.find((s) => s.section_key === key);
-    const newContent = data.content !== undefined ? data.content : (cur.draft_content || cur.content || defaultSec?.content);
+    const newContent =
+      data.content !== undefined
+        ? data.content
+        : cur.draft_content || cur.content || defaultSec?.content;
 
     overrides[key] = {
       ...cur,
@@ -739,27 +762,51 @@ export const pageSectionService = {
     };
     saveLocalSectionOverrides(overrides);
 
-    return { success: true, message: 'Published to live website', data: overrides[key] };
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('bf_content_updated', {
+          detail: { key, action: 'publish', content: newContent }
+        })
+      );
+    }
+
+    return apiSuccess
+      ? apiData
+      : { success: true, message: 'Published to live website', data: overrides[key] };
   },
 
   publishAll: async () => {
+    let apiSuccess = false;
+    let apiData = null;
     try {
       const res = await api.post('/page-sections/publish-all');
-      if (res?.data?.success) return res.data;
+      if (res?.data?.success) {
+        apiSuccess = true;
+        apiData = res.data;
+      }
     } catch (_) {}
 
     const overrides = getLocalSectionOverrides();
-    let publishedCount = 0;
     Object.keys(overrides).forEach((k) => {
-      if (overrides[k].draft_content) {
+      if (overrides[k].draft_content !== null && overrides[k].draft_content !== undefined) {
         overrides[k].content = overrides[k].draft_content;
         overrides[k].draft_content = null;
         overrides[k].publication_status = 'published';
-        publishedCount += 1;
       }
     });
     saveLocalSectionOverrides(overrides);
-    return { success: true, data: { publishedCount }, message: 'All pending sections published' };
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('bf_content_updated', {
+          detail: { action: 'publish-all' }
+        })
+      );
+    }
+
+    return apiSuccess
+      ? apiData
+      : { success: true, message: 'All drafts published to live website' };
   },
 
   discardDraft: async (idOrKey) => {
