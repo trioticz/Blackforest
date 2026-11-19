@@ -44,55 +44,111 @@ export default function AdminFooterPage() {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await pageSectionService.getByKey('global.footer', { preview: 'true' });
-      if (res?.success && res.data) {
-        let c = res.data.active_content || res.data.content || {};
-        if (typeof c === 'string') {
-          try {
-            c = JSON.parse(c);
-          } catch (_) {}
-        }
-        let social = c.social_links || {};
-        if (typeof social === 'string') {
-          try {
-            social = JSON.parse(social);
-          } catch (_) {}
-        }
 
-        setFooterForm({
-          column_1_title: c.column_1_title || 'Reach Us',
-          address_bangalore:
-            c.address_bangalore !== undefined
-              ? c.address_bangalore
-              : '737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Binnamangala, Indiranagar, Bengaluru, Karnataka 560038',
-          column_2_title: c.column_2_title || 'Head Office',
-          address_coimbatore:
-            c.address_coimbatore !== undefined
-              ? c.address_coimbatore
-              : '76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012',
-          phone_numbers:
-            c.phone_numbers !== undefined
-              ? c.phone_numbers
-              : '+91 90432 02008 / +91 90432 02009',
-          emails:
-            c.emails !== undefined
-              ? c.emails
-              : 'info@blackforestholidays.com / booking@blackforestholidays.com',
-          copyright:
-            c.copyright !== undefined
-              ? c.copyright
-              : '© 2026 Black Forest Holidays Pvt. Ltd. All rights reserved.',
-          social_links: {
-            facebook: social.facebook || 'https://facebook.com',
-            twitter: social.twitter || 'https://twitter.com',
-            linkedin: social.linkedin || 'https://linkedin.com',
-            instagram: social.instagram || 'https://instagram.com'
+      // 1. Fetch live MySQL settings from backend
+      let settingsData = null;
+      try {
+        const sRes = await settingsService.get();
+        if (sRes?.data) {
+          settingsData = sRes.data;
+        }
+      } catch (err) {
+        console.warn('Could not fetch settings from backend:', err);
+      }
+
+      // 2. Fetch page section CMS data
+      let sectionContent = null;
+      let updatedAt = null;
+      try {
+        const res = await pageSectionService.getByKey('global.footer', { preview: 'true' });
+        if (res?.success && res.data) {
+          let c = res.data.active_content || res.data.content || {};
+          if (typeof c === 'string') {
+            try {
+              c = JSON.parse(c);
+            } catch (_) {}
           }
-        });
-
-        if (res.data.updatedAt) {
-          setLastPublished(new Date(res.data.updatedAt).toLocaleTimeString());
+          if (c && Object.keys(c).length > 0) {
+            sectionContent = c;
+          }
+          if (res.data.updatedAt) {
+            updatedAt = res.data.updatedAt;
+          }
         }
+      } catch (err) {
+        console.warn('Could not fetch section CMS data:', err);
+      }
+
+      // 3. Parse footerText if saved as JSON in settings
+      let settingsFooterConfig = {};
+      if (typeof settingsData?.footerText === 'string' && settingsData.footerText.trim().startsWith('{')) {
+        try {
+          settingsFooterConfig = JSON.parse(settingsData.footerText);
+        } catch (_) {}
+      }
+
+      // Merge prioritized data
+      const mergedSocial = {
+        facebook:
+          settingsData?.socialLinks?.facebook ||
+          settingsFooterConfig.social_links?.facebook ||
+          sectionContent?.social_links?.facebook ||
+          'https://facebook.com',
+        twitter:
+          settingsData?.socialLinks?.twitter ||
+          settingsFooterConfig.social_links?.twitter ||
+          sectionContent?.social_links?.twitter ||
+          'https://twitter.com',
+        linkedin:
+          settingsData?.socialLinks?.linkedin ||
+          settingsFooterConfig.social_links?.linkedin ||
+          sectionContent?.social_links?.linkedin ||
+          'https://linkedin.com',
+        instagram:
+          settingsData?.socialLinks?.instagram ||
+          settingsFooterConfig.social_links?.instagram ||
+          sectionContent?.social_links?.instagram ||
+          'https://instagram.com'
+      };
+
+      setFooterForm({
+        column_1_title:
+          settingsFooterConfig.column_1_title ||
+          sectionContent?.column_1_title ||
+          'Reach Us',
+        address_bangalore:
+          settingsFooterConfig.address_bangalore ||
+          sectionContent?.address_bangalore ||
+          '737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Binnamangala, Indiranagar, Bengaluru, Karnataka 560038',
+        column_2_title:
+          settingsFooterConfig.column_2_title ||
+          sectionContent?.column_2_title ||
+          'Head Office',
+        address_coimbatore:
+          settingsData?.address ||
+          settingsFooterConfig.address_coimbatore ||
+          sectionContent?.address_coimbatore ||
+          '76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012',
+        phone_numbers:
+          settingsData?.phone ||
+          settingsFooterConfig.phone_numbers ||
+          sectionContent?.phone_numbers ||
+          '+91 97429 77700 / +91 97428 77700',
+        emails:
+          settingsData?.email ||
+          settingsFooterConfig.emails ||
+          sectionContent?.emails ||
+          'info@blackforestholidays.com / booking@blackforestholidays.com',
+        copyright:
+          settingsData?.copyright ||
+          settingsFooterConfig.copyright ||
+          sectionContent?.copyright ||
+          '© 2026 Black Forest Holidays Pvt. Ltd. All rights reserved.',
+        social_links: mergedSocial
+      });
+
+      if (updatedAt || settingsData?.updatedAt) {
+        setLastPublished(new Date(updatedAt || settingsData.updatedAt).toLocaleTimeString());
       }
       setHasUnsavedChanges(false);
     } catch (err) {
@@ -142,19 +198,26 @@ export default function AdminFooterPage() {
     try {
       setSaving(true);
 
-      // 1. Publish to pageSectionService (MySQL DB + local cache + broadcast event)
-      await pageSectionService.publish('global.footer', { content: footerForm });
-
-      // 2. Also update global settings for unified consistency
+      // 1. Direct update to MySQL Settings API (Always live & persistent on Render)
       try {
         await settingsService.update({
           address: footerForm.address_coimbatore,
           phone: footerForm.phone_numbers,
           email: footerForm.emails,
           copyright: footerForm.copyright,
-          socialLinks: footerForm.social_links
+          socialLinks: footerForm.social_links,
+          footerText: JSON.stringify(footerForm)
         });
-      } catch (_) {}
+      } catch (sErr) {
+        console.warn('Settings update failed:', sErr);
+      }
+
+      // 2. Publish to pageSectionService (MySQL DB + local cache + broadcast event)
+      try {
+        await pageSectionService.publish('global.footer', { content: footerForm });
+      } catch (pErr) {
+        console.warn('Page section publish failed:', pErr);
+      }
 
       // 3. Dispatch broadcast event for instantaneous in-memory sync across open tabs
       if (typeof window !== 'undefined') {

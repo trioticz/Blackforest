@@ -39,9 +39,16 @@ export const SiteSettingsProvider = ({ children }) => {
     try {
       const res = await settingsService.get();
       if (res?.data) {
+        let footerConfig = {};
+        if (typeof res.data.footerText === 'string' && res.data.footerText.trim().startsWith('{')) {
+          try {
+            footerConfig = JSON.parse(res.data.footerText);
+          } catch (_) {}
+        }
         setSettings((prev) => ({
           ...prev,
           ...res.data,
+          footerConfig,
           socialLinks: res.data.socialLinks || prev.socialLinks
         }));
       }

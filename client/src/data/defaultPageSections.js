@@ -272,7 +272,7 @@ export const defaultPageSections = [
       address_bangalore: '737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Binnamangala, Indiranagar, Bengaluru, Karnataka 560038',
       column_2_title: 'Head Office',
       address_coimbatore: '76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012',
-      phone_numbers: '+91 90432 02008 / +91 90432 02009',
+      phone_numbers: '+91 97429 77700 / +91 97428 77700',
       emails: 'info@blackforestholidays.com / booking@blackforestholidays.com',
       copyright: '© 2026 Black Forest Holidays Pvt. Ltd. All rights reserved.',
       social_links: {

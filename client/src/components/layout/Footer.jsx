@@ -35,7 +35,47 @@ export default function Footer() {
   const footerLogo = useWebsiteImage('footer.brand_logo', settings?.logo || '/assets/site/white_logo.png');
   const siteName = settings?.siteName || 'BlackForest Holidays';
 
-  const socialLinks =
+  const footerConfig = settings?.footerConfig || {};
+
+  const col1Title =
+    footerConfig.column_1_title ||
+    (content.column_1_title && content.column_1_title !== 'Reach Us' ? content.column_1_title : 'Reach Us');
+
+  const addressBangalore =
+    footerConfig.address_bangalore ||
+    content.address_bangalore ||
+    '737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Binnamangala, Indiranagar, Bengaluru, Karnataka 560038';
+
+  const col2Title =
+    footerConfig.column_2_title ||
+    (content.column_2_title && content.column_2_title !== 'Head Office' ? content.column_2_title : 'Head Office');
+
+  const addressCoimbatore =
+    settings?.address ||
+    footerConfig.address_coimbatore ||
+    content.address_coimbatore ||
+    '76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012';
+
+  const phoneNumbers =
+    settings?.phone ||
+    footerConfig.phone_numbers ||
+    (content.phone_numbers && !content.phone_numbers.includes('90432')
+      ? content.phone_numbers
+      : '+91 97429 77700 / +91 97428 77700');
+
+  const emails =
+    settings?.email ||
+    footerConfig.emails ||
+    content.emails ||
+    'info@blackforestholidays.com / booking@blackforestholidays.com';
+
+  const copyright =
+    settings?.copyright ||
+    footerConfig.copyright ||
+    content.copyright ||
+    '© 2026 Black Forest Holidays Pvt. Ltd. All rights reserved.';
+
+  const rawSocial =
     typeof content.social_links === 'string'
       ? (() => {
           try {
@@ -45,6 +85,29 @@ export default function Footer() {
           }
         })()
       : content.social_links || {};
+
+  const resolvedSocial = {
+    facebook:
+      settings?.socialLinks?.facebook ||
+      footerConfig.social_links?.facebook ||
+      rawSocial.facebook ||
+      'https://facebook.com',
+    twitter:
+      settings?.socialLinks?.twitter ||
+      footerConfig.social_links?.twitter ||
+      rawSocial.twitter ||
+      'https://twitter.com',
+    linkedin:
+      settings?.socialLinks?.linkedin ||
+      footerConfig.social_links?.linkedin ||
+      rawSocial.linkedin ||
+      'https://linkedin.com',
+    instagram:
+      settings?.socialLinks?.instagram ||
+      footerConfig.social_links?.instagram ||
+      rawSocial.instagram ||
+      'https://instagram.com'
+  };
 
   return (
     <>
@@ -82,7 +145,7 @@ export default function Footer() {
             {/* Column 1: Reach Us (4 cols with left padding so it's not stuck on the extreme left edge) */}
             <div className="md:col-span-5 lg:col-span-5 md:pl-6 lg:pl-10 space-y-5">
               <h3 className="text-2xl sm:text-[26px] font-bold text-white font-sans tracking-wide">
-                {content.column_1_title || 'Reach Us'}
+                {col1Title}
               </h3>
 
               {/* Address (Formatted exactly like reference) */}
@@ -90,7 +153,7 @@ export default function Footer() {
                 <MapPin className="w-5 h-5 text-white shrink-0 mt-1" />
                 <div className="space-y-0.5 font-light">
                   <p className="whitespace-pre-line">
-                    {content.address_bangalore || '737, 3rd Floor, Kheny Plaza CMH Main Road, 2nd Cross Rd, Binnamangala, Indiranagar, Bengaluru, Karnataka 560038'}
+                    {addressBangalore}
                   </p>
                 </div>
               </div>
@@ -99,7 +162,7 @@ export default function Footer() {
               <div className="flex items-center gap-3 pt-3">
                 {/* Facebook */}
                 <a
-                  href={socialLinks?.facebook || settings?.socialLinks?.facebook || 'https://facebook.com'}
+                  href={resolvedSocial.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
@@ -110,7 +173,7 @@ export default function Footer() {
 
                 {/* Twitter / X */}
                 <a
-                  href={socialLinks?.twitter || settings?.socialLinks?.twitter || 'https://twitter.com'}
+                  href={resolvedSocial.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Twitter"
@@ -123,7 +186,7 @@ export default function Footer() {
 
                 {/* LinkedIn */}
                 <a
-                  href={socialLinks?.linkedin || settings?.socialLinks?.linkedin || 'https://linkedin.com'}
+                  href={resolvedSocial.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
@@ -136,7 +199,7 @@ export default function Footer() {
 
                 {/* Instagram */}
                 <a
-                  href={socialLinks?.instagram || settings?.socialLinks?.instagram || 'https://instagram.com'}
+                  href={resolvedSocial.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
@@ -154,13 +217,13 @@ export default function Footer() {
             {/* Column 2: Head Office */}
             <div className="md:col-span-4 lg:col-span-4 space-y-5 md:pl-2">
               <h3 className="text-2xl sm:text-[26px] font-bold text-white font-sans tracking-wide">
-                {content.column_2_title || 'Head Office'}
+                {col2Title}
               </h3>
               <div className="flex items-start gap-3.5 text-sm sm:text-[15px] text-gray-200 leading-relaxed max-w-sm">
                 <MapPin className="w-5 h-5 text-white shrink-0 mt-1" />
                 <div className="space-y-0.5 font-light">
                   <p className="text-[16px] whitespace-pre-line">
-                    {content.address_coimbatore || '76, 1st floor, 8th Street, Crosscut Road, Gandhipuram, Coimbatore – 641012'}
+                    {addressCoimbatore}
                   </p>
                 </div>
               </div>
@@ -170,7 +233,7 @@ export default function Footer() {
                 <Mail className="w-4 h-4 text-white shrink-0" />
                 <p>
                   <span className="font-light">
-                    {content.emails || 'info@blackforestholidays.com / booking@blackforestholidays.com'}
+                    {emails}
                   </span>
                 </p>
               </div>
@@ -180,7 +243,7 @@ export default function Footer() {
                 <Phone className="w-4 h-4 text-white shrink-0 mt-1" />
                 <div className="font-light">
                   <p>
-                    {content.phone_numbers || '+91 90432 02008 / +91 90432 02009'}
+                    {phoneNumbers}
                   </p>
                 </div>
               </div>
@@ -226,7 +289,7 @@ export default function Footer() {
           {/* Bottom Dotted Rule and Centered Copyright */}
           <div className="border-t border-dotted border-gray-600/70 pt-6 text-center text-xs sm:text-sm text-gray-400 font-light">
             <p>
-              {content.copyright || settings?.copyright || '© 2026 BlackForest Holidays. All rights reserved.'}
+              {copyright}
             </p>
           </div>
 
