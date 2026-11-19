@@ -285,6 +285,37 @@ export const searchService = {
 import defaultWebsiteImages from '../data/defaultWebsiteImages';
 
 const STORAGE_KEY_OVERRIDES = 'bf_website_images_overrides';
+const STORAGE_KEY_PUB_HISTORY = 'bf_publication_history';
+
+export function recordPublication({ type, name, key, published_by, timestamp, details }) {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_PUB_HISTORY);
+    const history = raw ? JSON.parse(raw) : [];
+    const item = {
+      id: Date.now().toString() + '-' + Math.random().toString(36).substr(2, 5),
+      type: type || 'Content',
+      name: name || key || 'Published Item',
+      key: key || '',
+      timestamp: timestamp || new Date().toISOString(),
+      published_by: published_by || 'Admin',
+      details: details || null
+    };
+    history.unshift(item);
+    localStorage.setItem(STORAGE_KEY_PUB_HISTORY, JSON.stringify(history.slice(0, 60)));
+    return item;
+  } catch (_) {
+    return null;
+  }
+}
+
+export function getPublicationHistory() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_PUB_HISTORY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (_) {
+    return [];
+  }
+}
 
 function getLocalOverrides() {
   try {
@@ -317,6 +348,7 @@ function getLocalWebsiteImages(params = {}) {
 
   let list = defaultWebsiteImages.map((item, index) => {
     const override = overrides[item.image_key] || {};
+    const hasPending = Boolean(override.draft_image_url && override.draft_image_url !== (override.image_url || item.image_url));
     const merged = {
       ...item,
       id: index + 1,
@@ -325,7 +357,8 @@ function getLocalWebsiteImages(params = {}) {
     };
 
     merged.active_url = isPreview && merged.draft_image_url ? merged.draft_image_url : merged.image_url;
-    merged.has_pending_draft = Boolean(merged.draft_image_url && merged.draft_image_url !== merged.image_url);
+    merged.has_pending_draft = hasPending;
+    merged.has_draft = hasPending;
     return merged;
   });
 
@@ -521,6 +554,12 @@ export const websiteImageService = {
         updated_at: new Date().toISOString()
       };
       saveLocalOverrides(overrides);
+      recordPublication({
+        type: 'Image',
+        name: item?.image_name || key,
+        key: key,
+        published_by: 'Admin'
+      });
     }
     return { success: true, message: 'Image published successfully' };
   },
@@ -549,6 +588,12 @@ export const websiteImageService = {
           version_history: history.slice(0, 10),
           updated_at: new Date().toISOString()
         };
+        recordPublication({
+          type: 'Image',
+          name: item.image_name,
+          key: item.image_key,
+          published_by: 'Admin'
+        });
         publishedCount += 1;
       }
     });
@@ -762,6 +807,13 @@ export const pageSectionService = {
     };
     saveLocalSectionOverrides(overrides);
 
+    recordPublication({
+      type: 'Section',
+      name: cur.section_name || defaultSec?.section_name || key,
+      key: key,
+      published_by: 'Admin'
+    });
+
     if (typeof window !== 'undefined') {
       window.dispatchEvent(
         new CustomEvent('bf_content_updated', {
@@ -792,6 +844,12 @@ export const pageSectionService = {
         overrides[k].content = overrides[k].draft_content;
         overrides[k].draft_content = null;
         overrides[k].publication_status = 'published';
+        recordPublication({
+          type: 'Section',
+          name: overrides[k].section_name || k,
+          key: k,
+          published_by: 'Admin'
+        });
       }
     });
     saveLocalSectionOverrides(overrides);
@@ -993,6 +1051,13 @@ export const contentBlockService = {
       updated_at: new Date().toISOString()
     };
     saveLocalBlockOverrides(overrides);
+
+    recordPublication({
+      type: 'Content Block',
+      name: cur.block_name || defaultBlock?.block_name || key,
+      key: key,
+      published_by: 'Admin'
+    });
     return { success: true, message: 'Block published to live website', data: overrides[key] };
   },
 
@@ -1009,6 +1074,12 @@ export const contentBlockService = {
         overrides[k].content = overrides[k].draft_content;
         overrides[k].draft_content = null;
         overrides[k].publication_status = 'published';
+        recordPublication({
+          type: 'Content Block',
+          name: overrides[k].block_name || k,
+          key: k,
+          published_by: 'Admin'
+        });
         publishedCount += 1;
       }
     });
